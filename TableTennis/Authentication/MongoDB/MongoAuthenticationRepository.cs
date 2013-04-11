@@ -21,7 +21,7 @@ namespace TableTennis.Authentication.MongoDB
 
             _mongoServer = _mongoClient.GetServer();
 
-            _mongoDatabase = _mongoServer.GetDatabase("goldsilverprofit");
+            _mongoDatabase = _mongoServer.GetDatabase("tabletennis");
         }
 
         public bool ValidateUser(string user, string password)
