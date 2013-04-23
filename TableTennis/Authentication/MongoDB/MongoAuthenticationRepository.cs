@@ -30,9 +30,12 @@ namespace TableTennis.Authentication.MongoDB
 
             var foundUser = collection.FindOne(Query<UserAccount>.Where(s => s.Username == user));
 
-            var matched = BCrypt.Net.BCrypt.Verify(password, foundUser.Password);
-
-            return foundUser != null && matched;
+            if (foundUser != null)
+            {
+                var matched = BCrypt.Net.BCrypt.Verify(password, foundUser.Password);
+                return matched;
+            }
+            return false;
         }
 
         public void CreateUser(string username, string password)
