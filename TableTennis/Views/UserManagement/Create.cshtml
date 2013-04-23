@@ -2,10 +2,13 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Add New User</h2>
-@Html.Label("Username")
-@Html.TextBox("TBoxUserName")
-@Html.Label("Email")
-@Html.TextBox("TBoxEmail")
+@using (Html.BeginForm())
+{
+    <h2>Add New User</h2>
+    @Html.Label("Username")
+    @Html.TextBox("TBoxUserName")
+    @Html.Label("Email")
+    @Html.TextBox("TBoxEmail")
 
-<input type="submit" value="Create" />
+    <input type="submit" value="Create" />    
+}

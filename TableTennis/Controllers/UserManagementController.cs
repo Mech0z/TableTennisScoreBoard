@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TableTennis.Authentication.MongoDB;
 
 namespace TableTennis.Controllers
 {
@@ -40,7 +41,9 @@ namespace TableTennis.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                var username = collection["TBoxUserName"];
+                var email = collection["TBoxEmail"];
+
 
                 return RedirectToAction("Index");
             }
