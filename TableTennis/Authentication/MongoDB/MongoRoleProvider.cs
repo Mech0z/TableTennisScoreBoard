@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web.Security;
-using TableTennis.Authentication.MongoDB;
+using GoldSilverWebServer.Authentication.MongoDB;
 
-namespace GoldSilverWebServer.Authentication.MongoDB
+namespace TableTennis.Authentication.MongoDB
 {
     public class MongoRoleProvider : RoleProvider
     {
-        private IMongoAuthenticationRepository _mongoAuthenticationRepository;
+        private readonly IMongoAuthenticationRepository _mongoAuthenticationRepository;
 
         public MongoRoleProvider()
         {

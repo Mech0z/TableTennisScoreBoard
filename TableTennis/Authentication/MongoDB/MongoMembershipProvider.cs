@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web.Security;
-using TableTennis.Authentication.MongoDB;
+﻿using System.Web.Security;
+using GoldSilverWebServer.Authentication.MongoDB;
 
-namespace GoldSilverWebServer.Authentication.MongoDB
+namespace TableTennis.Authentication.MongoDB
 {
     public class MongoMembershipProvider : MembershipProvider
     {
