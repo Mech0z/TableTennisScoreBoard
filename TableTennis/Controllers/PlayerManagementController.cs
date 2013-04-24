@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using TableTennis.Authentication.MongoDB;
+using TableTennis.Models;
+using TableTennis.ViewModels;
 
 namespace TableTennis.Controllers
 {
-    public class UserManagementController : Controller
+    public class PlayerManagementController : Controller
     {
+        private readonly IMongoPlayerManagement _mongoPlayerManagement;
+
+        public PlayerManagementController()
+        {
+               _mongoPlayerManagement = new MongoPlayerManagement();   
+        }
+
         //
         // GET: /UserManagement/
 
@@ -33,19 +38,36 @@ namespace TableTennis.Controllers
             return View();
         }
 
+        public ActionResult PlayerList()
+        {
+            var playerList = _mongoPlayerManagement.GetAllPlayers();
+
+            var viewModel = new PlayerListViewModel {PlayerList = playerList};
+
+            return View(viewModel);
+        }
+
         //
         // POST: /UserManagement/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(PlayerManagementViewModel viewModel)
         {
             try
             {
-                var username = collection["TBoxUserName"];
-                var email = collection["TBoxEmail"];
+                if (ModelState.IsValid)
+                {
+                    var result = _mongoPlayerManagement.CreatePlayer(viewModel.Player);
 
+                    if (!result)
+                    {
+                        ViewBag["Error"] = "Player creating failed";
+                    }
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+                return View();
             }
             catch
             {

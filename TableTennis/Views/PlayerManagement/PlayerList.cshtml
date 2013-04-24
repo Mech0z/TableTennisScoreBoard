@@ -1,0 +1,20 @@
+﻿@model TableTennis.ViewModels.PlayerListViewModel
+
+@{
+    ViewBag.Title = "PlayerList";
+}
+
+<h2>PlayerList</h2>
+
+
+@foreach (var p in Model.PlayerList)
+{
+    <tr>
+        <td>
+            @p.Username
+        </td>
+        <td>
+            @p.Email
+        </td>  
+    </tr>
+}

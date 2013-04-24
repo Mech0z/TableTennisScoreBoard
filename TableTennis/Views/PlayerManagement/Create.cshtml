@@ -1,0 +1,13 @@
+﻿@model TableTennis.ViewModels.PlayerManagementViewModel
+
+@{
+    
+    ViewBag.Title = "Create player";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.EditorFor(m => m.Player);
+    
+    <input type="submit" value="Create" />    
+}

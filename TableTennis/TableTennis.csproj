@@ -147,21 +147,26 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\MongoDB\IMongoAuthenticationRepository.cs" />
+    <Compile Include="Authentication\MongoDB\IMongoPlayerManagement.cs" />
     <Compile Include="Authentication\MongoDB\MongoAuthenticationRepository.cs" />
     <Compile Include="Authentication\MongoDB\MongoDBSettings.cs" />
     <Compile Include="Authentication\MongoDB\MongoMembershipProvider.cs" />
     <Compile Include="Authentication\MongoDB\MongoRoleProvider.cs" />
+    <Compile Include="Authentication\MongoDB\MongoPlayerManagement.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\UserManagementController.cs" />
+    <Compile Include="Controllers\PlayerManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\UserAccountRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\PlayerListViewModel.cs" />
+    <Compile Include="ViewModels\PlayerManagementViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\ajax-loader.gif" />
@@ -278,8 +283,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\UserManagement\Index.cshtml" />
-    <Content Include="Views\UserManagement\Create.cshtml" />
+    <Content Include="Views\PlayerManagement\Index.cshtml" />
+    <Content Include="Views\PlayerManagement\Create.cshtml" />
+    <Content Include="Views\PlayerManagement\PlayerList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
