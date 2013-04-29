@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using TableTennis.Authentication.MongoDB;
 using TableTennis.Models;
 using TableTennis.ViewModels;
@@ -43,7 +44,7 @@ namespace TableTennis.Controllers
             var playerList = _mongoPlayerManagement.GetAllPlayers();
 
             var viewModel = new PlayerListViewModel {PlayerList = playerList};
-
+            
             return View(viewModel);
         }
 
@@ -58,7 +59,6 @@ namespace TableTennis.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = _mongoPlayerManagement.CreatePlayer(viewModel.Player);
-
                     if (!result)
                     {
                         ViewBag["Error"] = "Player creating failed";

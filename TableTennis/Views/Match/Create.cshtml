@@ -1,0 +1,19 @@
+﻿@model TableTennis.ViewModels.CreateMatchViewModel
+
+@{
+    ViewBag.Title = "Enter Match Result";
+}
+
+@using (Html.BeginForm("Index", "Match", FormMethod.Post))
+{
+    <h4>Player 1</h4>
+    @Html.DropDownListFor(p => p.Player1ID, Model.PlayerList)
+   
+    <h4>Player 2</h4>
+    @Html.DropDownListFor(p => p.Player1ID, Model.PlayerList)
+
+    <h4>Winner</h4>
+    @Html.DropDownListFor(w => w.Winner, Model.Winner)
+    
+    <input type="submit" value="Add result" />    
+}
