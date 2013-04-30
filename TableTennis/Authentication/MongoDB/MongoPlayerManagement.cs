@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -25,7 +26,7 @@ namespace TableTennis.Authentication.MongoDB
         {
             var collection = _mongoDatabase.GetCollection<Player>("Player");
             var foundPlayer = collection.FindOne(Query<Player>.Where(s => s.Username == player.Username));
-            
+
             if (foundPlayer != null)
             {
                 return false;
@@ -39,6 +40,18 @@ namespace TableTennis.Authentication.MongoDB
         {
             var collection = _mongoDatabase.GetCollection<Player>("Player");
             return collection.FindAll().ToList();
+        }
+
+        public Player GetPlayerById(Guid playerId)
+        {
+            var collection = _mongoDatabase.GetCollection<Player>("Player");
+            return collection.Find(Query<Player>.Where(s => s.Id == playerId)).Single();
+        }
+
+        public int GetPlayerRatingById(Guid playerId)
+        {
+            var collection = _mongoDatabase.GetCollection<Player>("Player");
+            return collection.Find(Query<Player>.Where(s => s.Id == playerId)).Select(p => p.Rating).Single();
         }
     }
 }

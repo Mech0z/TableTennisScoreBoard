@@ -11,7 +11,7 @@ namespace TableTennis.Models
     {
         public PlayedGame()
         {
-            Players = new List<Player>();
+            PlayerIds = new List<Guid>();
         }
 
         [BsonId(IdGenerator = typeof(CombGuidGenerator))]
@@ -20,9 +20,11 @@ namespace TableTennis.Models
 
         public bool Ranked { get; set; }
 
-        public List<Player> Players { get; set; }
+        public DateTime TimeStamp { get; set; }
 
-        public int WinnerId { get; set; }
+        public List<Guid> PlayerIds { get; set; }
+
+        public Guid WinnerId { get; set; }
 
         public int EloPoints { get; set; }
     }

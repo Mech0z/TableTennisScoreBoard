@@ -147,9 +147,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\MongoDB\IMongoAuthenticationRepository.cs" />
+    <Compile Include="Authentication\MongoDB\IMongoMatchManagement.cs" />
     <Compile Include="Authentication\MongoDB\IMongoPlayerManagement.cs" />
     <Compile Include="Authentication\MongoDB\MongoAuthenticationRepository.cs" />
     <Compile Include="Authentication\MongoDB\MongoDBSettings.cs" />
+    <Compile Include="Authentication\MongoDB\MongoMatchManagement.cs" />
     <Compile Include="Authentication\MongoDB\MongoMembershipProvider.cs" />
     <Compile Include="Authentication\MongoDB\MongoRoleProvider.cs" />
     <Compile Include="Authentication\MongoDB\MongoPlayerManagement.cs" />
@@ -162,6 +164,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\EloRating.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\UserAccount.cs" />

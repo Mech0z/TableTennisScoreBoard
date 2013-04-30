@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TableTennis.Authentication.MongoDB;
+using TableTennis.Models;
 using TableTennis.ViewModels;
 
 namespace TableTennis.Controllers
@@ -11,10 +12,12 @@ namespace TableTennis.Controllers
     public class MatchController : Controller
     {
         private readonly IMongoPlayerManagement _mongoPlayerManagement;
+        private readonly IMongoMatchManagement _mongoMatchManagement;
 
         public MatchController()
         {
             _mongoPlayerManagement = new MongoPlayerManagement();
+            _mongoMatchManagement = new MongoMatchManagement();
         }
 
         //
@@ -63,11 +66,35 @@ namespace TableTennis.Controllers
         // POST: /Match/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(CreateMatchViewModel vm)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (!ModelState.IsValid)
+                {
+                    ViewBag["Error"] = "This is wrong!";
+                    return View();
+                }
+
+                var player1Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(vm.Player1ID);
+                var player2Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(vm.Player2ID);
+
+                var playerOneWin = vm.WinnerID == 1 ? 1 : 0;
+                var playerTwoWin = vm.WinnerID == 2 ? 1 : 0;
+
+                var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
+
+                var game = new PlayedGame
+                    {
+                        EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2,
+                        PlayerIds = {vm.Player1ID, vm.Player2ID},
+                        Ranked = true,
+                        TimeStamp = DateTime.UtcNow,
+                        WinnerId = playerOneWin == 1 ? vm.Player1ID : vm.Player2ID
+
+                    };
+
+                _mongoMatchManagement.CreateMatch(game);
 
                 return RedirectToAction("Index");
             }
