@@ -6,15 +6,30 @@
 
 <h2>PlayerList</h2>
 
-
-@foreach (var p in Model.PlayerList)
-{
+<table>
     <tr>
         <td>
-            @p.Username
+            Username
         </td>
         <td>
-            @p.Email
-        </td>  
+            Email
+        </td>
+        <td>
+            Rating
+        </td>
     </tr>
-}
+    @foreach (var p in Model.PlayerList)
+    {
+        <tr>
+            <td>
+                @p.Username
+            </td>
+            <td>
+                @p.Email
+            </td>
+            <td>
+                @p.Rating
+            </td>
+        </tr>
+    }
+</table>

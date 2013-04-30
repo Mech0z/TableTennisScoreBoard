@@ -1,7 +1,5 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using TableTennis.Authentication.MongoDB;
-using TableTennis.Models;
 using TableTennis.ViewModels;
 
 namespace TableTennis.Controllers
@@ -12,7 +10,7 @@ namespace TableTennis.Controllers
 
         public PlayerManagementController()
         {
-               _mongoPlayerManagement = new MongoPlayerManagement();   
+            _mongoPlayerManagement = new MongoPlayerManagement();
         }
 
         //
@@ -42,7 +40,7 @@ namespace TableTennis.Controllers
         public ActionResult PlayerList()
         {
             var playerList = _mongoPlayerManagement.GetAllPlayers();
-
+            
             var viewModel = new PlayerListViewModel {PlayerList = playerList};
             
             return View(viewModel);

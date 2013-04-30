@@ -10,5 +10,6 @@ namespace TableTennis.Authentication.MongoDB
         List<Player> GetAllPlayers();
         Player GetPlayerById(Guid playerId);
         int GetPlayerRatingById(Guid playerId);
+        void UpdateRating(Guid playerId, int rating);
     }
 }

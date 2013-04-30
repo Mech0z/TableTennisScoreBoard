@@ -75,6 +75,11 @@ namespace TableTennis.Controllers
                     ViewBag["Error"] = "This is wrong!";
                     return View();
                 }
+                if (vm.Player1ID == vm.Player2ID)
+                {
+                    ViewBag["Error"] = "Select differnet players";
+                    return View();
+                }
 
                 var player1Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(vm.Player1ID);
                 var player2Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(vm.Player2ID);
@@ -93,6 +98,9 @@ namespace TableTennis.Controllers
                         WinnerId = playerOneWin == 1 ? vm.Player1ID : vm.Player2ID
 
                     };
+
+                _mongoPlayerManagement.UpdateRating(vm.Player1ID, (int)ratingSystem.FinalResult1);
+                _mongoPlayerManagement.UpdateRating(vm.Player2ID, (int)ratingSystem.FinalResult2);
 
                 _mongoMatchManagement.CreateMatch(game);
 

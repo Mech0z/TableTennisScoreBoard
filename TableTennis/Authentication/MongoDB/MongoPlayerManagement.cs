@@ -53,5 +53,13 @@ namespace TableTennis.Authentication.MongoDB
             var collection = _mongoDatabase.GetCollection<Player>("Player");
             return collection.Find(Query<Player>.Where(s => s.Id == playerId)).Select(p => p.Rating).Single();
         }
+
+        public void UpdateRating(Guid playerId, int rating)
+        {
+            var collection = _mongoDatabase.GetCollection<Player>("Player");
+            var player = collection.Find(Query<Player>.Where(s => s.Id == playerId)).Single();
+            player.Rating = rating;
+            collection.Save(player);
+        }
     }
 }
