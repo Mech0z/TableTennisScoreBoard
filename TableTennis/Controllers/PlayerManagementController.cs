@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using TableTennis.Interfaces.Repository;
 using TableTennis.ViewModels;
+using System.Linq;
 
 namespace TableTennis.Controllers
 {
@@ -47,6 +48,8 @@ namespace TableTennis.Controllers
             {
                 player.Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(player.Id);
             }
+
+            playerList = playerList.OrderByDescending(player => player.Rating).ToList();
 
             var viewModel = new PlayerListViewModel {PlayerList = playerList};
             
