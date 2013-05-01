@@ -165,6 +165,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\EloRating.cs" />
+    <Compile Include="Models\Gravatar.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\UserAccount.cs" />

@@ -1,4 +1,5 @@
-﻿@model TableTennis.ViewModels.PlayerListViewModel
+﻿@using TableTennis.Models
+@model TableTennis.ViewModels.PlayerListViewModel
 
 @{
     ViewBag.Title = "PlayerList";
@@ -29,6 +30,9 @@
             </td>
             <td>
                 @p.Rating
+            </td>
+            <td>
+                @Html.Gravatar(p.GravatarEmail)
             </td>
         </tr>
     }
