@@ -168,6 +168,7 @@
     <Compile Include="Models\Gravatar.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\RatingCalculator.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\UserAccountRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

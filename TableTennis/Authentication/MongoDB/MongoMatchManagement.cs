@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -51,6 +52,12 @@ namespace TableTennis.Authentication.MongoDB
                 }
             }
             return rating;
+        }
+
+        public List<PlayedGame> GetAllGames()
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            return collection.FindAll().ToList();
         }
     }
 }
