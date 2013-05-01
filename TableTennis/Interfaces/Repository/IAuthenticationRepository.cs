@@ -1,6 +1,6 @@
-﻿namespace GoldSilverWebServer.Authentication.MongoDB
+﻿namespace TableTennis.Interfaces.Repository
 {
-    public interface IMongoAuthenticationRepository
+    public interface IAuthenticationRepository
     {
         bool ValidateUser(string user, string password);
         void CreateUser(string username, string password);

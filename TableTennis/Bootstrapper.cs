@@ -1,7 +1,7 @@
 using System.Web.Mvc;
-using GoldSilverWebServer.Authentication.MongoDB;
 using Microsoft.Practices.Unity;
 using TableTennis.Authentication.MongoDB;
+using TableTennis.Interfaces.Repository;
 using Unity.Mvc4;
 
 namespace TableTennis
@@ -26,10 +26,10 @@ namespace TableTennis
 
             // e.g. container.RegisterType<ITestService, TestService>();
 
-            container.RegisterType<IMongoMatchManagement, MongoMatchManagement>();
-            container.RegisterType<IMongoPlayerManagement, MongoPlayerManagement>();
+            container.RegisterType<IMatchManagementRepository, MongoMatchManagement>();
+            container.RegisterType<IPlayerManagementRepository, MongoPlayerManagement>();
 
-            container.RegisterType<IMongoAuthenticationRepository, MongoAuthenticationRepository>();
+            container.RegisterType<IAuthenticationRepository, MongoAuthenticationRepository>();
             RegisterTypes(container);
 
             return container;

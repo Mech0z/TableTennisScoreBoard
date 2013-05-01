@@ -1,9 +1,9 @@
 ﻿using System;
 using TableTennis.Models;
 
-namespace TableTennis.Authentication.MongoDB
+namespace TableTennis.Interfaces.Repository
 {
-    public interface IMongoMatchManagement
+    public interface IMatchManagementRepository
     {
         void CreateMatch(PlayedGame game);
         int GetPlayerRatingByPlayerId(Guid playerId);

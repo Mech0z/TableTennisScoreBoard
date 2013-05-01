@@ -2,11 +2,12 @@
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 
 namespace TableTennis.Authentication.MongoDB
 {
-    public class MongoMatchManagement : IMongoMatchManagement
+    public class MongoMatchManagement : IMatchManagementRepository
     {
         private readonly string _connStr;
         private readonly MongoClient _mongoClient;

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using TableTennis.Authentication.MongoDB;
+using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 using TableTennis.ViewModels;
 
@@ -11,13 +9,13 @@ namespace TableTennis.Controllers
 {
     public class MatchController : Controller
     {
-        private readonly IMongoMatchManagement _mongoMatchManagement;
-        private readonly IMongoPlayerManagement _mongoPlayerManagement;
+        private readonly IMatchManagementRepository _matchManagementRepository;
+        private readonly IPlayerManagementRepository _playerManagementRepository;
 
-        public MatchController(IMongoMatchManagement mongoMatchManagement, IMongoPlayerManagement mongoPlayerManagement)
+        public MatchController(IMatchManagementRepository matchManagementRepository, IPlayerManagementRepository playerManagementRepository)
         {
-            _mongoMatchManagement = mongoMatchManagement;
-            _mongoPlayerManagement = mongoPlayerManagement;
+            _matchManagementRepository = matchManagementRepository;
+            _playerManagementRepository = playerManagementRepository;
         }
 
         //
@@ -41,7 +39,7 @@ namespace TableTennis.Controllers
 
         public ActionResult Create()
         {
-            var playerList = _mongoPlayerManagement.GetAllPlayers();
+            var playerList = _playerManagementRepository.GetAllPlayers();
 
             var vm = new CreateMatchViewModel
                 {
@@ -81,8 +79,8 @@ namespace TableTennis.Controllers
                     return View();
                 }
 
-                var player1Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(vm.Player1ID);
-                var player2Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(vm.Player2ID);
+                var player1Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(vm.Player1ID);
+                var player2Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(vm.Player2ID);
 
                 var playerOneWin = vm.WinnerID == 1 ? 1 : 0;
                 var playerTwoWin = vm.WinnerID == 2 ? 1 : 0;
@@ -99,10 +97,10 @@ namespace TableTennis.Controllers
 
                     };
 
-                _mongoPlayerManagement.UpdateRating(vm.Player1ID, (int)ratingSystem.FinalResult1);
-                _mongoPlayerManagement.UpdateRating(vm.Player2ID, (int)ratingSystem.FinalResult2);
+                _playerManagementRepository.UpdateRating(vm.Player1ID, (int)ratingSystem.FinalResult1);
+                _playerManagementRepository.UpdateRating(vm.Player2ID, (int)ratingSystem.FinalResult2);
 
-                _mongoMatchManagement.CreateMatch(game);
+                _matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("Index");
             }

@@ -1,11 +1,11 @@
 ﻿using System.Web.Security;
-using GoldSilverWebServer.Authentication.MongoDB;
+using TableTennis.Interfaces.Repository;
 
 namespace TableTennis.Authentication.MongoDB
 {
     public class MongoMembershipProvider : MembershipProvider
     {
-        public IMongoAuthenticationRepository MongoAuthenticationRepository { get; set; }
+        public IAuthenticationRepository MongoAuthenticationRepository { get; set; }
 
         public MongoMembershipProvider()
         {

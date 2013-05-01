@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using GoldSilverWebServer.Authentication.MongoDB;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 
 namespace TableTennis.Authentication.MongoDB
 {
-    public class MongoAuthenticationRepository : IMongoAuthenticationRepository
+    public class MongoAuthenticationRepository : IAuthenticationRepository
     {
         private readonly string _connStr;
         private readonly MongoClient _mongoClient;

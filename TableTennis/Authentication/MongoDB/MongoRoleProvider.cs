@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Web.Security;
-using GoldSilverWebServer.Authentication.MongoDB;
+using TableTennis.Interfaces.Repository;
 
 namespace TableTennis.Authentication.MongoDB
 {
     public class MongoRoleProvider : RoleProvider
     {
-        private readonly IMongoAuthenticationRepository _mongoAuthenticationRepository;
+        private readonly IAuthenticationRepository _mongoAuthenticationRepository;
 
 
-        public MongoRoleProvider(IMongoAuthenticationRepository mongoAuthenticationRepository)
+        public MongoRoleProvider(IAuthenticationRepository mongoAuthenticationRepository)
         {
             _mongoAuthenticationRepository = mongoAuthenticationRepository;
         }

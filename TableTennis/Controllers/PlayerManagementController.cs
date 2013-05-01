@@ -1,18 +1,18 @@
 ﻿using System.Web.Mvc;
-using TableTennis.Authentication.MongoDB;
+using TableTennis.Interfaces.Repository;
 using TableTennis.ViewModels;
 
 namespace TableTennis.Controllers
 {
     public class PlayerManagementController : Controller
     {
-        private readonly IMongoPlayerManagement _mongoPlayerManagement;
-        private readonly IMongoMatchManagement _mongoMatchManagement;
+        private readonly IPlayerManagementRepository _playerManagementRepository;
+        private readonly IMatchManagementRepository _matchManagementRepository;
 
-        public PlayerManagementController(IMongoPlayerManagement mongoPlayerManagement, IMongoMatchManagement mongoMatchManagement)
+        public PlayerManagementController(IPlayerManagementRepository playerManagementRepository, IMatchManagementRepository matchManagementRepository)
         {
-            _mongoPlayerManagement = mongoPlayerManagement;
-            _mongoMatchManagement = mongoMatchManagement;
+            _playerManagementRepository = playerManagementRepository;
+            _matchManagementRepository = matchManagementRepository;
         }
 
         //
@@ -41,11 +41,11 @@ namespace TableTennis.Controllers
 
         public ActionResult PlayerList()
         {
-            var playerList = _mongoPlayerManagement.GetAllPlayers();
+            var playerList = _playerManagementRepository.GetAllPlayers();
 
             foreach (var player in playerList)
             {
-                player.Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(player.Id);
+                player.Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(player.Id);
             }
 
             var viewModel = new PlayerListViewModel {PlayerList = playerList};
@@ -63,7 +63,7 @@ namespace TableTennis.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = _mongoPlayerManagement.CreatePlayer(viewModel.Player);
+                    var result = _playerManagementRepository.CreatePlayer(viewModel.Player);
                     if (!result)
                     {
                         ViewBag["Error"] = "Player creating failed";

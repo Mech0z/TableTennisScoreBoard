@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 
 namespace TableTennis.Authentication.MongoDB
 {
-    public class MongoPlayerManagement : IMongoPlayerManagement
+    public class MongoPlayerManagement : IPlayerManagementRepository
     {
         private readonly string _connStr;
         private readonly MongoClient _mongoClient;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using TableTennis.Models;
 
-namespace TableTennis.Authentication.MongoDB
+namespace TableTennis.Interfaces.Repository
 {
-    public interface IMongoPlayerManagement
+    public interface IPlayerManagementRepository
     {
         bool CreatePlayer(Player player);
         List<Player> GetAllPlayers();

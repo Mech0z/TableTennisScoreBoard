@@ -146,9 +146,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authentication\MongoDB\IMongoAuthenticationRepository.cs" />
-    <Compile Include="Authentication\MongoDB\IMongoMatchManagement.cs" />
-    <Compile Include="Authentication\MongoDB\IMongoPlayerManagement.cs" />
+    <Compile Include="Interfaces\Repository\IAuthenticationRepository.cs" />
+    <Compile Include="Interfaces\Repository\IMatchManagementRepository.cs" />
+    <Compile Include="Interfaces\Repository\IPlayerManagementRepository.cs" />
     <Compile Include="Authentication\MongoDB\MongoAuthenticationRepository.cs" />
     <Compile Include="Authentication\MongoDB\MongoDBSettings.cs" />
     <Compile Include="Authentication\MongoDB\MongoMatchManagement.cs" />
