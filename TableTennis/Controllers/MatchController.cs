@@ -11,13 +11,13 @@ namespace TableTennis.Controllers
 {
     public class MatchController : Controller
     {
-        private readonly IMongoPlayerManagement _mongoPlayerManagement;
         private readonly IMongoMatchManagement _mongoMatchManagement;
+        private readonly IMongoPlayerManagement _mongoPlayerManagement;
 
-        public MatchController()
+        public MatchController(IMongoMatchManagement mongoMatchManagement, IMongoPlayerManagement mongoPlayerManagement)
         {
-            _mongoPlayerManagement = new MongoPlayerManagement();
-            _mongoMatchManagement = new MongoMatchManagement();
+            _mongoMatchManagement = mongoMatchManagement;
+            _mongoPlayerManagement = mongoPlayerManagement;
         }
 
         //
