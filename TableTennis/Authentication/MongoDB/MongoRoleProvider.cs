@@ -8,11 +8,12 @@ namespace TableTennis.Authentication.MongoDB
     {
         private readonly IMongoAuthenticationRepository _mongoAuthenticationRepository;
 
-        public MongoRoleProvider()
+
+        public MongoRoleProvider(IMongoAuthenticationRepository mongoAuthenticationRepository)
         {
-            _mongoAuthenticationRepository = new MongoAuthenticationRepository();
+            _mongoAuthenticationRepository = mongoAuthenticationRepository;
         }
-        
+
         public override bool IsUserInRole(string username, string roleName)
         {
             return _mongoAuthenticationRepository.DoUserHaveRole(username, roleName);
