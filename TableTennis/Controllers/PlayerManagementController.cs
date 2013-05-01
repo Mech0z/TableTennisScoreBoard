@@ -7,10 +7,12 @@ namespace TableTennis.Controllers
     public class PlayerManagementController : Controller
     {
         private readonly IMongoPlayerManagement _mongoPlayerManagement;
+        private readonly IMongoMatchManagement _mongoMatchManagement;
 
         public PlayerManagementController()
         {
             _mongoPlayerManagement = new MongoPlayerManagement();
+            _mongoMatchManagement = new MongoMatchManagement();
         }
 
         //
@@ -40,7 +42,12 @@ namespace TableTennis.Controllers
         public ActionResult PlayerList()
         {
             var playerList = _mongoPlayerManagement.GetAllPlayers();
-            
+
+            foreach (var player in playerList)
+            {
+                player.Rating = _mongoMatchManagement.GetPlayerRatingByPlayerId(player.Id);
+            }
+
             var viewModel = new PlayerListViewModel {PlayerList = playerList};
             
             return View(viewModel);
