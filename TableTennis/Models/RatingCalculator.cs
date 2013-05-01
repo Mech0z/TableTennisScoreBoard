@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using System.Web.Mvc;
+using TableTennis.Interfaces.HelperClasses;
 using TableTennis.Interfaces.Repository;
 
 namespace TableTennis.Models
 {
-    public class RatingCalculator
+    public class RatingCalculator : IRatingCalculator
     {
         private readonly IMatchManagementRepository _matchManagementRepository;
         private readonly IPlayerManagementRepository _playerManagementRepository;
@@ -16,7 +16,6 @@ namespace TableTennis.Models
             _playerManagementRepository = playerManagementRepository;
         }
 
-        [Authorize]
         public void RecalculateRatings()
         {
             var allGames = _matchManagementRepository.GetAllGames();

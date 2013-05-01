@@ -166,6 +166,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\EloRating.cs" />
     <Compile Include="Models\Gravatar.cs" />
+    <Compile Include="Interfaces\HelperClasses\IRatingCalculator.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\RatingCalculator.cs" />
@@ -295,6 +296,7 @@
     <Content Include="Views\PlayerManagement\Create.cshtml" />
     <Content Include="Views\PlayerManagement\PlayerList.cshtml" />
     <Content Include="Views\Match\Create.cshtml" />
+    <Content Include="Views\Account\Management.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

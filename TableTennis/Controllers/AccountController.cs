@@ -5,14 +5,22 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using TableTennis.Interfaces.HelperClasses;
 using TableTennis.Models;
 
 namespace TableTennis.Controllers
 {
-
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly IRatingCalculator _ratingCalculator;
+
+        public AccountController(IRatingCalculator ratingCalculator)
+        {
+            _ratingCalculator = ratingCalculator;
+        }
+
+
         //
         // GET: /Account/Index
 
@@ -28,6 +36,20 @@ namespace TableTennis.Controllers
         public ActionResult Login()
         {
             return View();
+        }
+
+        
+        public ActionResult Management()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult UpdateRating()
+        {
+            _ratingCalculator.RecalculateRatings();
+            return RedirectToAction("Management", "Account");
         }
 
         //
