@@ -91,7 +91,7 @@ namespace TableTennis.Models
                 tag.Attributes.Add("height", size.ToString());
             }
 
-            return tag.ToString();
+            return url.ToString();
         }
 
         private static string GetEmailHash(string email)
