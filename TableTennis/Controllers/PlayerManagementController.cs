@@ -9,10 +9,10 @@ namespace TableTennis.Controllers
         private readonly IMongoPlayerManagement _mongoPlayerManagement;
         private readonly IMongoMatchManagement _mongoMatchManagement;
 
-        public PlayerManagementController()
+        public PlayerManagementController(IMongoPlayerManagement mongoPlayerManagement, IMongoMatchManagement mongoMatchManagement)
         {
-            _mongoPlayerManagement = new MongoPlayerManagement();
-            _mongoMatchManagement = new MongoMatchManagement();
+            _mongoPlayerManagement = mongoPlayerManagement;
+            _mongoMatchManagement = mongoMatchManagement;
         }
 
         //
