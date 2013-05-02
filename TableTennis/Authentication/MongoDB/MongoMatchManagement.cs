@@ -29,31 +29,6 @@ namespace TableTennis.Authentication.MongoDB
             collection.Insert(game);
         }
 
-        public int GetPlayerRatingByPlayerId(Guid playerId)
-        {
-            var rating = 1500;
-            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
-            var playersPlayedMatches =
-                collection.Find(Query<PlayedGame>.Where(c => c.PlayerIds.Contains(playerId)))
-                          .SetSortOrder(SortBy.Ascending("TimeStamp"))
-                          .ToList();
-
-            foreach (var match in playersPlayedMatches)
-            {
-                if (!match.Ranked) continue;
-
-                if (match.WinnerId == playerId)
-                {
-                    rating += match.EloPoints;
-                }
-                else
-                {
-                    rating -= match.EloPoints;
-                }
-            }
-            return rating;
-        }
-
         public List<PlayedGame> GetAllGames()
         {
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
@@ -64,6 +39,12 @@ namespace TableTennis.Authentication.MongoDB
         {
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
             return collection.Find(Query<PlayedGame>.Where(g => g.PlayerIds.Contains(playerID))).ToList();
+        }
+
+        public void UpdateGameRatingById(PlayedGame game)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            collection.Save(game);
         }
     }
 }

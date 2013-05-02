@@ -25,7 +25,7 @@ namespace TableTennis.Models
             {
                 player.Rating = 1500;
             }
-            
+
             foreach (var game in allGames)
             {
                 if (!game.Ranked)
@@ -34,19 +34,26 @@ namespace TableTennis.Models
                 }
                 var player1 = players.SingleOrDefault(s => s.Id == game.PlayerIds[0]);
                 var player2 = players.SingleOrDefault(s => s.Id == game.PlayerIds[1]);
+                int rating;
 
                 if (game.PlayerIds[0] == game.WinnerId)
                 {
                     var elo = new EloRating(player1.Rating, player2.Rating, 1, 0);
                     player1.Rating += (int) elo.Point1;
                     player2.Rating += (int) elo.Point2;
+                    rating = (int) elo.Point1;
                 }
                 else
                 {
                     var elo = new EloRating(player1.Rating, player2.Rating, 0, 1);
-                    player1.Rating += (int)elo.Point1;
-                    player2.Rating += (int)elo.Point2;
+                    player1.Rating += (int) elo.Point1;
+                    player2.Rating += (int) elo.Point2;
+                    rating = (int) elo.Point2;
                 }
+
+                game.EloPoints = rating;
+
+                _matchManagementRepository.UpdateGameRatingById(game);
             }
 
             foreach (var player in players)
