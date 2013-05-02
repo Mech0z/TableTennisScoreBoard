@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using TableTennis.Interfaces.Repository;
 using TableTennis.ViewModels;
 using System.Linq;
@@ -27,10 +28,15 @@ namespace TableTennis.Controllers
         //
         // GET: /UserManagement/Details/5
 
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        public ActionResult Details(Guid id)
+        {
+            var vm = new PlayerDetailsViewModel
+                {
+                    Player = _playerManagementRepository.GetPlayerById(id)
+                };
+
+            return View(vm);
+        }
 
         //
         // GET: /UserManagement/Create
