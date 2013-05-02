@@ -48,7 +48,9 @@
     </tr>
     @foreach (var p in Model.PlayedGamesViewModel.GameList)
     {
-        <tr>
+        var color = p.Won ? "Win" : "Loose";
+        
+        <tr class=@color>
             <td>
                 @p.TimeStamp.ToShortDateString()
             </td>

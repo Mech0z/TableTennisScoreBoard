@@ -24,7 +24,7 @@ namespace TableTennis.Models
                         TimeStamp = game.TimeStamp,
                         Opponent = opponentList.First(s => s.PlayerID == opponentPlayerID).PlayerUserName,
                         Won = won,
-                        Rating = won ? game.EloPoints : game.EloPoints*-1
+                        Rating = game.EloPoints
                     };
 
                 GameList.Add(gameVM);
