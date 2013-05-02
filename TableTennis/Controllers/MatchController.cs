@@ -80,8 +80,8 @@ namespace TableTennis.Controllers
                     return View();
                 }
 
-                var player1Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(vm.Player1ID);
-                var player2Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(vm.Player2ID);
+                var player1Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player1ID);
+                var player2Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player2ID);
 
                 var playerOneWin = vm.WinnerID == 1 ? 1 : 0;
                 var playerTwoWin = vm.WinnerID == 2 ? 1 : 0;

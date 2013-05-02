@@ -63,7 +63,7 @@ namespace TableTennis.Controllers
 
             foreach (var player in playerList)
             {
-                player.Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(player.Id);
+                player.Rating = _playerManagementRepository.GetPlayerRatingById(player.Id);
             }
 
             playerList = playerList.OrderByDescending(player => player.Rating).ToList();
