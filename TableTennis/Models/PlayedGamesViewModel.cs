@@ -16,14 +16,15 @@ namespace TableTennis.Models
 
             foreach (var game in playedGames)
             {
-                var opponentPlayerID = game.PlayerIds[0] == playerID ? game.PlayerIds[1] : game.PlayerIds[0]; 
+                var opponentPlayerID = game.PlayerIds[0] == playerID ? game.PlayerIds[1] : game.PlayerIds[0];
+                var won = game.WinnerId == playerID;
 
                 var gameVM = new GameViewModel()
                     {
                         TimeStamp = game.TimeStamp,
                         Opponent = opponentList.First(s => s.PlayerID == opponentPlayerID).PlayerUserName,
-                        Rating = game.EloPoints,
-                        Won = game.WinnerId == playerID ? true : false
+                        Won = won,
+                        Rating = won ? game.EloPoints : game.EloPoints * -1
                     };
 
                 GameList.Add(gameVM);

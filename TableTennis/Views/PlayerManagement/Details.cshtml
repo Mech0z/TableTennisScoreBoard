@@ -45,9 +45,6 @@
         <td>
             Rating
         </td>
-        <td>
-            Result
-        </td>
     </tr>
     @foreach (var p in Model.PlayedGamesViewModel.GameList)
     {
@@ -60,9 +57,6 @@
             </td>
             <td>
                 @p.Rating
-            </td>
-            <td>
-                @p.Won
             </td>
         </tr>
     }
