@@ -168,10 +168,13 @@
     <Compile Include="Models\Gravatar.cs" />
     <Compile Include="Interfaces\HelperClasses\IRatingCalculator.cs" />
     <Compile Include="Models\PlayedGame.cs" />
+    <Compile Include="Models\PlayedGamesViewModel.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\RatingCalculator.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\UserAccountRole.cs" />
+    <Compile Include="Models\Views\PlayerManagement\GameViewModel.cs" />
+    <Compile Include="Models\Views\PlayerManagement\PlayerUsername.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CreateMatchViewModel.cs" />
     <Compile Include="ViewModels\PlayerDetailsViewModel.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TableTennis.Models;
+using TableTennis.Models.Views.PlayerManagement;
 
 namespace TableTennis.Interfaces.Repository
 {
@@ -11,5 +12,6 @@ namespace TableTennis.Interfaces.Repository
         Player GetPlayerById(Guid playerId);
         int GetPlayerRatingById(Guid playerId);
         void UpdateRating(Guid playerId, int rating);
+        List<PlayerUsername> GetPlayerUsernames(List<Guid> playerIds);
     }
 }

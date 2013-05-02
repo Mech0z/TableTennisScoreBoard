@@ -28,6 +28,10 @@ namespace TableTennis.Models
             
             foreach (var game in allGames)
             {
+                if (!game.Ranked)
+                {
+                    continue;
+                }
                 var player1 = players.SingleOrDefault(s => s.Id == game.PlayerIds[0]);
                 var player2 = players.SingleOrDefault(s => s.Id == game.PlayerIds[1]);
 

@@ -33,6 +33,41 @@
          <img src="@Html.Gravatar(Model.Player.GravatarEmail)" width="64" height="64" />
     </div>
 </fieldset>
+
+<table>
+    <tr>
+        <td>
+            Time
+        </td>
+        <td>
+            Opponent
+        </td>
+        <td>
+            Rating
+        </td>
+        <td>
+            Result
+        </td>
+    </tr>
+    @foreach (var p in Model.PlayedGamesViewModel.GameList)
+    {
+        <tr>
+            <td>
+                @p.TimeStamp
+            </td>
+            <td>
+                @p.Opponent
+            </td>
+            <td>
+                @p.Rating
+            </td>
+            <td>
+                @p.Won
+            </td>
+        </tr>
+    }
+</table>
+
 <p>
     @Html.ActionLink("Back to List", "PlayerList")
 </p>

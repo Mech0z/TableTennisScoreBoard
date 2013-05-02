@@ -59,5 +59,11 @@ namespace TableTennis.Authentication.MongoDB
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
             return collection.FindAll().ToList();
         }
+
+        public List<PlayedGame> GetAllGamesByPlayerID(Guid playerID)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            return collection.Find(Query<PlayedGame>.Where(g => g.PlayerIds.Contains(playerID))).ToList();
+        }
     }
 }

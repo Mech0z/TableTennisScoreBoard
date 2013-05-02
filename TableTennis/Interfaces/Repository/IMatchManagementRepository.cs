@@ -9,5 +9,6 @@ namespace TableTennis.Interfaces.Repository
         void CreateMatch(PlayedGame game);
         int GetPlayerRatingByPlayerId(Guid playerId);
         List<PlayedGame> GetAllGames();
+        List<PlayedGame> GetAllGamesByPlayerID(Guid playerID);
     }
 }

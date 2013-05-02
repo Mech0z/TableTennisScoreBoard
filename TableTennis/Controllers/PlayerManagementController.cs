@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using TableTennis.Interfaces.Repository;
+using TableTennis.Models;
 using TableTennis.ViewModels;
 using System.Linq;
 
@@ -30,9 +32,18 @@ namespace TableTennis.Controllers
 
         public ActionResult Details(Guid id)
         {
+            var playedGames = _matchManagementRepository.GetAllGamesByPlayerID(id);
+
+            var playerIdList = playedGames.SelectMany(playedGame => playedGame.PlayerIds).ToList();
+
+            var oppenentUsernames = _playerManagementRepository.GetPlayerUsernames(playerIdList);
+
+            var playedGamesVM = new PlayedGamesViewModel(playedGames, oppenentUsernames, id);
+
             var vm = new PlayerDetailsViewModel
                 {
-                    Player = _playerManagementRepository.GetPlayerById(id)
+                    Player = _playerManagementRepository.GetPlayerById(id),
+                    PlayedGamesViewModel = playedGamesVM
                 };
 
             return View(vm);
