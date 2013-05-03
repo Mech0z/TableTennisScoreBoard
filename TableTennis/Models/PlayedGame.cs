@@ -27,5 +27,7 @@ namespace TableTennis.Models
         public Guid WinnerId { get; set; }
 
         public int EloPoints { get; set; }
+
+        public List<GameSet> GameSets { get; set; } 
     }
 }

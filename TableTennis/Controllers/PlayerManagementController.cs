@@ -1,5 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using TableTennis.Interfaces.Repository;
+using TableTennis.Models;
 using TableTennis.ViewModels;
 using System.Linq;
 
@@ -27,10 +30,24 @@ namespace TableTennis.Controllers
         //
         // GET: /UserManagement/Details/5
 
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        public ActionResult Details(Guid id)
+        {
+            var playedGames = _matchManagementRepository.GetAllGamesByPlayerID(id);
+
+            var playerIdList = playedGames.SelectMany(playedGame => playedGame.PlayerIds).ToList();
+
+            var oppenentUsernames = _playerManagementRepository.GetPlayerUsernames(playerIdList);
+
+            var playedGamesVM = new PlayedGamesViewModel(playedGames, oppenentUsernames, id);
+
+            var vm = new PlayerDetailsViewModel
+                {
+                    Player = _playerManagementRepository.GetPlayerById(id),
+                    PlayedGamesViewModel = playedGamesVM
+                };
+
+            return View(vm);
+        }
 
         //
         // GET: /UserManagement/Create
@@ -46,7 +63,7 @@ namespace TableTennis.Controllers
 
             foreach (var player in playerList)
             {
-                player.Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(player.Id);
+                player.Rating = _playerManagementRepository.GetPlayerRatingById(player.Id);
             }
 
             playerList = playerList.OrderByDescending(player => player.Rating).ToList();

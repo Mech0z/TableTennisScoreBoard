@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -28,29 +29,22 @@ namespace TableTennis.Authentication.MongoDB
             collection.Insert(game);
         }
 
-        public int GetPlayerRatingByPlayerId(Guid playerId)
+        public List<PlayedGame> GetAllGames()
         {
-            var rating = 1500;
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
-            var playersPlayedMatches =
-                collection.Find(Query<PlayedGame>.Where(c => c.PlayerIds.Contains(playerId)))
-                          .SetSortOrder(SortBy.Ascending("TimeStamp"))
-                          .ToList();
+            return collection.FindAll().ToList();
+        }
 
-            foreach (var match in playersPlayedMatches)
-            {
-                if (!match.Ranked) continue;
+        public List<PlayedGame> GetAllGamesByPlayerID(Guid playerID)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            return collection.Find(Query<PlayedGame>.Where(g => g.PlayerIds.Contains(playerID))).ToList();
+        }
 
-                if (match.WinnerId == playerId)
-                {
-                    rating += match.EloPoints;
-                }
-                else
-                {
-                    rating -= match.EloPoints;
-                }
-            }
-            return rating;
+        public void UpdateGameRatingById(PlayedGame game)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            collection.Save(game);
         }
     }
 }

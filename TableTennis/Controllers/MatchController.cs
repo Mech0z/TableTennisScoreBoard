@@ -12,7 +12,8 @@ namespace TableTennis.Controllers
         private readonly IMatchManagementRepository _matchManagementRepository;
         private readonly IPlayerManagementRepository _playerManagementRepository;
 
-        public MatchController(IMatchManagementRepository matchManagementRepository, IPlayerManagementRepository playerManagementRepository)
+        public MatchController(IMatchManagementRepository matchManagementRepository,
+                               IPlayerManagementRepository playerManagementRepository)
         {
             _matchManagementRepository = matchManagementRepository;
             _playerManagementRepository = playerManagementRepository;
@@ -79,8 +80,8 @@ namespace TableTennis.Controllers
                     return View();
                 }
 
-                var player1Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(vm.Player1ID);
-                var player2Rating = _matchManagementRepository.GetPlayerRatingByPlayerId(vm.Player2ID);
+                var player1Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player1ID);
+                var player2Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player2ID);
 
                 var playerOneWin = vm.WinnerID == 1 ? 1 : 0;
                 var playerTwoWin = vm.WinnerID == 2 ? 1 : 0;
@@ -89,16 +90,15 @@ namespace TableTennis.Controllers
 
                 var game = new PlayedGame
                     {
-                        EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2,
+                        EloPoints = playerOneWin == 1 ? (int) ratingSystem.Point1 : (int) ratingSystem.Point2,
                         PlayerIds = {vm.Player1ID, vm.Player2ID},
                         Ranked = true,
                         TimeStamp = DateTime.UtcNow,
                         WinnerId = playerOneWin == 1 ? vm.Player1ID : vm.Player2ID
-
                     };
 
-                _playerManagementRepository.UpdateRating(vm.Player1ID, (int)ratingSystem.FinalResult1);
-                _playerManagementRepository.UpdateRating(vm.Player2ID, (int)ratingSystem.FinalResult2);
+                _playerManagementRepository.UpdateRating(vm.Player1ID, (int) ratingSystem.FinalResult1);
+                _playerManagementRepository.UpdateRating(vm.Player2ID, (int) ratingSystem.FinalResult2);
 
                 _matchManagementRepository.CreateMatch(game);
 

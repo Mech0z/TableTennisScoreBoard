@@ -1,7 +1,9 @@
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using TableTennis.Authentication.MongoDB;
+using TableTennis.Interfaces.HelperClasses;
 using TableTennis.Interfaces.Repository;
+using TableTennis.Models;
 using Unity.Mvc4;
 
 namespace TableTennis
@@ -28,6 +30,7 @@ namespace TableTennis
 
             container.RegisterType<IMatchManagementRepository, MongoMatchManagement>();
             container.RegisterType<IPlayerManagementRepository, MongoPlayerManagement>();
+            container.RegisterType<IRatingCalculator, RatingCalculator>();
 
             container.RegisterType<IAuthenticationRepository, MongoAuthenticationRepository>();
             RegisterTypes(container);

@@ -1,0 +1,69 @@
+﻿@using TableTennis.Models
+@model TableTennis.ViewModels.PlayerDetailsViewModel
+
+@{
+    ViewBag.Title = @Model.Player.Username;
+}
+
+<h2>Player details</h2>
+
+<fieldset>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Player.Username)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Player.Username)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Player.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Player.Email)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Player.Rating)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Player.Rating)
+    </div>
+
+    <div class="display-field">
+         <img src="@Html.Gravatar(Model.Player.GravatarEmail)" width="64" height="64" />
+    </div>
+</fieldset>
+
+<table>
+    <tr>
+        <td>
+            Time
+        </td>
+        <td>
+            Opponent
+        </td>
+        <td>
+            Rating
+        </td>
+    </tr>
+    @foreach (var p in Model.PlayedGamesViewModel.GameList)
+    {
+        var color = p.Won ? "Win" : "Loose";
+        
+        <tr class=@color>
+            <td>
+                @p.TimeStamp.ToShortDateString()
+            </td>
+            <td>
+                @p.Opponent
+            </td>
+            <td>
+                @p.Rating
+            </td>
+        </tr>
+    }
+</table>
+
+<p>
+    @Html.ActionLink("Back to List", "PlayerList")
+</p>

@@ -26,7 +26,6 @@ namespace TableTennis.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        [HiddenInput(DisplayValue = false)]
         public int Rating { get; set; }
 
         [Required]

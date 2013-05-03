@@ -5,6 +5,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
+using TableTennis.Models.Views.PlayerManagement;
 
 namespace TableTennis.Authentication.MongoDB
 {
@@ -61,6 +62,20 @@ namespace TableTennis.Authentication.MongoDB
             var player = collection.Find(Query<Player>.Where(s => s.Id == playerId)).Single();
             player.Rating = rating;
             collection.Save(player);
+        }
+
+        public List<PlayerUsername> GetPlayerUsernames(List<Guid> playerIds)
+        {
+            var collection = _mongoDatabase.GetCollection<Player>("Player");
+            var list = new List<PlayerUsername>();
+
+            foreach (var playerId in playerIds)
+            {
+                var player = collection.FindOne(Query<Player>.Where(p => p.Id == playerId));
+                list.Add(new PlayerUsername {PlayerID = playerId, PlayerUserName = player.Username});
+            }
+
+            return list;
         }
     }
 }
