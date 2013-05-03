@@ -102,7 +102,7 @@ namespace TableTennis.Controllers
 
                 _matchManagementRepository.CreateMatch(game);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("PlayerList", "PlayerManagement");
             }
             catch
             {
