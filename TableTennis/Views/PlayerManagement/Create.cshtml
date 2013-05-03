@@ -7,7 +7,14 @@
 
 @using (Html.BeginForm())
 {
-    @Html.EditorFor(m => m.Player);
+    @Html.DisplayNameFor(m => m.Player.Username)
+    @Html.EditorFor(m => m.Player.Username)
+
+    @Html.DisplayNameFor(m => m.Player.Email)
+    @Html.EditorFor(m => m.Player.Email)
+
+    @Html.DisplayNameFor(m => m.Player.GravatarEmail)
+    @Html.EditorFor(m => m.Player.GravatarEmail)
     
     <input type="submit" value="Create" />    
 }
