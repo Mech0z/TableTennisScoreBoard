@@ -6,12 +6,13 @@ using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace TableTennis.Models
 {
-    [Bind(Exclude = "Id")]
+    [Bind(Exclude = "Id, GameSets")]
     public class PlayedGame
     {
         public PlayedGame()
         {
             PlayerIds = new List<Guid>();
+            GameSets = new List<GameSet>();
         }
 
         [BsonId(IdGenerator = typeof(CombGuidGenerator))]
