@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace TableTennis.Models
 {
-    [Bind(Exclude = "Rating")]
+    [Bind(Exclude = "Id, Rating")]
     public class Player
     {
         public Player()
