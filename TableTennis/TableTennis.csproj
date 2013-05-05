@@ -150,7 +150,6 @@
     <Compile Include="Interfaces\Repository\IMatchManagementRepository.cs" />
     <Compile Include="Interfaces\Repository\IPlayerManagementRepository.cs" />
     <Compile Include="Authentication\MongoDB\MongoAuthenticationRepository.cs" />
-    <Compile Include="Authentication\MongoDB\MongoDBSettings.cs" />
     <Compile Include="Authentication\MongoDB\MongoMatchManagement.cs" />
     <Compile Include="Authentication\MongoDB\MongoMembershipProvider.cs" />
     <Compile Include="Authentication\MongoDB\MongoRoleProvider.cs" />
