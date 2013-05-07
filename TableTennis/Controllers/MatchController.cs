@@ -62,12 +62,19 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
+                    ModelState.Clear();
                     vm.PlayerList = CreatePlayerList();
                     vm.Winner = CreateWinnerList();
+                    ModelState.AddModelError("ValidationError", "Failed to submit, invalid data!");
+
                     return View(vm);
                 }
                 if (vm.Player1ID == vm.Player2ID)
                 {
+                    ModelState.Clear();
+                    vm.PlayerList = CreatePlayerList();
+                    vm.Winner = CreateWinnerList();
+                    ModelState.AddModelError("ValidationError", "Select different players!");
                     return View(vm);
                 }
 
