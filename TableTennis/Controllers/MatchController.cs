@@ -94,11 +94,11 @@ namespace TableTennis.Controllers
                 //Validate game score
                 //TODO validate
                 game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
-                if (vm.Score1Set2 != 0 && vm.Score2Set2 != 0)
+                if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
                 {
                     game.GameSets.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
                 }
-                if (vm.Score1Set3 != 0 && vm.Score2Set3 != 0)
+                if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
                 {
                     game.GameSets.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
                 }
