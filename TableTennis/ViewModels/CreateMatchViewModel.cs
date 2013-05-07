@@ -30,7 +30,7 @@ namespace TableTennis.ViewModels
         public int WinnerID { get; set; }
 
         [Required]
-        [RegularExpression("[0-9][0-9]")]
+        [RegularExpression("[0-9][0-9]?")]
         public int Score1Set1 { get; set; }
 
         [RegularExpression("[0-9][0-9]?")]
