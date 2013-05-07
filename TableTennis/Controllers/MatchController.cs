@@ -62,8 +62,8 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    //vm.PlayerList = CreatePlayerList();
-                    //vm.Winner = CreateWinnerList();
+                    vm.PlayerList = CreatePlayerList();
+                    vm.Winner = CreateWinnerList();
                     return View(vm);
                 }
                 if (vm.Player1ID == vm.Player2ID)
@@ -71,11 +71,11 @@ namespace TableTennis.Controllers
                     return View(vm);
                 }
 
-                int player1Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player1ID);
-                int player2Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player2ID);
+                var player1Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player1ID);
+                var player2Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player2ID);
 
-                int playerOneWin = vm.WinnerID == 1 ? 1 : 0;
-                int playerTwoWin = vm.WinnerID == 2 ? 1 : 0;
+                var playerOneWin = vm.WinnerID == 1 ? 1 : 0;
+                var playerTwoWin = vm.WinnerID == 2 ? 1 : 0;
 
                 var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
 
@@ -107,7 +107,7 @@ namespace TableTennis.Controllers
 
                 return RedirectToAction("PlayerList", "PlayerManagement");
             }
-            catch(Exception e)
+            catch
             {
                 return View();
             }
