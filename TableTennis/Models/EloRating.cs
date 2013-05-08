@@ -11,7 +11,7 @@
         public EloRating(double CurrentRating1, double CurrentRating2, double Score1, double Score2)
         {
             const double medium = 20;
-            const double diversification = 10;
+            const double diversification = 20;
             const double minRating = medium - diversification;
             const double maxRating = medium + diversification;
 
