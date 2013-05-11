@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 using TableTennis.ViewModels;
@@ -99,8 +100,19 @@ namespace TableTennis.Controllers
                 _playerManagementRepository.UpdateRating(vm.Player2ID, (int) ratingSystem.FinalResult2);
 
                 //Validate game score
-                //TODO validate
-                game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
+                var errorMessage = "";
+                var validationResult = ValidateMatch.ValidateGame(Game.TableTennis, GameType.Standard, game.GameSets, out errorMessage);
+
+                if (!validationResult)
+                {
+                    ModelState.Clear();
+                    vm.PlayerList = CreatePlayerList();
+                    vm.Winner = CreateWinnerList();
+                    ModelState.AddModelError("MatchValidationError", errorMessage);
+                    return View(vm);
+                }
+
+                {game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
                 if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
                 {
                     game.GameSets.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
@@ -113,7 +125,7 @@ namespace TableTennis.Controllers
                 _matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerList", "PlayerManagement");
-            }
+            }}
             catch
             {
                 return View();

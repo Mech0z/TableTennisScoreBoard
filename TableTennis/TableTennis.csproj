@@ -146,6 +146,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="HelperClasses\ValidateMatch.cs" />
     <Compile Include="Interfaces\Repository\IAuthenticationRepository.cs" />
     <Compile Include="Interfaces\Repository\IMatchManagementRepository.cs" />
     <Compile Include="Interfaces\Repository\IPlayerManagementRepository.cs" />
@@ -163,14 +164,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\EloRating.cs" />
+    <Compile Include="HelperClasses\EloRating.cs" />
     <Compile Include="Models\GameSet.cs" />
-    <Compile Include="Models\Gravatar.cs" />
+    <Compile Include="HelperClasses\Gravatar.cs" />
     <Compile Include="Interfaces\HelperClasses\IRatingCalculator.cs" />
     <Compile Include="Models\PlayedGame.cs" />
-    <Compile Include="Models\PlayedGamesViewModel.cs" />
+    <Compile Include="ViewModels\PlayedGamesViewModel.cs" />
     <Compile Include="Models\Player.cs" />
-    <Compile Include="Models\RatingCalculator.cs" />
+    <Compile Include="HelperClasses\RatingCalculator.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\UserAccountRole.cs" />
     <Compile Include="Models\Views\PlayerManagement\GameViewModel.cs" />
