@@ -72,6 +72,11 @@ namespace TableTennis.HelperClasses
                 {
                     player2Sets++;
                 }
+                else if (gameSet.Score1 < 0 || gameSet.Score2 < 0)
+                {
+                    valid = false;
+                    errorMessage = "Scores cant be less than zero!";
+                }
                 else
                 {
                     valid = false;

@@ -98,6 +98,16 @@ namespace TableTennis.Controllers
 
                 _playerManagementRepository.UpdateRating(vm.Player1ID, (int) ratingSystem.FinalResult1);
                 _playerManagementRepository.UpdateRating(vm.Player2ID, (int) ratingSystem.FinalResult2);
+                
+                {game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
+                if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
+                {
+                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
+                }
+                if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
+                {
+                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
+                }
 
                 //Validate game score
                 var errorMessage = "";
@@ -110,16 +120,6 @@ namespace TableTennis.Controllers
                     vm.Winner = CreateWinnerList();
                     ModelState.AddModelError("MatchValidationError", errorMessage);
                     return View(vm);
-                }
-
-                {game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
-                if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
-                {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
-                }
-                if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
-                {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
                 }
 
                 _matchManagementRepository.CreateMatch(game);
