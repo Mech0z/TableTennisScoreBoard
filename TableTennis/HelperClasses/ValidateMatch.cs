@@ -77,16 +77,14 @@ namespace TableTennis.HelperClasses
                     valid = false;
                     errorMessage = "Unvalid set, games are played to 11 or until won by 2 points";
                 }
-                
             }
 
             if (player1Sets == 2 || player2Sets == 2)
             {
-                valid = true;
             }
             else
             {
-                errorMessage = "No player have won 2 sets"
+                errorMessage = "No player have won 2 sets";
                 valid = false;
             }
 
