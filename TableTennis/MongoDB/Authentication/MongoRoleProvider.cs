@@ -2,7 +2,7 @@
 using System.Web.Security;
 using TableTennis.Interfaces.Repository;
 
-namespace TableTennis.Authentication.MongoDB
+namespace TableTennis.MongoDB.Authentication
 {
     public class MongoRoleProvider : RoleProvider
     {

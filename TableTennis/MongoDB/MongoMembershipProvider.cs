@@ -1,7 +1,8 @@
 ﻿using System.Web.Security;
 using TableTennis.Interfaces.Repository;
+using TableTennis.MongoDB.Authentication;
 
-namespace TableTennis.Authentication.MongoDB
+namespace TableTennis.MongoDB
 {
     public class MongoMembershipProvider : MembershipProvider
     {

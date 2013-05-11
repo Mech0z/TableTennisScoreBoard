@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
@@ -86,13 +85,16 @@ namespace TableTennis.Controllers
                     var result = _playerManagementRepository.CreatePlayer(viewModel.Player);
                     if (!result)
                     {
-                        ViewBag["Error"] = "Player creating failed";
+                        ModelState.AddModelError("ModelError" ,"Username is taken!");
+                        return View(viewModel);
                     }
 
                     return RedirectToAction("Index");
                 }
 
-                return View();
+                ModelState.AddModelError("ModelError", "Model was not valid!");
+
+                return View(viewModel);
             }
             catch
             {

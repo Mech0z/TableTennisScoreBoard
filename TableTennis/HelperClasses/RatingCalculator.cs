@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using TableTennis.Interfaces.HelperClasses;
 using TableTennis.Interfaces.Repository;
+using TableTennis.Models;
 
-namespace TableTennis.Models
+namespace TableTennis.HelperClasses
 {
     public class RatingCalculator : IRatingCalculator
     {

@@ -7,6 +7,8 @@
 
 @using (Html.BeginForm())
 {
+    @Html.ValidationMessage("ModelError")
+    
     @Html.DisplayNameFor(m => m.Player.Username)
     @Html.EditorFor(m => m.Player.Username)
 

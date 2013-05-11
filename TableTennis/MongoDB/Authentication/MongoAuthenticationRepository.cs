@@ -4,7 +4,7 @@ using MongoDB.Driver.Builders;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 
-namespace TableTennis.Authentication.MongoDB
+namespace TableTennis.MongoDB.Authentication
 {
     public class MongoAuthenticationRepository : IAuthenticationRepository
     {

@@ -149,11 +149,11 @@
     <Compile Include="Interfaces\Repository\IAuthenticationRepository.cs" />
     <Compile Include="Interfaces\Repository\IMatchManagementRepository.cs" />
     <Compile Include="Interfaces\Repository\IPlayerManagementRepository.cs" />
-    <Compile Include="Authentication\MongoDB\MongoAuthenticationRepository.cs" />
-    <Compile Include="Authentication\MongoDB\MongoMatchManagement.cs" />
-    <Compile Include="Authentication\MongoDB\MongoMembershipProvider.cs" />
-    <Compile Include="Authentication\MongoDB\MongoRoleProvider.cs" />
-    <Compile Include="Authentication\MongoDB\MongoPlayerManagement.cs" />
+    <Compile Include="MongoDB\Authentication\MongoAuthenticationRepository.cs" />
+    <Compile Include="MongoDB\MongoMatchManagement.cs" />
+    <Compile Include="MongoDB\MongoMembershipProvider.cs" />
+    <Compile Include="MongoDB\Authentication\MongoRoleProvider.cs" />
+    <Compile Include="MongoDB\MongoPlayerManagement.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
