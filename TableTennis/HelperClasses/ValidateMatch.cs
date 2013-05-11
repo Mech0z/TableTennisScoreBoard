@@ -64,11 +64,11 @@ namespace TableTennis.HelperClasses
                 {
                     player2Sets++;
                 }
-                else if(gameSet.Score1 + 2 == gameSet.Score2 )
+                else if(gameSet.Score1 + 2 == gameSet.Score2  && gameSet.Score1 > 11)
                 {
                     player1Sets++;
                 }
-                else if (gameSet.Score2 + 2 == gameSet.Score1)
+                else if (gameSet.Score2 + 2 == gameSet.Score1 && gameSet.Score2 > 11)
                 {
                     player2Sets++;
                 }
