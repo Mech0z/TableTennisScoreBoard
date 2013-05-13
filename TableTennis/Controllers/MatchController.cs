@@ -43,11 +43,11 @@ namespace TableTennis.Controllers
         public ActionResult Create()
         {
             var vm = new CreateMatchViewModel
-                         {
-                             Winner =
-                                 CreateWinnerList(),
-                             PlayerList = CreatePlayerList()
-                         }
+                {
+                    Winner =
+                        CreateWinnerList(),
+                    PlayerList = CreatePlayerList()
+                }
                 ;
 
             return View(vm);
@@ -78,42 +78,29 @@ namespace TableTennis.Controllers
                     ModelState.AddModelError("ValidationError", "Select different players!");
                     return View(vm);
                 }
-
-                var player1Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player1ID);
-                var player2Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player2ID);
-
-                var playerOneWin = vm.WinnerID == 1 ? 1 : 0;
-                var playerTwoWin = vm.WinnerID == 2 ? 1 : 0;
-
-                var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
-
-                var game = new PlayedGame
-                               {
-                                   EloPoints = playerOneWin == 1 ? (int) ratingSystem.Point1 : (int) ratingSystem.Point2,
-                                   PlayerIds = {vm.Player1ID, vm.Player2ID},
-                                   Ranked = true,
-                                   TimeStamp = DateTime.UtcNow,
-                                   WinnerId = playerOneWin == 1 ? vm.Player1ID : vm.Player2ID
-                               };
-
-                _playerManagementRepository.UpdateRating(vm.Player1ID, (int) ratingSystem.FinalResult1);
-                _playerManagementRepository.UpdateRating(vm.Player2ID, (int) ratingSystem.FinalResult2);
                 
-                {game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
+                var game = new PlayedGame
+                {
+                    PlayerIds = { vm.Player1ID, vm.Player2ID },
+                    Ranked = true,
+                    TimeStamp = DateTime.UtcNow,
+                };
+
+                game.GameSets.Add(new GameSet { Score1 = vm.Score1Set1, Score2 = vm.Score2Set1 });
                 if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
                 {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
+                    game.GameSets.Add(new GameSet { Score1 = vm.Score1Set2, Score2 = vm.Score2Set2 });
                 }
                 if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
                 {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
+                    game.GameSets.Add(new GameSet { Score1 = vm.Score1Set3, Score2 = vm.Score2Set3 });
                 }
 
                 //Validate game score
                 var errorMessage = "";
-                var validationResult = ValidateMatch.ValidateGame(Game.TableTennis, GameType.Standard, game.GameSets, out errorMessage);
-
-                if (!validationResult)
+                var validationResult = ValidateMatch.ValidateGame(Game.TableTennis, GameType.Standard, game.GameSets,
+                                                                  out errorMessage);
+                if (validationResult == -1)
                 {
                     ModelState.Clear();
                     vm.PlayerList = CreatePlayerList();
@@ -122,10 +109,25 @@ namespace TableTennis.Controllers
                     return View(vm);
                 }
 
+                var player1Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player1ID);
+                var player2Rating = _playerManagementRepository.GetPlayerRatingById(vm.Player2ID);
+                
+                var playerOneWin = validationResult == 1 ? 1 : 0;
+                var playerTwoWin = validationResult == 2 ? 1 : 0;
+
+                var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
+
+                game.EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2;
+
+                _playerManagementRepository.UpdateRating(vm.Player1ID, (int)ratingSystem.FinalResult1);
+                _playerManagementRepository.UpdateRating(vm.Player2ID, (int)ratingSystem.FinalResult2);
+
+                game.WinnerId = validationResult == 1 ? vm.Player1ID : vm.Player2ID;
+
                 _matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerList", "PlayerManagement");
-            }}
+            }
             catch
             {
                 return View();
@@ -136,19 +138,19 @@ namespace TableTennis.Controllers
         {
             List<Player> playerList = _playerManagementRepository.GetAllPlayers();
             return playerList.Select(p => new SelectListItem
-                                              {
-                                                  Text = p.Username,
-                                                  Value = p.Id.ToString()
-                                              });
+                {
+                    Text = p.Username,
+                    Value = p.Id.ToString()
+                });
         }
 
         private SelectListItem[] CreateWinnerList()
         {
             return new[]
-                       {
-                           new SelectListItem {Text = "Player 1", Value = 1.ToString(), Selected = true}
-                           , new SelectListItem {Text = "Player 2", Value = 2.ToString(), Selected = false}
-                       };
+                {
+                    new SelectListItem {Text = "Player 1", Value = 1.ToString(), Selected = true}
+                    , new SelectListItem {Text = "Player 2", Value = 2.ToString(), Selected = false}
+                };
         }
 
         //

@@ -27,9 +27,6 @@ namespace TableTennis.ViewModels
         public Guid Player2ID { get; set; }
 
         [Required]
-        public int WinnerID { get; set; }
-
-        [Required]
         [RegularExpression("[0-9][0-9]?")]
         public int Score1Set1 { get; set; }
 
