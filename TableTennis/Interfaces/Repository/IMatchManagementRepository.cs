@@ -10,5 +10,6 @@ namespace TableTennis.Interfaces.Repository
         List<PlayedGame> GetAllGames();
         List<PlayedGame> GetAllGamesByPlayerID(Guid playerID);
         void UpdateGameRatingById(PlayedGame game);
+        List<PlayedGame> GetLastXPlayedGames(int numberOfGames);
     }
 }

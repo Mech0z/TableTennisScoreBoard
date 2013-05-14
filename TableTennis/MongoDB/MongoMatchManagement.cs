@@ -46,5 +46,11 @@ namespace TableTennis.Authentication.MongoDB
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
             collection.Save(game);
         }
+
+        public List<PlayedGame> GetLastXPlayedGames(int numberOfGames)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            return collection.FindAll().OrderByDescending(s => s.TimeStamp).Take(numberOfGames).ToList();
+        }
     }
 }
