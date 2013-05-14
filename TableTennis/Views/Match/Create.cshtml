@@ -4,6 +4,8 @@
     ViewBag.Title = "Enter Match Result";
 }
 
+@Html.ActionLink("Home", "Index", "Home")
+
 @using (Html.BeginForm("Create", "Match", FormMethod.Post))
 {
     @Html.ValidationMessage("ValidationError")
