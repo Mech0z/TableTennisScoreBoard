@@ -7,7 +7,7 @@ using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 using TableTennis.Models.Views.PlayerManagement;
 
-namespace TableTennis.Authentication.MongoDB
+namespace TableTennis.MongoDB
 {
     public class MongoPlayerManagement : IPlayerManagementRepository
     {
@@ -21,7 +21,7 @@ namespace TableTennis.Authentication.MongoDB
             _connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MongoConnection"].ConnectionString;
             _mongoClient = new MongoClient(_connStr);
             _mongoServer = _mongoClient.GetServer();
-            _mongoDatabase = _mongoServer.GetDatabase("tabletennis");
+            _mongoDatabase = _mongoServer.GetDatabase(System.Configuration.ConfigurationManager.AppSettings["DatabaseName"]);
         }
 
         public bool CreatePlayer(Player player)

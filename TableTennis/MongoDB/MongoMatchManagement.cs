@@ -20,7 +20,7 @@ namespace TableTennis.Authentication.MongoDB
             _connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MongoConnection"].ConnectionString;
             _mongoClient = new MongoClient(_connStr);
             _mongoServer = _mongoClient.GetServer();
-            _mongoDatabase = _mongoServer.GetDatabase("tabletennis");
+            _mongoDatabase = _mongoServer.GetDatabase(System.Configuration.ConfigurationManager.AppSettings["DatabaseName"]);
         }
 
         public void CreateMatch(PlayedGame game)
