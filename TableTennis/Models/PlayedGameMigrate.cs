@@ -7,11 +7,11 @@ using MongoDB.Bson.Serialization.IdGenerators;
 namespace TableTennis.Models
 {
     [Bind(Exclude = "Id, GameSets")]
-    public class PlayedGame
+    public class PlayedGameMigrate
     {
-        public PlayedGame()
+        public PlayedGameMigrate()
         {
-            Players = new List<string>();
+            PlayerIds = new List<Guid>();
             GameSets = new List<GameSet>();
         }
 
@@ -23,9 +23,9 @@ namespace TableTennis.Models
 
         public DateTime TimeStamp { get; set; }
 
-        public List<string> Players { get; set; }
+        public List<Guid> PlayerIds { get; set; }
 
-        public string WinnerUsername { get; set; }
+        public Guid WinnerId { get; set; }
 
         public int EloPoints { get; set; }
 

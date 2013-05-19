@@ -1,29 +1,12 @@
 ﻿using System.Linq;
-using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 
 namespace TableTennis.MongoDB.Authentication
 {
-    public class MongoAuthenticationRepository : IAuthenticationRepository
+    public class MongoAuthenticationRepository : MongoRepositoryBase, IAuthenticationRepository
     {
-        private readonly string _connStr;
-        private readonly MongoClient _mongoClient;
-        private readonly MongoServer _mongoServer;
-        private readonly MongoDatabase _mongoDatabase;
-
-        public MongoAuthenticationRepository()
-        {
-            _connStr = System.Configuration.ConfigurationManager.ConnectionStrings["MongoConnection"].ConnectionString;
-
-            _mongoClient = new MongoClient(_connStr);
-
-            _mongoServer = _mongoClient.GetServer();
-
-            _mongoDatabase = _mongoServer.GetDatabase(System.Configuration.ConfigurationManager.AppSettings["DatabaseName"]);
-        }
-
         public bool ValidateUser(string user, string password)
         {
             var collection = _mongoDatabase.GetCollection<UserAccount>("Users");

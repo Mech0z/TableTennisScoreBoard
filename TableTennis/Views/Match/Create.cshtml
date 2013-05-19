@@ -11,10 +11,10 @@
     @Html.ValidationMessage("ValidationError")
     
     <h4>Player 1</h4>
-    @Html.DropDownListFor(p => p.Player1ID, Model.PlayerList)   
+    @Html.DropDownListFor(p => p.Player1Username, Model.PlayerList)   
    
     <h4>Player 2</h4>
-    @Html.DropDownListFor(p => p.Player2ID, Model.PlayerList)
+    @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)
 
     @Html.ValidationMessage("MatchValidationError");
     

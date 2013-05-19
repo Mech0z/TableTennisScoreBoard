@@ -33,11 +33,11 @@ namespace TableTennis.HelperClasses
                 {
                     continue;
                 }
-                var player1 = players.SingleOrDefault(s => s.Id == game.PlayerIds[0]);
-                var player2 = players.SingleOrDefault(s => s.Id == game.PlayerIds[1]);
+                var player1 = players.SingleOrDefault(s => s.Username == game.Players[0]);
+                var player2 = players.SingleOrDefault(s => s.Username == game.Players[1]);
                 int rating;
 
-                if (game.PlayerIds[0] == game.WinnerId)
+                if (game.Players[0] == game.WinnerUsername)
                 {
                     var elo = new EloRating(player1.Rating, player2.Rating, 1, 0);
                     player1.Rating += (int) elo.Point1;
@@ -59,7 +59,7 @@ namespace TableTennis.HelperClasses
 
             foreach (var player in players)
             {
-                _playerManagementRepository.UpdateRating(player.Id, player.Rating);
+                _playerManagementRepository.UpdateRating(player.Username, player.Rating);
             }
         }
     }

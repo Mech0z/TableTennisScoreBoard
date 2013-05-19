@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 using TableTennis.ViewModels;
@@ -29,19 +28,15 @@ namespace TableTennis.Controllers
         //
         // GET: /UserManagement/Details/5
 
-        public ActionResult Details(Guid id)
+        public ActionResult Details(string username)
         {
-            var playedGames = _matchManagementRepository.GetAllGamesByPlayerID(id);
+            var playedGames = _matchManagementRepository.GetAllGamesByUsername(username);
 
-            var playerIdList = playedGames.SelectMany(playedGame => playedGame.PlayerIds).ToList();
-
-            var oppenentUsernames = _playerManagementRepository.GetPlayerUsernames(playerIdList);
-
-            var playedGamesVM = new PlayedGamesViewModel(playedGames, oppenentUsernames, id);
+            var playedGamesVM = new PlayedGamesViewModel(playedGames, username);
 
             var vm = new PlayerDetailsViewModel
                 {
-                    Player = _playerManagementRepository.GetPlayerById(id),
+                    Player = _playerManagementRepository.GetPlayerByUsername(username),
                     PlayedGamesViewModel = playedGamesVM
                 };
 
@@ -59,11 +54,6 @@ namespace TableTennis.Controllers
         public ActionResult PlayerList()
         {
             var playerList = _playerManagementRepository.GetAllPlayers();
-
-            foreach (var player in playerList)
-            {
-                player.Rating = _playerManagementRepository.GetPlayerRatingById(player.Id);
-            }
 
             playerList = playerList.OrderByDescending(player => player.Rating).ToList();
 
@@ -101,57 +91,5 @@ namespace TableTennis.Controllers
                 return View();
             }
         }
-
-        //
-        // GET: /UserManagement/Edit/5
-
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //
-        // POST: /UserManagement/Edit/5
-
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //
-        // GET: /UserManagement/Delete/5
-
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //
-        // POST: /UserManagement/Delete/5
-
-        //[HttpPost]
-        //public ActionResult Delete(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }

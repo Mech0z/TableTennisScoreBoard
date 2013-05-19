@@ -25,7 +25,7 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(@p.Username, "Details", new {id = @p.Id})
+                @Html.ActionLink(@p.Username, "Details", new {username = @p.Username})
             </td>
             <td>
                 @p.Email

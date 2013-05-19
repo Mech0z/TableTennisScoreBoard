@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace TableTennis.Models
 {
@@ -14,11 +12,7 @@ namespace TableTennis.Models
             Rating = 1500;
         }
 
-        [BsonId(IdGenerator = typeof(CombGuidGenerator))]
-        [HiddenInput(DisplayValue = false)]
-        public Guid Id { get; set; }
-
-        [Required]
+        [BsonId]
         public string Username { get; set; }
 
         [Required]

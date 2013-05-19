@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TableTennis.Models;
 
 namespace TableTennis.Interfaces.Repository
@@ -8,7 +7,7 @@ namespace TableTennis.Interfaces.Repository
     {
         void CreateMatch(PlayedGame game);
         List<PlayedGame> GetAllGames();
-        List<PlayedGame> GetAllGamesByPlayerID(Guid playerID);
+        List<PlayedGame> GetAllGamesByUsername(string username);
         void UpdateGameRatingById(PlayedGame game);
         List<PlayedGame> GetLastXPlayedGames(int numberOfGames);
     }

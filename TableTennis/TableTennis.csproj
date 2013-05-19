@@ -169,6 +169,7 @@
     <Compile Include="HelperClasses\Gravatar.cs" />
     <Compile Include="Interfaces\HelperClasses\IRatingCalculator.cs" />
     <Compile Include="Models\PlayedGame.cs" />
+    <Compile Include="MongoDB\MongoRepositoryBase.cs" />
     <Compile Include="ViewModels\PlayedGamesViewModel.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="HelperClasses\RatingCalculator.cs" />

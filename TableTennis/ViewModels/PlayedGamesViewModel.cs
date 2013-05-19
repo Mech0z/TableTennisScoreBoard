@@ -10,19 +10,19 @@ namespace TableTennis.Models
         public List<GameViewModel> GameList { get; set; }
         public List<PlayerUsername> PlayerUsernames { get; set; }
 
-        public PlayedGamesViewModel(List<PlayedGame> playedGames, List<PlayerUsername> opponentList, Guid playerID)
+        public PlayedGamesViewModel(List<PlayedGame> playedGames, string Username)
         {
             GameList = new List<GameViewModel>();
 
             foreach (var game in playedGames)
             {
-                var opponentPlayerID = game.PlayerIds[0] == playerID ? game.PlayerIds[1] : game.PlayerIds[0];
-                var won = game.WinnerId == playerID;
+                var opponentUsername = game.Players[0] == Username ? game.Players[1] : game.Players[0];
+                var won = game.WinnerUsername == Username;
 
                 var gameVM = new GameViewModel
                     {
                         TimeStamp = game.TimeStamp,
-                        Opponent = opponentList.First(s => s.PlayerID == opponentPlayerID).PlayerUserName,
+                        Opponent = opponentUsername,
                         Won = won,
                         Rating = game.EloPoints
                     };

@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace TableTennis.Models
 {
     public class UserAccount
-    { 
-        public int Id { get; set; }
+    {
+        [BsonId]
         public string Username { get; set; }
+
         public string Password { get; set; }
         public List<UserAccountRole> Roles { get; set; }
 
