@@ -170,6 +170,7 @@
     <Compile Include="Interfaces\HelperClasses\IRatingCalculator.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="MongoDB\MongoRepositoryBase.cs" />
+    <Compile Include="ViewModels\LastGamesViewModel.cs" />
     <Compile Include="ViewModels\PlayedGamesViewModel.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="HelperClasses\RatingCalculator.cs" />
@@ -304,6 +305,7 @@
     <Content Include="Views\Match\Create.cshtml" />
     <Content Include="Views\Account\Management.cshtml" />
     <Content Include="Views\PlayerManagement\Details.cshtml" />
+    <Content Include="Views\Match\LastGames.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

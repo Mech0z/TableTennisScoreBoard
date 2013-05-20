@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
@@ -22,20 +21,16 @@ namespace TableTennis.Controllers
             _playerManagementRepository = playerManagementRepository;
         }
 
-        //
-        // GET: /Match/
-
-        public ActionResult Index()
+        /// <summary>
+        /// Show 10 last games from account
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult LastGames()
         {
-            return View();
-        }
+            //TODO var games = _matchManagementRepository.GetLastXPlayedGames(10, HttpContext.User.Identity.Name);
+            var vm = new LastGamesViewModel {PlayedGames = _matchManagementRepository.GetLastXPlayedGames(10, "d60")};
 
-        //
-        // GET: /Match/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
+            return View(vm);
         }
 
         //
@@ -126,7 +121,7 @@ namespace TableTennis.Controllers
                 game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
 
                 game.BoundAccount = "d60";
-                //game.BoundAccount = HttpContext.User.Identity.Name;
+                //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerList", "PlayerManagement");
@@ -154,58 +149,6 @@ namespace TableTennis.Controllers
                            new SelectListItem {Text = "Player 1", Value = 1.ToString(), Selected = true}
                            , new SelectListItem {Text = "Player 2", Value = 2.ToString(), Selected = false}
                        };
-        }
-
-        //
-        // GET: /Match/Edit/5
-
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Match/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Match/Delete/5
-
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Match/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

@@ -1,0 +1,30 @@
+﻿@model TableTennis.ViewModels.LastGamesViewModel
+
+@{
+    ViewBag.Title = "Last Games at " + HttpContext.Current.User.Identity.Name;
+}
+
+@Html.ActionLink("Home", "Index", "Home")
+
+@foreach (var game in Model.PlayedGames)
+{
+    switch (game.Players.Count)
+    {
+        case 2:
+            @game.Players[0]
+            @game.Players[1]
+            break;
+        case 4:
+            @game.Players[0]
+            @game.Players[1]
+            @game.Players[3]
+            @game.Players[4]
+            break;
+    }
+
+    foreach (var set in game.GameSets)
+    {
+        @set.Score1
+        @set.Score2
+    }
+}
