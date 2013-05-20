@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
@@ -124,6 +125,8 @@ namespace TableTennis.Controllers
 
                 game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
 
+                game.BoundAccount = "d60";
+                //game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerList", "PlayerManagement");
