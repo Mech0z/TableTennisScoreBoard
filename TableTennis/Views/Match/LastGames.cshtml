@@ -1,4 +1,5 @@
-﻿@model TableTennis.ViewModels.LastGamesViewModel
+﻿@using TableTennis.Models
+@model TableTennis.ViewModels.LastGamesViewModel
 
 @{
     ViewBag.Title = "Last Games at " + HttpContext.Current.User.Identity.Name;
@@ -6,25 +7,35 @@
 
 @Html.ActionLink("Home", "Index", "Home")
 
-@foreach (var game in Model.PlayedGames)
+<br>
+
+@foreach (PlayedGame game in Model.PlayedGames)
 {
+    @game.TimeStamp
+    <br/>
     switch (game.Players.Count)
     {
         case 2:
-            @game.Players[0]
-            @game.Players[1]
+            @Html.Display(game.Players[0])
+            @Html.Label(" - ")
+            @Html.Display(game.Players[1])
             break;
         case 4:
-            @game.Players[0]
-            @game.Players[1]
-            @game.Players[3]
-            @game.Players[4]
+            @Html.Display(game.Players[0])
+            @Html.Display(game.Players[1])
+            @Html.Display(game.Players[3])
+            @Html.Display(game.Players[4])
             break;
     }
-
-    foreach (var set in game.GameSets)
+    <br/>
+    foreach (GameSet set in game.GameSets)
     {
-        @set.Score1
-        @set.Score2
+        <b>
+            @Html.Display(set.Score1.ToString())
+            @Html.Label(" - ")
+            @Html.Display(set.Score2.ToString())
+        </b>
+        <br/>
     }
+    <br/>
 }

@@ -28,7 +28,7 @@ namespace TableTennis.Controllers
         public ActionResult LastGames()
         {
             //TODO var games = _matchManagementRepository.GetLastXPlayedGames(10, HttpContext.User.Identity.Name);
-            var vm = new LastGamesViewModel {PlayedGames = _matchManagementRepository.GetLastXPlayedGames(10, "d60")};
+            var vm = new LastGamesViewModel {PlayedGames = _matchManagementRepository.GetLastXPlayedGames(5, "d60")};
 
             return View(vm);
         }
