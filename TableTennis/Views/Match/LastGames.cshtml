@@ -16,24 +16,24 @@
     switch (game.Players.Count)
     {
         case 2:
-            @Html.Display(game.Players[0])
+            @(game.Players[0])
             @Html.Label(" - ")
-            @Html.Display(game.Players[1])
+            @(game.Players[1])
             break;
         case 4:
-            @Html.Display(game.Players[0])
-            @Html.Display(game.Players[1])
-            @Html.Display(game.Players[3])
-            @Html.Display(game.Players[4])
+            @game.Players[0]
+            @game.Players[1]
+            @game.Players[3]
+            @game.Players[4]
             break;
     }
     <br/>
     foreach (GameSet set in game.GameSets)
     {
         <b>
-            @Html.Display(set.Score1.ToString())
+            @set.Score1
             @Html.Label(" - ")
-            @Html.Display(set.Score2.ToString())
+            @set.Score2
         </b>
         <br/>
     }
