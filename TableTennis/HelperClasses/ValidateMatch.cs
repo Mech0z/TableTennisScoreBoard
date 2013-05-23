@@ -19,25 +19,11 @@ namespace TableTennis.HelperClasses
             }
         }
 
-        private static int ValidateTableTennis(GameType gameType, List<GameSet> gameSets, out string errorMessage)
-        {
-            switch (gameType)
-            {
-                case GameType.Standard:
-                    return ValidateStandardTTGame(gameSets, out errorMessage);
-                case GameType.Double:
-                    return ValidateDoubleTTGame(gameSets, out errorMessage);
-                default:
-                    errorMessage = "Not valid gametype";
-                    return -1;
-            }
-        }
-
         private static int ValidateFoosball(GameType gameType, List<GameSet> gameSets, out string errorMessage)
         {
             switch (gameType)
             {
-                case GameType.Standard:
+                case GameType.Single11:
                     return ValidateStandardFoosballGame(gameSets, out errorMessage);
                 case GameType.Double:
                     return ValidateDoubleFoosballGame(gameSets, out errorMessage);
@@ -47,28 +33,53 @@ namespace TableTennis.HelperClasses
             }
         }
 
-        private static int ValidateStandardTTGame(List<GameSet> gameSets, out string errorMessage)
+        private static int ValidateTableTennis(GameType gameType, List<GameSet> gameSets, out string errorMessage)
         {
-            var player1Sets = 0;
-            var player2Sets = 0;
-            var valid = 0;
+            int player1Sets = 0;
+            int player2Sets = 0;
+            int valid = 0;
+
+            int scoreGoal = 0;
+
             errorMessage = "";
 
-            foreach (var gameSet in gameSets)
+            switch (gameType)
             {
-                if (gameSet.Score1 == 11 && gameSet.Score2 <= 9)
+                case GameType.Freestyle:
+                    if (gameSets[0].Score1 == 1)
+                    { return 1; }
+                    if (gameSets[0].Score2 == 1)
+                    { return 2; }
+
+                    errorMessage = "One player must have a score of 1 in first set to indicate a winner";
+                    return -1;
+                case GameType.Single11:
+                    scoreGoal = 11;
+                    break;
+                case GameType.Single21:
+                case GameType.Double:
+                    scoreGoal = 21;
+                    break;
+                default:
+                    errorMessage = "Invalid game type";
+                    break;
+            }
+
+            foreach (GameSet gameSet in gameSets)
+            {
+                if (gameSet.Score1 == scoreGoal && gameSet.Score2 + 2 <= gameSet.Score1)
                 {
                     player1Sets++;
                 }
-                else if (gameSet.Score2 == 11 && gameSet.Score1 <= 9)
+                else if (gameSet.Score2 == scoreGoal && gameSet.Score1 + 2 <= gameSet.Score2)
                 {
                     player2Sets++;
                 }
-                else if(gameSet.Score1 == gameSet.Score2 + 2  && gameSet.Score1 > 11)
+                else if (gameSet.Score1 == gameSet.Score2 + 2 && gameSet.Score1 > scoreGoal)
                 {
                     player1Sets++;
                 }
-                else if (gameSet.Score2 == gameSet.Score1 + 2 && gameSet.Score2 > 11)
+                else if (gameSet.Score2 == gameSet.Score1 + 2 && gameSet.Score2 > scoreGoal)
                 {
                     player2Sets++;
                 }
@@ -80,7 +91,7 @@ namespace TableTennis.HelperClasses
                 else
                 {
                     valid = -1;
-                    errorMessage = "Unvalid set, games are played to 11 or until won by 2 points";
+                    errorMessage = string.Format("Unvalid set, games are played to {0} or until won by 2 points", scoreGoal);
                 }
             }
 
@@ -99,12 +110,6 @@ namespace TableTennis.HelperClasses
                 valid = -1;
             }
             return valid;
-        }
-
-        private static int ValidateDoubleTTGame(List<GameSet> gameSets, out string errorMessage)
-        {
-            errorMessage = "";
-            return 0;
         }
 
         private static int ValidateStandardFoosballGame(List<GameSet> gameSets, out string errorMessage)
@@ -128,7 +133,9 @@ namespace TableTennis.HelperClasses
 
     public enum GameType
     {
-        Standard,
-        Double
+        Single11,
+        Single21,
+        Double,
+        Freestyle
     }
 }

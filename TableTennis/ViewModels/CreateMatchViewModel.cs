@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -18,12 +19,17 @@ namespace TableTennis.ViewModels
 
         public IEnumerable<SelectListItem> PlayerList { get; set; }
         public IEnumerable<SelectListItem> Winner { get; set; }
+        public IEnumerable<SelectListItem> GameTypes { get; set; }
         
         [Required]
         public string Player1Username { get; set; }
 
         [Required]
         public string Player2Username { get; set; }
+
+        [Required]
+        [DisplayName("Game mode")]
+        public string GameType { get; set; }
 
         [Required]
         [RegularExpression("[0-9][0-9]?")]

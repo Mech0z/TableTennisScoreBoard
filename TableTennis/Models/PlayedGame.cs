@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
+using TableTennis.HelperClasses;
 
 namespace TableTennis.Models
 {
@@ -32,5 +33,7 @@ namespace TableTennis.Models
         public List<GameSet> GameSets { get; set; }
 
         public string BoundAccount { get; set; }
+
+        public GameType GameType { get; set; }
     }
 }

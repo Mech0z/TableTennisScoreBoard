@@ -16,6 +16,9 @@
     <h4>Player 2</h4>
     @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)
 
+    <h4>@Html.DisplayNameFor(p => p.GameTypes)</h4>
+    @Html.DropDownListFor(p => p.GameType, Model.GameTypes)
+    
     @Html.ValidationMessage("MatchValidationError");
     
     <h5>Set 1</h5>

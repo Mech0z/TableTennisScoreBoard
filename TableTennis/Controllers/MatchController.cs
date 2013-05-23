@@ -42,7 +42,8 @@ namespace TableTennis.Controllers
                          {
                              Winner =
                                  CreateWinnerList(),
-                             PlayerList = CreatePlayerList()
+                             PlayerList = CreatePlayerList(),
+                             GameTypes = CreateTableTennisGameTypes()
                          }
                 ;
 
@@ -62,6 +63,7 @@ namespace TableTennis.Controllers
                     ModelState.Clear();
                     vm.PlayerList = CreatePlayerList();
                     vm.Winner = CreateWinnerList();
+                    vm.GameTypes = CreateTableTennisGameTypes();
                     ModelState.AddModelError("ValidationError", "Failed to submit, invalid data!");
 
                     return View(vm);
@@ -71,6 +73,7 @@ namespace TableTennis.Controllers
                     ModelState.Clear();
                     vm.PlayerList = CreatePlayerList();
                     vm.Winner = CreateWinnerList();
+                    vm.GameTypes = CreateTableTennisGameTypes();
                     ModelState.AddModelError("ValidationError", "Select different players!");
                     return View(vm);
                 }
@@ -94,13 +97,16 @@ namespace TableTennis.Controllers
 
                 //Validate game score
                 var errorMessage = "";
-                var validationResult = ValidateMatch.ValidateGame(Game.TableTennis, GameType.Standard, game.GameSets,
+                var gameType = (GameType)Enum.Parse(typeof(GameType), vm.GameType);
+                game.GameType = gameType;
+                var validationResult = ValidateMatch.ValidateGame(Game.TableTennis, gameType, game.GameSets,
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
                     ModelState.Clear();
                     vm.PlayerList = CreatePlayerList();
                     vm.Winner = CreateWinnerList();
+                    vm.GameTypes = CreateTableTennisGameTypes();
                     ModelState.AddModelError("MatchValidationError", errorMessage);
                     return View(vm);
                 }
@@ -130,6 +136,16 @@ namespace TableTennis.Controllers
             {
                 return View();
             }
+        }
+
+        private IEnumerable<SelectListItem> CreateTableTennisGameTypes()
+        {
+            return new[]
+                {
+                    new SelectListItem {Text = "Freestyle", Value = GameType.Freestyle.ToString()},
+                    new SelectListItem {Text = "11 Point best of 3", Value = GameType.Single11.ToString()},
+                    new SelectListItem {Text = "21 Point best of 3", Value = GameType.Single21.ToString()}
+                };
         }
 
         private IEnumerable<SelectListItem> CreatePlayerList()
