@@ -39,5 +39,11 @@ namespace TableTennis.MongoDB
                 collection.Find(Query<PlayedGame>.Where(game => game.BoundAccount == boundAccount)).OrderByDescending(
                     s => s.TimeStamp).Take(numberOfGames).ToList();
         }
+
+        public void UpdateMatch(PlayedGame game)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            collection.Save(game);
+        }
     }
 }
