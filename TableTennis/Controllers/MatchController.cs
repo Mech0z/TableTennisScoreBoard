@@ -38,43 +38,45 @@ namespace TableTennis.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            var vm = new CreateMatchViewModel
-                         {
-                             Winner =
-                                 CreateWinnerList(),
-                             PlayerList = CreatePlayerList(),
-                             GameTypes = CreateTableTennisGameTypes()
-                         }
-                ;
-
+            var vm = CreateMatchVM(GameType.Single11);
             return View(vm);
+        }
+
+        [HttpGet]
+        public ActionResult CreateDouble()
+        {
+            var vm = CreateMatchVM(GameType.Double);
+            return View(vm);
+        }
+
+        private CreateViewModel CreateMatchVM(GameType gameType)
+        {
+            var vm = new CreateViewModel
+            {
+                Winner =
+                    CreateWinnerList(),
+                PlayerList = CreatePlayerList(),
+                GameTypes = CreateTableTennisGameTypes()
+            };
+            return vm;
         }
 
         //
         // POST: /Match/Create
 
         [HttpPost]
-        public ActionResult Create(CreateMatchViewModel vm)
+        public ActionResult Create(CreateViewModel vm)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    ModelState.Clear();
-                    vm.PlayerList = CreatePlayerList();
-                    vm.Winner = CreateWinnerList();
-                    vm.GameTypes = CreateTableTennisGameTypes();
-                    ModelState.AddModelError("ValidationError", "Failed to submit, invalid data!");
-
+                    vm = RecreateMatchViewModel(vm, "Failed to submit, invalid data!");
                     return View(vm);
                 }
                 if (vm.Player1Username == vm.Player2Username)
                 {
-                    ModelState.Clear();
-                    vm.PlayerList = CreatePlayerList();
-                    vm.Winner = CreateWinnerList();
-                    vm.GameTypes = CreateTableTennisGameTypes();
-                    ModelState.AddModelError("ValidationError", "Select different players!");
+                    vm = RecreateMatchViewModel(vm, "Select different players!");
                     return View(vm);
                 }
 
@@ -103,11 +105,7 @@ namespace TableTennis.Controllers
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    ModelState.Clear();
-                    vm.PlayerList = CreatePlayerList();
-                    vm.Winner = CreateWinnerList();
-                    vm.GameTypes = CreateTableTennisGameTypes();
-                    ModelState.AddModelError("MatchValidationError", errorMessage);
+                    vm = RecreateMatchViewModel(vm, errorMessage);
                     return View(vm);
                 }
 
@@ -136,6 +134,17 @@ namespace TableTennis.Controllers
             {
                 return View();
             }
+        }
+
+        private CreateViewModel RecreateMatchViewModel(CreateViewModel vm, string errorMessage)
+        {
+            ModelState.Clear();
+            vm.PlayerList = CreatePlayerList();
+            vm.Winner = CreateWinnerList();
+            vm.GameTypes = CreateTableTennisGameTypes();
+            ModelState.AddModelError("ValidationError", errorMessage);
+
+            return vm;
         }
 
         private IEnumerable<SelectListItem> CreateTableTennisGameTypes()

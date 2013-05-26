@@ -1,4 +1,4 @@
-﻿@model TableTennis.ViewModels.CreateViewModel
+﻿@model TableTennis.ViewModels.CreateDoubleViewModel
 
 @{
     ViewBag.Title = "Enter Match Result";
@@ -10,14 +10,13 @@
 {
     @Html.ValidationMessage("ValidationError")
     
-    <h4>Player 1</h4>
+    <h4>Team 1</h4>
     @Html.DropDownListFor(p => p.Player1Username, Model.PlayerList)   
-   
-    <h4>Player 2</h4>
     @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)
-
-    <h4>@Html.DisplayNameFor(p => p.GameTypes)</h4>
-    @Html.DropDownListFor(p => p.GameType, Model.GameTypes)
+    
+    <h4>Team 2</h4>
+    @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)
+    @Html.DropDownListFor(p => p.Player4Username, Model.PlayerList)
     
     @Html.ValidationMessage("MatchValidationError");
     

@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace TableTennis.ViewModels
 {
-    public class CreateMatchViewModel
+    public class CreateMatchViewModelBase
     {
-        public CreateMatchViewModel()
+        public CreateMatchViewModelBase()
         {
             Score1Set1 = 0;
             Score1Set2 = 0;
@@ -26,7 +26,7 @@ namespace TableTennis.ViewModels
 
         [Required]
         public string Player2Username { get; set; }
-
+        
         [Required]
         [DisplayName("Game mode")]
         public string GameType { get; set; }

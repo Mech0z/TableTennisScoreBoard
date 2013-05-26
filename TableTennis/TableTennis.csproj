@@ -170,6 +170,8 @@
     <Compile Include="Interfaces\HelperClasses\IRatingCalculator.cs" />
     <Compile Include="Models\PlayedGame.cs" />
     <Compile Include="MongoDB\MongoRepositoryBase.cs" />
+    <Compile Include="ViewModels\CreateDoubleViewModel.cs" />
+    <Compile Include="ViewModels\CreateMatchViewModelBase.cs" />
     <Compile Include="ViewModels\LastGamesViewModel.cs" />
     <Compile Include="ViewModels\PlayedGamesViewModel.cs" />
     <Compile Include="Models\Player.cs" />
@@ -179,7 +181,7 @@
     <Compile Include="Models\Views\PlayerManagement\GameViewModel.cs" />
     <Compile Include="Models\Views\PlayerManagement\PlayerUsername.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CreateMatchViewModel.cs" />
+    <Compile Include="ViewModels\CreateSingleViewModel.cs" />
     <Compile Include="ViewModels\PlayerDetailsViewModel.cs" />
     <Compile Include="ViewModels\PlayerListViewModel.cs" />
     <Compile Include="ViewModels\PlayerManagementViewModel.cs" />
@@ -306,6 +308,7 @@
     <Content Include="Views\Account\Management.cshtml" />
     <Content Include="Views\PlayerManagement\Details.cshtml" />
     <Content Include="Views\Match\LastGames.cshtml" />
+    <Content Include="Views\Match\CreateDouble.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
