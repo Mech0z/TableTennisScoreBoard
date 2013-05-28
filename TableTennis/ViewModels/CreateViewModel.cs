@@ -1,6 +1,6 @@
 ﻿namespace TableTennis.ViewModels
 {
-    public class CreateSingleViewModel : CreateMatchViewModelBase
+    public class CreateViewModel : CreateMatchViewModelBase
     {
     }
 }

@@ -181,7 +181,7 @@
     <Compile Include="Models\Views\PlayerManagement\GameViewModel.cs" />
     <Compile Include="Models\Views\PlayerManagement\PlayerUsername.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CreateSingleViewModel.cs" />
+    <Compile Include="ViewModels\CreateViewModel.cs" />
     <Compile Include="ViewModels\PlayerDetailsViewModel.cs" />
     <Compile Include="ViewModels\PlayerListViewModel.cs" />
     <Compile Include="ViewModels\PlayerManagementViewModel.cs" />
