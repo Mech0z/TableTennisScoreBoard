@@ -1,13 +1,15 @@
 ﻿@{
     ViewBag.Title = "Table Tennis Scoreboard";
+    ViewBag.Active = "Home";
 }
 
-<h2>@ViewBag.Message</h2>
+<h1>@ViewBag.Message</h1>
 
-<ul data-role="listview" data-inset="true">
-    <li data-role="list-divider">Navigation</li>
-    <li>@Html.ActionLink("User Management", "Index", "PlayerManagement")</li>
-    <li>@Html.ActionLink("Enter match result", "Create", "Match")</li>
-    <li>@Html.ActionLink("Admin", "Management", "Account")</li>
-    <li>@Html.ActionLink("Last 5 games", "LastGames", "Match")</li>
-</ul>
+<div class="hero-unit">
+    
+    <p>@Html.ActionLink("User Management", "Index", "PlayerManagement", new {}, new {@class = "btn"})</p>
+    <p>@Html.ActionLink("Enter match result", "Create", "Match", new{}, new {@class = "btn"})</p>
+    <p>@Html.ActionLink("Admin", "Management", "Account", new {}, new {@class = "btn"})</p>
+    <p>@Html.ActionLink("Last 5 games", "LastGames", "Match", new {}, new {@class = "btn"})</p>
+
+</div>
