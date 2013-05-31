@@ -45,7 +45,7 @@
 tr.Win {background: #8ec641}
 tr.Loose {background: #FF0000}
 
-header h1, #header h1
+header h1, #header h1 a
 {
     font-weight: normal;
     padding: 5px 0;

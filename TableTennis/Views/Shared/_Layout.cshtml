@@ -28,7 +28,9 @@
         <div class="container-fluid">
             <div id="header" class="row-fluid">
                 <div id="title">
-                    <h1>d60 Scoreboard</h1>
+                    <h1>
+                        @Html.ActionLink("d60 Scoreboard", "PlayerList", "PlayerManagement")
+                    </h1>
                 </div>
             </div>
             <div id="" class="row-fluid">
@@ -37,11 +39,11 @@
                         <div class="container-fluid">
                             <ul class="nav">
                                 <li class="divider-vertical"></li>
-                                <li class="@(ViewBag.Active == "EnterMatch" ? "active" : "")">
-                                    @Html.ActionLink("Enter Match", "Create", "Match")
-                                </li>
                                 <li class="@(ViewBag.Active == "PlayerList" ? "active" : "")">
                                     @Html.ActionLink("Ranklist", "PlayerList", "PlayerManagement")
+                                </li>
+                                <li class="@(ViewBag.Active == "EnterMatch" ? "active" : "")">
+                                    @Html.ActionLink("Enter Match", "Create", "Match")
                                 </li>
                                 <li class="@(ViewBag.Active == "LastGames" ? "active" : "")">
                                     @Html.ActionLink("Last Games", "LastGames", "Match")
@@ -50,7 +52,10 @@
                                     @Html.Partial("_LoginPartial")
                                 </li>
                                 <li class="@(ViewBag.Active == "Admin" ? "active" : "")">
-                                    @Html.ActionLink("Admin", "Management", "Account")
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        @Html.ActionLink("Admin", "Management", "Account")
+                                    }
                                 </li>
                             </ul>
                             <div class="nav-collapse">
