@@ -17,9 +17,9 @@
     switch (game.Players.Count)
     {
         case 2:
-            @(game.Players[0])
-            @Html.Label(" - ")
-            @(game.Players[1])
+            <b>
+                @game.Players[0] - @game.Players[1]
+            </b>
             break;
         case 4:
             @game.Players[0]
