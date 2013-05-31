@@ -1,9 +1,9 @@
 ﻿@{
     ViewBag.Title = "User Management";
+    ViewBag.Active = "PlayerManagement";
 }
 
-<ul data-role="listview" data-inset="true">
-    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-    <li>@Html.ActionLink("Playerlist", "PlayerList")</li>
-    <li>@Html.ActionLink("Create Player", "Create")</li>
-</ul>
+@Html.ActionLink("Home", "Index", "Home", new {}, new {@class = "btn"})
+@Html.ActionLink("Playerlist", "PlayerList", new {}, new {@class = "btn"})
+@Html.ActionLink("Create Player", "Create", new {}, new {@class = "btn"})
+

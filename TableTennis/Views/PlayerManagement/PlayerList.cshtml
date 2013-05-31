@@ -3,32 +3,30 @@
 
 @{
     ViewBag.Title = "PlayerList";
+    ViewBag.Active = "PlayerList";
+
+    int i = 1;
 }
-
-@Html.ActionLink("Home", "Index", "Home")
-
-<h2>PlayerList</h2>
-
 <table>
     <tr>
         <td>
-            Username
+            Rank
         </td>
         <td>
-            Email
+            Username
         </td>
         <td>
             Rating
         </td>
     </tr>
-    @foreach (var p in Model.PlayerList)
+    @foreach (Player p in Model.PlayerList)
     {
         <tr>
             <td>
-                @Html.ActionLink(@p.Username, "Details", new {username = @p.Username})
+                #@i
             </td>
             <td>
-                @p.Email
+                @Html.ActionLink(@p.Username, "Details", new {username = @p.Username})
             </td>
             <td>
                 @p.Rating
@@ -37,5 +35,6 @@
                 <img src="@Html.Gravatar(p.GravatarEmail)" width="64" height="64" />
             </td>
         </tr>
+        i++;
     }
 </table>

@@ -42,7 +42,7 @@
     text-shadow: none;
 }
 
-tr.Win {background: #00FF00}
+tr.Win {background: #8ec641}
 tr.Loose {background: #FF0000}
 
 header h1, #header h1
@@ -50,7 +50,7 @@ header h1, #header h1
     font-weight: normal;
     padding: 5px 0;
     margin: 0;
-    color: #5c87b2;
+    color: #8ec641;
     border: none;
     line-height: 2em;
     font-size: 20px !important;

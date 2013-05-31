@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "Last Games at " + HttpContext.Current.User.Identity.Name;
+    ViewBag.Active = "LastGames";
 }
 
 @Html.ActionLink("Home", "Index", "Home")
@@ -31,9 +32,7 @@
     foreach (GameSet set in game.GameSets)
     {
         <b>
-            @set.Score1
-            @Html.Label(" - ")
-            @set.Score2
+            @set.Score1 - @set.Score2
         </b>
         <br/>
     }
