@@ -30,18 +30,12 @@
                 <div id="title">
                     <h1>d60 Scoreboard</h1>
                 </div>
-                <div id="logindisplay">
-                    @Html.Partial("_LoginPartial")
-                </div>
             </div>
             <div id="" class="row-fluid">
                 <div class="navbar">
                     <div class="navbar-inner">
                         <div class="container-fluid">
                             <ul class="nav">
-                                <li class="@(ViewBag.Active == "Home" ? "active" : "")">
-                                    @Html.ActionLink("Home", "Index", "Home")
-                                </li>
                                 <li class="divider-vertical"></li>
                                 <li class="@(ViewBag.Active == "EnterMatch" ? "active" : "")">
                                     @Html.ActionLink("Enter Match", "Create", "Match")
@@ -51,6 +45,12 @@
                                 </li>
                                 <li class="@(ViewBag.Active == "LastGames" ? "active" : "")">
                                     @Html.ActionLink("Last Games", "LastGames", "Match")
+                                </li>
+                                <li class="@(ViewBag.Active == "Account" ? "active" : "")">
+                                    @Html.Partial("_LoginPartial")
+                                </li>
+                                <li class="@(ViewBag.Active == "Admin" ? "active" : "")">
+                                    @Html.ActionLink("Admin", "Management", "Account")
                                 </li>
                             </ul>
                             <div class="nav-collapse">

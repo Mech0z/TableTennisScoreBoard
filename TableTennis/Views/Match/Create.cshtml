@@ -5,15 +5,13 @@
     ViewBag.Active = "EnterMatch";
 }
 
-@Html.ActionLink("Home", "Index", "Home")
-
 @using (Html.BeginForm("Create", "Match", FormMethod.Post))
 {
     @Html.ValidationMessage("ValidationError")
     
     <h4>Player 1</h4>
     
-    @Html.DropDownListFor(p => p.Player1Username, Model.PlayerList, new {@class = "btn"})   
+    @Html.DropDownListFor(p => p.Player1Username, Model.PlayerList)   
    
     <h4>Player 2</h4>
     @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)

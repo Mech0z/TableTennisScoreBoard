@@ -1,8 +1,9 @@
 ﻿@{
     ViewBag.Title = "Management";
+    ViewBag.Active = "Admin";
 }
 
 @using (Html.BeginForm("UpdateRating", "Account", FormMethod.Post))
 {
-    <input type="submit" value="Recalculate ratings" />    
+    <input type="submit" value="Recalculate ratings" class="btn"/>    
 }
