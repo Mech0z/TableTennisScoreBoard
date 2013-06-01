@@ -32,27 +32,27 @@ namespace TableTennis.ViewModels
         public string GameType { get; set; }
 
         [Required]
-        [RegularExpression("[0-9][0-9]?")]
+        [Range(0,100)]
         public int Score1Set1 { get; set; }
 
-        [RegularExpression("[0-9][0-9]?")]
         [Required]
+        [Range(0, 100)]
         public int Score1Set2 { get; set; }
 
-        [RegularExpression("[0-9][0-9]?")]
         [Required]
+        [Range(0, 100)]
         public int Score1Set3 { get; set; }
 
-        [RegularExpression("[0-9][0-9]?")]
         [Required]
+        [Range(0, 100)]
         public int Score2Set1 { get; set; }
 
-        [RegularExpression("[0-9][0-9]?")]
         [Required]
+        [Range(0,100)]
         public int Score2Set2 { get; set; }
 
-        [RegularExpression("[0-9][0-9]?")]
         [Required]
+        [Range(0,100)]
         public int Score2Set3 { get; set; }
     }
 }

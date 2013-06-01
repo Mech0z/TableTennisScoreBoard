@@ -23,14 +23,21 @@
     
     <h5>Set 1</h5>
     @Html.EditorFor(p => p.Score1Set1)
+    @Html.ValidationMessageFor(p => p.Score1Set1)
     @Html.EditorFor(p => p.Score2Set1)
+    @Html.ValidationMessageFor(p => p.Score2Set1)
+
     <h5>Set 2</h5>
     @Html.EditorFor(p => p.Score1Set2)
+    @Html.ValidationMessageFor(p => p.Score1Set2)
     @Html.EditorFor(p => p.Score2Set2)
+    @Html.ValidationMessageFor(p => p.Score2Set2)
     
     <h5>Set 3</h5>
     @Html.EditorFor(p => p.Score1Set3)
+    @Html.ValidationMessageFor(p => p.Score1Set3)
     @Html.EditorFor(p => p.Score2Set3)
+    @Html.ValidationMessageFor(p => p.Score2Set3)
     
     <input type="submit" value="Add result" />    
 }
