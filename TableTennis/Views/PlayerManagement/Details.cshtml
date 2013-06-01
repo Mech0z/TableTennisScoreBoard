@@ -1,4 +1,5 @@
-﻿@using TableTennis.Models
+﻿@using TableTennis.HelperClasses
+@using TableTennis.Models
 @model TableTennis.ViewModels.PlayerDetailsViewModel
 
 @{
@@ -23,10 +24,10 @@
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(model => model.Player.Rating)
+        @Html.DisplayNameFor(model => model.Player.Ratings[Game.SingleTableTennis])
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Player.Rating)
+        @Html.DisplayFor(model => model.Player.Ratings[Game.SingleTableTennis])
     </div>
 
     <div class="display-field">

@@ -291,6 +291,7 @@
     <Content Include="LICENSE.txt" />
     <Content Include="Privat.config" />
     <None Include="Properties\PublishProfiles\Beta.MadsSkipper.DK.pubxml" />
+    <None Include="Properties\PublishProfiles\madsskipper.dk - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\madsskipper.dk - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\madsskipper.dk - Web Deploy.pubxml" />
     <Content Include="Scripts\bootstrap.js" />

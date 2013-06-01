@@ -44,7 +44,7 @@ namespace TableTennis.Controllers
         [HttpPost]
         public ActionResult UpdateRating()
         {
-            _ratingCalculator.RecalculateRatings();
+            _ratingCalculator.RecalculateSingleTTRatings();
             return RedirectToAction("Management", "Account");
         }
 

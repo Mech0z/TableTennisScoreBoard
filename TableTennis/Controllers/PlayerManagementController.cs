@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 using TableTennis.ViewModels;
@@ -55,7 +56,7 @@ namespace TableTennis.Controllers
         {
             var playerList = _playerManagementRepository.GetAllPlayers();
 
-            playerList = playerList.OrderByDescending(player => player.Rating).ToList();
+            playerList = playerList.OrderByDescending(player => player.Ratings[Game.SingleTableTennis]).ToList();
 
             var viewModel = new PlayerListViewModel {PlayerList = playerList};
             

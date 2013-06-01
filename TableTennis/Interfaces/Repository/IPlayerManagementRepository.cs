@@ -10,6 +10,6 @@ namespace TableTennis.Interfaces.Repository
         Player GetPlayerByUsername(string username);
         int GetPlayerRatingByUsername(string username);
         void UpdateRating(string username, int rating);
-        //List<PlayerUsername> GetPlayerUsernames(List<Guid> playerIds);
+        void UpdatePlayer(Player player);
     }
 }

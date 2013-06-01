@@ -9,9 +9,9 @@ namespace TableTennis.HelperClasses
         {
             switch (game)
             {
-                case Game.TableTennis:
+                case Game.SingleTableTennis:
                     return ValidateTableTennis(gameType, gameSets, out errorMessage);
-                case Game.Foosball:
+                case Game.SingleFoosball:
                     return ValidateFoosball(gameType, gameSets, out errorMessage);
                 default:
                     errorMessage = "Not valid game";
@@ -127,8 +127,10 @@ namespace TableTennis.HelperClasses
 
     public enum Game
     {
-        TableTennis,
-        Foosball
+        SingleTableTennis,
+        DoubleTableTennis,
+        SingleFoosball,
+        DoubleFoosball
     }
 
     public enum GameType

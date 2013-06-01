@@ -101,7 +101,7 @@ namespace TableTennis.Controllers
                 var errorMessage = "";
                 var gameType = (GameType)Enum.Parse(typeof(GameType), vm.GameType);
                 game.GameType = gameType;
-                var validationResult = ValidateMatch.ValidateGame(Game.TableTennis, gameType, game.GameSets,
+                var validationResult = ValidateMatch.ValidateGame(Game.SingleTableTennis, gameType, game.GameSets,
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {

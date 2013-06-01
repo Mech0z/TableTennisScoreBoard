@@ -2,6 +2,6 @@
 {
     public interface IRatingCalculator
     {
-        void RecalculateRatings();
+        void RecalculateSingleTTRatings();
     }
 }

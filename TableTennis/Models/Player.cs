@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using MongoDB.Bson.Serialization.Attributes;
+using TableTennis.HelperClasses;
 
 namespace TableTennis.Models
 {
@@ -9,7 +11,7 @@ namespace TableTennis.Models
     {
         public Player()
         {
-            Rating = 1500;
+            Ratings = new Dictionary<Game, int>();
         }
 
         [BsonId]
@@ -20,8 +22,8 @@ namespace TableTennis.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        public int Rating { get; set; }
-
+        public Dictionary<Game, int> Ratings { get; set; }
+        
         [Required]
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
