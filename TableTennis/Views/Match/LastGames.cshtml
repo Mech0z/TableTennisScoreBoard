@@ -1,4 +1,5 @@
-﻿@using TableTennis.Models
+﻿@using TableTennis.HelperClasses
+@using TableTennis.Models
 @model TableTennis.ViewModels.LastGamesViewModel
 
 @{
@@ -12,18 +13,19 @@
 {
     @game.TimeStamp
     <br/>
-    switch (game.Players.Count)
+    switch (game.Game)
     {
-        case 2:
+        case Game.SingleTableTennis:
+            @Html.Label("Single Table Tennis")
             <b>
                 @game.Players[0] - @game.Players[1]
             </b>
             break;
-        case 4:
-            @game.Players[0]
-            @game.Players[1]
-            @game.Players[3]
-            @game.Players[4]
+        case Game.DoubleTableTennis:
+            @Html.Label("Double Table Tennis")
+            <b>
+                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3]
+            </b>
             break;
     }
     <br/>
