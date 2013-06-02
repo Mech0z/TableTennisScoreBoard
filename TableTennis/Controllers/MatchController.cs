@@ -55,7 +55,7 @@ namespace TableTennis.Controllers
             var vm = new CreateViewModel
                 {
                     PlayerList = CreatePlayerList(),
-                    GameTypes = CreateTableTennisGameTypes()
+                    GameTypes = CreateTableTennisGameTypes(Game.SingleTableTennis)
                 };
 
             return vm;
@@ -66,7 +66,7 @@ namespace TableTennis.Controllers
             var vm = new CreateDoubleViewModel
                 {
                     PlayerList = CreatePlayerList(),
-                    GameTypes = CreateTableTennisGameTypes()
+                    GameTypes = CreateTableTennisGameTypes(Game.DoubleTableTennis)
                 };
 
             return vm;
@@ -253,27 +253,37 @@ namespace TableTennis.Controllers
         {
             ModelState.Clear();
             vm.PlayerList = CreatePlayerList();
-            vm.GameTypes = CreateTableTennisGameTypes();
+            vm.GameTypes = CreateTableTennisGameTypes(Game.SingleTableTennis);
             ModelState.AddModelError("ValidationError", errorMessage);
 
             return vm;
         }
 
-        private IEnumerable<SelectListItem> CreateTableTennisGameTypes()
+        private IEnumerable<SelectListItem> CreateTableTennisGameTypes(Game game)
         {
-            return new[]
-                {
-                    new SelectListItem {Text = "Freestyle", Value = GameType.Freestyle.ToString()},
-                    new SelectListItem {Text = "11 Point best of 3", Value = GameType.Single11.ToString()},
-                    new SelectListItem {Text = "21 Point best of 3", Value = GameType.Single21.ToString()}
-                };
+            switch (game)
+            {
+                case Game.DoubleTableTennis:
+                    return new[]
+                        {
+                            new SelectListItem {Text = "Freestyle", Value = GameType.Freestyle.ToString()},
+                            new SelectListItem {Text = "21 Point best of 3", Value = GameType.Single21.ToString()}
+                        };
+                default:
+                    return new[]
+                        {
+                            new SelectListItem {Text = "Freestyle", Value = GameType.Freestyle.ToString()},
+                            new SelectListItem {Text = "11 Point best of 3", Value = GameType.Single11.ToString()},
+                            new SelectListItem {Text = "21 Point best of 3", Value = GameType.Single21.ToString()}
+                        };
+            }
         }
 
         private CreateDoubleViewModel RecreateDoubleTTMatchViewModel(CreateDoubleViewModel vm, string errorMessage)
         {
             ModelState.Clear();
             vm.PlayerList = CreatePlayerList();
-            vm.GameTypes = CreateTableTennisGameTypes();
+            vm.GameTypes = CreateTableTennisGameTypes(Game.DoubleTableTennis);
             ModelState.AddModelError("ValidationError", errorMessage);
 
             return vm;
