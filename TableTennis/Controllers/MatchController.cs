@@ -38,35 +38,49 @@ namespace TableTennis.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            CreateViewModel vm = CreateMatchVM();
+            CreateViewModel vm = CreateMatchVM(Game.SingleTableTennis);
             return View(vm);
         }
 
         [HttpGet]
         public ActionResult CreateDouble()
         {
-            CreateDoubleViewModel vm = CreateDoubleMatchVM();
+            CreateDoubleViewModel vm = CreateDoubleMatchVM(Game.DoubleTableTennis);
 
             return View(vm);
         }
 
-        private CreateViewModel CreateMatchVM()
+        [HttpGet]
+        public ActionResult CreateSingleFoosball()
+        {
+            CreateViewModel vm = CreateMatchVM(Game.SingleFoosball);
+            return View(vm);
+        }
+
+        [HttpGet]
+        public ActionResult CreateDoubleFoosball()
+        {
+            CreateDoubleViewModel vm = CreateDoubleMatchVM(Game.DoubleFoosball);
+            return View(vm);
+        }
+
+        private CreateViewModel CreateMatchVM(Game game)
         {
             var vm = new CreateViewModel
                 {
                     PlayerList = CreatePlayerList(),
-                    GameTypes = CreateTableTennisGameTypes(Game.SingleTableTennis)
+                    GameTypes = CreateTableTennisGameTypes(game)
                 };
 
             return vm;
         }
 
-        private CreateDoubleViewModel CreateDoubleMatchVM()
+        private CreateDoubleViewModel CreateDoubleMatchVM(Game game)
         {
             var vm = new CreateDoubleViewModel
                 {
                     PlayerList = CreatePlayerList(),
-                    GameTypes = CreateTableTennisGameTypes(Game.DoubleTableTennis)
+                    GameTypes = CreateTableTennisGameTypes(game)
                 };
 
             return vm;
@@ -263,6 +277,16 @@ namespace TableTennis.Controllers
         {
             switch (game)
             {
+                case Game.SingleFoosball:
+                    return new[]
+                        {
+                            new SelectListItem {Text = "Single to 10", Value = GameType.Single.ToString()},
+                        };
+                case Game.DoubleFoosball:
+                    return new[]
+                        {
+                            new SelectListItem {Text = "Double to 10", Value = GameType.Double.ToString()},
+                        };
                 case Game.DoubleTableTennis:
                     return new[]
                         {

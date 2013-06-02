@@ -1,0 +1,27 @@
+﻿@model TableTennis.ViewModels.CreateViewModel
+
+@{
+    ViewBag.Title = "Enter Foosball Match Result";
+    ViewBag.Active = "EnterMatch";
+}
+
+@using (Html.BeginForm("CreateSingleFoosball", "Match", FormMethod.Post))
+{
+    @Html.ValidationMessage("ValidationError")
+
+    <h4>Players</h4>
+    @Html.DropDownListFor(p => p.Player1Username, Model.PlayerList)
+    @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)
+
+    <h4>@Html.DisplayNameFor(p => p.GameTypes)</h4>
+    @Html.DropDownListFor(p => p.GameType, Model.GameTypes)
+
+    <h4>Score</h4>
+    @Html.ValidationMessageFor(p => p.Score1Set1)
+    @Html.ValidationMessageFor(p => p.Score2Set1)
+    @Html.EditorFor(p => p.Score1Set1)
+    @Html.EditorFor(p => p.Score2Set1)
+
+    <br/>
+    <input type="submit" value="Add result" />   
+}

@@ -138,6 +138,7 @@ namespace TableTennis.HelperClasses
         Single11,
         Single21,
         Double,
-        Freestyle
+        Freestyle,
+        Single
     }
 }
