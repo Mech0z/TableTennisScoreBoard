@@ -1,0 +1,41 @@
+﻿@using TableTennis.HelperClasses
+@using TableTennis.Models
+@model TableTennis.ViewModels.PlayerListViewModel
+
+@{
+    ViewBag.Title = "PlayerList";
+    ViewBag.Active = "PlayerList";
+
+    int i = 1;
+}
+<table>
+    <tr>
+        <td>
+            Rank
+        </td>
+        <td>
+            Username
+        </td>
+        <td>
+            Rating
+        </td>
+    </tr>
+    @foreach (Player p in Model.PlayerList)
+    {
+        <tr>
+            <td>
+                #@i
+            </td>
+            <td>
+                @Html.ActionLink(@p.Username, "Details", new {username = @p.Username})
+            </td>
+            <td>
+                @p.Ratings[Game.DoubleTableTennis]
+            </td>
+            <td>
+                <img src="@Html.Gravatar(p.GravatarEmail)" width="64" height="64" />
+            </td>
+        </tr>
+        i++;
+    }
+</table>

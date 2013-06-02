@@ -35,21 +35,28 @@ namespace TableTennis.MongoDB
             MongoCollection<Player> collection = _mongoDatabase.GetCollection<Player>("Player");
             return collection.Find(Query<Player>.Where(s => s.Username == username)).Single();
         }
-
-        public int GetPlayerRatingByUsername(string username)
+        
+        public int GetPlayerRatingByUsername(string username, Game game)
         {
             MongoCollection<Player> collection = _mongoDatabase.GetCollection<Player>("Player");
-            return
-                collection.Find(Query<Player>.Where(s => s.Username == username))
-                          .Select(p => p.Ratings[Game.SingleTableTennis])
-                          .Single();
+            var result = collection.FindOne(Query<Player>.Where(s => s.Username == username));
+            if (result.Ratings.ContainsKey(game))
+            {
+                return result.Ratings[game];
+            }
+
+            //If player dont have rating in game, create it and update
+            result.Ratings.Add(game, 1500);
+            UpdatePlayer(result);
+
+            return result.Ratings[game];
         }
 
-        public void UpdateRating(string username, int rating)
+        public void UpdateRating(string username, int rating, Game game)
         {
             MongoCollection<Player> collection = _mongoDatabase.GetCollection<Player>("Player");
             Player player = collection.Find(Query<Player>.Where(s => s.Username == username)).Single();
-            player.Ratings[Game.SingleTableTennis] = rating;
+            player.Ratings[game] = rating;
             collection.Save(player);
         }
 

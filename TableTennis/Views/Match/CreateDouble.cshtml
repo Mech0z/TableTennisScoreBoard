@@ -6,7 +6,7 @@
 
 @Html.ActionLink("Home", "Index", "Home")
 
-@using (Html.BeginForm("Create", "Match", FormMethod.Post))
+@using (Html.BeginForm("CreateDouble", "Match", FormMethod.Post))
 {
     @Html.ValidationMessage("ValidationError")
     
@@ -15,21 +15,31 @@
     @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)
     
     <h4>Team 2</h4>
-    @Html.DropDownListFor(p => p.Player2Username, Model.PlayerList)
+    @Html.DropDownListFor(p => p.Player3Username, Model.PlayerList)
     @Html.DropDownListFor(p => p.Player4Username, Model.PlayerList)
+    
+    <h4>@Html.DisplayNameFor(p => p.GameTypes)</h4>
+    @Html.DropDownListFor(p => p.GameType, Model.GameTypes)
     
     @Html.ValidationMessage("MatchValidationError");
     
     <h5>Set 1</h5>
+    @Html.ValidationMessageFor(p => p.Score1Set1)
     @Html.EditorFor(p => p.Score1Set1)
+    @Html.ValidationMessageFor(p => p.Score2Set1)
     @Html.EditorFor(p => p.Score2Set1)
     <h5>Set 2</h5>
+    @Html.ValidationMessageFor(p => p.Score1Set2)
     @Html.EditorFor(p => p.Score1Set2)
+    @Html.ValidationMessageFor(p => p.Score2Set2)
     @Html.EditorFor(p => p.Score2Set2)
     
     <h5>Set 3</h5>
+    @Html.ValidationMessageFor(p => p.Score1Set3)
     @Html.EditorFor(p => p.Score1Set3)
+    @Html.ValidationMessageFor(p => p.Score2Set3)
     @Html.EditorFor(p => p.Score2Set3)
     
+    <br/>
     <input type="submit" value="Add result" />    
 }

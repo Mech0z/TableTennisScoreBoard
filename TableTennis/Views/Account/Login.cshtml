@@ -2,12 +2,8 @@
 
 @{
     ViewBag.Title = "Log in";
+    ViewBag.Active = "Admin";
 }
-
-@*@section Header {*@
-    @Html.ActionLink("Cancel", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
-    <h1>@ViewBag.Title</h1>
-@*}*@
 
 <p>
     Please enter your user name and password. @Html.ActionLink("Register", "Register") if you don't have an account.

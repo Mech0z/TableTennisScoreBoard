@@ -3,5 +3,6 @@
     public interface IRatingCalculator
     {
         void RecalculateSingleTTRatings();
+        void RecalculateDoubleTTRatings();
     }
 }

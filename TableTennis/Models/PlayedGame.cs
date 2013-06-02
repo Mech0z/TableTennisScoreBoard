@@ -35,5 +35,7 @@ namespace TableTennis.Models
         public string BoundAccount { get; set; }
 
         public GameType GameType { get; set; }
+
+        public Game Game { get; set; }
     }
 }

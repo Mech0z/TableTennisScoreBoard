@@ -44,7 +44,17 @@ namespace TableTennis.Controllers
         [HttpPost]
         public ActionResult UpdateRating()
         {
+            ViewBag.Result = "Done";
             _ratingCalculator.RecalculateSingleTTRatings();
+            return RedirectToAction("Management", "Account");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult UpdateTTDoubleRating()
+        {
+            ViewBag.Result = "Done";
+            _ratingCalculator.RecalculateDoubleTTRatings();
             return RedirectToAction("Management", "Account");
         }
 

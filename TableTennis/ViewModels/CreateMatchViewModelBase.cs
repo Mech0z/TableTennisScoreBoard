@@ -18,7 +18,6 @@ namespace TableTennis.ViewModels
         }
 
         public IEnumerable<SelectListItem> PlayerList { get; set; }
-        public IEnumerable<SelectListItem> Winner { get; set; }
         public IEnumerable<SelectListItem> GameTypes { get; set; }
         
         [Required]

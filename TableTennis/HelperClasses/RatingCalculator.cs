@@ -28,10 +28,6 @@ namespace TableTennis.HelperClasses
                 {
                     player.Ratings[Game.SingleTableTennis] = 1500;
                 }
-                else
-                {
-                    player.Ratings.Add(Game.SingleTableTennis, 1500);
-                }
             }
 
             foreach (var game in allGames)
@@ -66,7 +62,25 @@ namespace TableTennis.HelperClasses
 
             foreach (var player in players)
             {
-                _playerManagementRepository.UpdateRating(player.Username, player.Ratings[Game.SingleTableTennis]);
+                if (player.Ratings.ContainsKey(Game.SingleTableTennis))
+                {
+                    _playerManagementRepository.UpdateRating(player.Username, player.Ratings[Game.SingleTableTennis],
+                                                             Game.SingleTableTennis);
+                }
+            }
+        }
+
+        public void RecalculateDoubleTTRatings()
+        {
+            var allGames = _matchManagementRepository.GetAllGames();
+            var players = _playerManagementRepository.GetAllPlayers();
+
+            foreach (var player in players)
+            {
+                if (player.Ratings.ContainsKey(Game.DoubleTableTennis))
+                {
+                    player.Ratings[Game.SingleTableTennis] = 1500;
+                }
             }
         }
     }

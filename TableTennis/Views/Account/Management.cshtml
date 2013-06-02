@@ -3,7 +3,14 @@
     ViewBag.Active = "Admin";
 }
 
+<h2>@ViewBag.Result</h2>
+
 @using (Html.BeginForm("UpdateRating", "Account", FormMethod.Post))
 {
-    <input type="submit" value="Recalculate ratings" class="btn"/>    
+    <input type="submit" value="Recalculate ratings" class="btn"/>
+}
+
+@using (Html.BeginForm("UpdateTTDoubleRating", "Account", FormMethod.Post))
+{
+    <input type="submit" value="Recalculate Double Tabletennis ratings" class="btn"/>
 }

@@ -1,18 +1,20 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 using TableTennis.ViewModels;
-using System.Linq;
 
 namespace TableTennis.Controllers
 {
     public class PlayerManagementController : Controller
     {
-        private readonly IPlayerManagementRepository _playerManagementRepository;
         private readonly IMatchManagementRepository _matchManagementRepository;
+        private readonly IPlayerManagementRepository _playerManagementRepository;
 
-        public PlayerManagementController(IPlayerManagementRepository playerManagementRepository, IMatchManagementRepository matchManagementRepository)
+        public PlayerManagementController(IPlayerManagementRepository playerManagementRepository,
+                                          IMatchManagementRepository matchManagementRepository)
         {
             _playerManagementRepository = playerManagementRepository;
             _matchManagementRepository = matchManagementRepository;
@@ -31,7 +33,7 @@ namespace TableTennis.Controllers
 
         public ActionResult Details(string username)
         {
-            var playedGames = _matchManagementRepository.GetAllGamesByUsername(username);
+            List<PlayedGame> playedGames = _matchManagementRepository.GetAllGamesByUsername(username);
 
             var playedGamesVM = new PlayedGamesViewModel(playedGames, username);
 
@@ -54,12 +56,27 @@ namespace TableTennis.Controllers
 
         public ActionResult PlayerList()
         {
-            var playerList = _playerManagementRepository.GetAllPlayers();
+            List<Player> tempPlayerList = _playerManagementRepository.GetAllPlayers();
+            List<Player> playerList =
+                tempPlayerList.Where(player => player.Ratings.ContainsKey(Game.SingleTableTennis))
+                              .OrderByDescending(player => player.Ratings[Game.SingleTableTennis])
+                              .ToList();
 
-            playerList = playerList.OrderByDescending(player => player.Ratings[Game.SingleTableTennis]).ToList();
+            var viewModel = new PlayerListViewModel { PlayerList = playerList };
+
+            return View(viewModel);
+        }
+
+        public ActionResult PlayerListTTDouble()
+        {
+            List<Player> tempPlayerList = _playerManagementRepository.GetAllPlayers();
+            List<Player> playerList =
+                tempPlayerList.Where(player => player.Ratings.ContainsKey(Game.DoubleTableTennis))
+                              .OrderByDescending(player => player.Ratings[Game.DoubleTableTennis])
+                              .ToList();
 
             var viewModel = new PlayerListViewModel {PlayerList = playerList};
-            
+
             return View(viewModel);
         }
 
@@ -73,10 +90,10 @@ namespace TableTennis.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = _playerManagementRepository.CreatePlayer(viewModel.Player);
+                    bool result = _playerManagementRepository.CreatePlayer(viewModel.Player);
                     if (!result)
                     {
-                        ModelState.AddModelError("ModelError" ,"Username is taken!");
+                        ModelState.AddModelError("ModelError", "Username is taken!");
                         return View(viewModel);
                     }
 
