@@ -257,6 +257,154 @@ namespace TableTennis.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult CreateSingleFoosball(CreateViewModel vm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    vm = RecreateSingleFoosbalViewModel(vm, "Failed to submit, invalid data!");
+                    return View(vm);
+                }
+                if (vm.Player1Username == vm.Player2Username)
+                {
+                    vm = RecreateSingleFoosbalViewModel(vm, "Select different players!");
+                    return View(vm);
+                }
+
+                var game = new PlayedGame
+                {
+                    Players = { vm.Player1Username, vm.Player2Username },
+                    Ranked = true,
+                    TimeStamp = DateTime.UtcNow,
+                };
+
+                game.GameSets.Add(new GameSet { Score1 = vm.Score1Set1, Score2 = vm.Score2Set1 });
+
+                //Validate game score
+                string errorMessage = "";
+                var gameType = (GameType)Enum.Parse(typeof(GameType), vm.GameType);
+                game.GameType = gameType;
+                int validationResult = ValidateMatch.ValidateGame(Game.SingleFoosball, gameType, game.GameSets,
+                                                                  out errorMessage);
+                if (validationResult == -1)
+                {
+                    vm = RecreateSingleFoosbalViewModel(vm, errorMessage);
+                    return View(vm);
+                }
+
+                int player1Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player1Username,
+                                                                                          Game.SingleFoosball);
+                int player2Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player2Username,
+                                                                                          Game.SingleFoosball);
+
+                int playerOneWin = validationResult == 1 ? 1 : 0;
+                int playerTwoWin = validationResult == 2 ? 1 : 0;
+
+                var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
+
+                game.EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2;
+
+                _playerManagementRepository.UpdateRating(vm.Player1Username, (int)ratingSystem.FinalResult1,
+                                                         Game.SingleFoosball);
+                _playerManagementRepository.UpdateRating(vm.Player2Username, (int)ratingSystem.FinalResult2,
+                                                         Game.SingleFoosball);
+
+                game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
+                game.Game = Game.SingleFoosball;
+                game.BoundAccount = "d60";
+                //TODO game.BoundAccount = HttpContext.User.Identity.Name;
+                _matchManagementRepository.CreateMatch(game);
+
+                return RedirectToAction("PlayerList", "PlayerManagement");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateDoubleFoosball(CreateDoubleViewModel vm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    vm = RecreateDoubleFoosballViewMdoel(vm, "Failed to submit, invalid data!");
+                    return View(vm);
+                }
+                if (vm.Player1Username == vm.Player2Username || vm.Player1Username == vm.Player3Username ||
+                    vm.Player1Username == vm.Player4Username || vm.Player2Username == vm.Player3Username ||
+                    vm.Player2Username == vm.Player4Username || vm.Player3Username == vm.Player4Username)
+                {
+                    vm = RecreateDoubleFoosballViewMdoel(vm, "Select different players!");
+                    return View(vm);
+                }
+
+                var game = new PlayedGame
+                {
+                    Players = { vm.Player1Username, vm.Player2Username, vm.Player3Username, vm.Player4Username },
+                    Ranked = true,
+                    TimeStamp = DateTime.UtcNow,
+                };
+
+                game.GameSets.Add(new GameSet { Score1 = vm.Score1Set1, Score2 = vm.Score2Set1 });
+
+                //Validate game score
+                string errorMessage = "";
+                var gameType = (GameType)Enum.Parse(typeof(GameType), vm.GameType);
+                game.GameType = gameType;
+                int validationResult = ValidateMatch.ValidateGame(Game.DoubleFoosball, gameType, game.GameSets,
+                                                                  out errorMessage);
+                if (validationResult == -1)
+                {
+                    vm = RecreateDoubleFoosballViewMdoel(vm, errorMessage);
+                    return View(vm);
+                }
+
+                int player1Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player1Username,
+                                                                                          Game.DoubleFoosball);
+                int player2Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player2Username,
+                                                                                          Game.DoubleFoosball);
+                int player3Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player3Username,
+                                                                                          Game.DoubleFoosball);
+                int player4Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player4Username,
+                                                                                          Game.DoubleFoosball);
+
+                int playerOneWin = validationResult == 1 ? 1 : 0;
+                int playerTwoWin = validationResult == 2 ? 1 : 0;
+
+                var ratingSystem = new EloRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2,
+                                                 playerOneWin, playerTwoWin);
+
+                game.EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2;
+
+                _playerManagementRepository.UpdateRating(vm.Player1Username, (int)ratingSystem.FinalResult1,
+                                                         Game.DoubleFoosball);
+                _playerManagementRepository.UpdateRating(vm.Player2Username, (int)ratingSystem.FinalResult1,
+                                                         Game.DoubleFoosball);
+                _playerManagementRepository.UpdateRating(vm.Player3Username, (int)ratingSystem.FinalResult2,
+                                                         Game.DoubleFoosball);
+                _playerManagementRepository.UpdateRating(vm.Player4Username, (int)ratingSystem.FinalResult2,
+                                                         Game.DoubleFoosball);
+
+                game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
+                game.Game = Game.DoubleFoosball;
+
+                game.BoundAccount = "d60";
+                //TODO game.BoundAccount = HttpContext.User.Identity.Name;
+                _matchManagementRepository.CreateMatch(game);
+
+                return RedirectToAction("PlayerList", "PlayerManagement");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         /// <summary>
         ///     Creates a new view model if there is an error when submitting
         /// </summary>
@@ -301,6 +449,26 @@ namespace TableTennis.Controllers
                             new SelectListItem {Text = "21 Point best of 3", Value = GameType.Single21.ToString()}
                         };
             }
+        }
+
+        private CreateViewModel RecreateSingleFoosbalViewModel(CreateViewModel vm, string errorMessage)
+        {
+            ModelState.Clear();
+            vm.PlayerList = CreatePlayerList();
+            vm.GameTypes = CreateTableTennisGameTypes(Game.SingleFoosball);
+            ModelState.AddModelError("ValidationError", errorMessage);
+
+            return vm;
+        }
+
+        private CreateDoubleViewModel RecreateDoubleFoosballViewMdoel(CreateDoubleViewModel vm, string errorMessage)
+        {
+            ModelState.Clear();
+            vm.PlayerList = CreatePlayerList();
+            vm.GameTypes = CreateTableTennisGameTypes(Game.DoubleFoosball);
+            ModelState.AddModelError("ValidationError", errorMessage);
+
+            return vm;
         }
 
         private CreateDoubleViewModel RecreateDoubleTTMatchViewModel(CreateDoubleViewModel vm, string errorMessage)
