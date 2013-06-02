@@ -54,6 +54,8 @@
                                         <li>
                                             @Html.ActionLink("Single tabletennis", "PlayerList", "PlayerManagement")
                                             @Html.ActionLink("Double tabletennis", "PlayerListTTDouble", "PlayerManagement")
+                                            @Html.ActionLink("Single Foosball", "PlayerListSingleFoosball", "PlayerManagement")
+                                            @Html.ActionLink("Double Foosball", "PlayerListDoubleFoosball", "PlayerManagement")
                                         </li>
                                     </ul>
                                 </li>
@@ -76,6 +78,12 @@
                                 </li>
                                 <li class="@(ViewBag.Active == "Account" ? "active" : "")">
                                     @Html.Partial("_LoginPartial")
+                                </li>
+                                <li>
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        @Html.ActionLink("Create player", "Create", "PlayerManagement")
+                                    }
                                 </li>
                                 <li class="@(ViewBag.Active == "Admin" ? "active" : "")">
                                     @if (Request.IsAuthenticated)

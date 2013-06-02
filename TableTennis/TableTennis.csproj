@@ -355,6 +355,8 @@
     <Content Include="Views\PlayerManagement\PlayerListTTDouble.cshtml" />
     <Content Include="Views\Match\CreateSingleFoosball.cshtml" />
     <Content Include="Views\Match\CreateDoubleFoosball.cshtml" />
+    <Content Include="Views\PlayerManagement\PlayerListSingleFoosball.cshtml" />
+    <Content Include="Views\PlayerManagement\PlayerListDoubleFoosball.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

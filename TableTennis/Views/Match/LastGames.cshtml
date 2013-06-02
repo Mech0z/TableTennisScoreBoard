@@ -27,6 +27,18 @@
                 @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3]
             </b>
             break;
+        case Game.SingleFoosball:
+            @Html.Label("Single Foosball")
+            <b>
+                @game.Players[0] - @game.Players[1]
+            </b>
+            break;
+        case Game.DoubleFoosball:
+            @Html.Label("Double Foosball")
+            <b>
+                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3]
+            </b>
+            break;
     }
     <br/>
     foreach (GameSet set in game.GameSets)

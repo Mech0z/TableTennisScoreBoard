@@ -9,14 +9,14 @@
 {
     @Html.ValidationMessage("ModelError")
     
-    @Html.DisplayNameFor(m => m.Player.Username)
+    <h4>@Html.DisplayNameFor(m => m.Player.Username)</h4>
     @Html.EditorFor(m => m.Player.Username)
-
-    @Html.DisplayNameFor(m => m.Player.Email)
+    <br>
+    <h4>@Html.DisplayNameFor(m => m.Player.Email)</h4>
     @Html.EditorFor(m => m.Player.Email)
-
-    @Html.DisplayNameFor(m => m.Player.GravatarEmail)
+    <br/>
+    <h4>@Html.DisplayNameFor(m => m.Player.GravatarEmail)</h4>
     @Html.EditorFor(m => m.Player.GravatarEmail)
-    
-    <input type="submit" value="Create" />    
+    <br/>
+    <input type="submit" class="btn" value="Create" />    
 }

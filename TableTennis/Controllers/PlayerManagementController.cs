@@ -80,6 +80,32 @@ namespace TableTennis.Controllers
             return View(viewModel);
         }
 
+        public ActionResult PlayerListSingleFoosball()
+        {
+            List<Player> tempPlayerList = _playerManagementRepository.GetAllPlayers();
+            List<Player> playerList =
+                tempPlayerList.Where(player => player.Ratings.ContainsKey(Game.SingleFoosball))
+                              .OrderByDescending(player => player.Ratings[Game.SingleFoosball])
+                              .ToList();
+
+            var viewModel = new PlayerListViewModel { PlayerList = playerList };
+
+            return View(viewModel);
+        }
+
+        public ActionResult PlayerListDoubleFoosball()
+        {
+            List<Player> tempPlayerList = _playerManagementRepository.GetAllPlayers();
+            List<Player> playerList =
+                tempPlayerList.Where(player => player.Ratings.ContainsKey(Game.DoubleFoosball))
+                              .OrderByDescending(player => player.Ratings[Game.DoubleFoosball])
+                              .ToList();
+
+            var viewModel = new PlayerListViewModel { PlayerList = playerList };
+
+            return View(viewModel);
+        }
+
         //
         // POST: /UserManagement/Create
 
