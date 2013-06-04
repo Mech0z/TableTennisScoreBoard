@@ -19,7 +19,7 @@ namespace TableTennis.HelperClasses
 
         public void RecalculateSingleTTRatings()
         {
-            var allGames = _matchManagementRepository.GetAllGames();
+            var allGames = _matchManagementRepository.GetAllGames().OrderBy(games => games.TimeStamp);
             var players = _playerManagementRepository.GetAllPlayers();
 
             foreach (var player in players)

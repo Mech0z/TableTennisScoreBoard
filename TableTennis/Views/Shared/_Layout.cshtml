@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
     <head>
         <script>
@@ -80,10 +81,11 @@
                                     @Html.Partial("_LoginPartial")
                                 </li>
                                 <li>
-                                    @if (Request.IsAuthenticated)
+                                    @Html.ActionLink("Create player", "Create", "PlayerManagement")
+                                    @*@if (Request.IsAuthenticated)
                                     {
-                                        @Html.ActionLink("Create player", "Create", "PlayerManagement")
-                                    }
+                                        
+                                    }*@
                                 </li>
                                 <li class="@(ViewBag.Active == "Admin" ? "active" : "")">
                                     @if (Request.IsAuthenticated)
