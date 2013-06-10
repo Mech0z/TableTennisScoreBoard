@@ -249,7 +249,7 @@ namespace TableTennis.Controllers
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
-                return RedirectToAction("PlayerList", "PlayerManagement");
+                return RedirectToAction("PlayerListTTDouble", "PlayerManagement");
             }
             catch
             {
@@ -317,7 +317,7 @@ namespace TableTennis.Controllers
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
-                return RedirectToAction("PlayerList", "PlayerManagement");
+                return RedirectToAction("PlayerListSingleFoosball", "PlayerManagement");
             }
             catch
             {
@@ -405,7 +405,7 @@ namespace TableTennis.Controllers
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 //_matchManagementRepository.CreateMatch(game);
 
-                return RedirectToAction("PlayerList", "PlayerManagement");
+                return RedirectToAction("PlayerListDoubleFoosball", "PlayerManagement");
             }
             catch
             {
