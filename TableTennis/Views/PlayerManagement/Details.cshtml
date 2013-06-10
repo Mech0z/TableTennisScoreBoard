@@ -49,34 +49,47 @@
             Rating
         </td>
     </tr>
-    @foreach (var p in Model.PlayedGamesViewModel.GameList)
+    @foreach (var game in Model.PlayedGamesViewModel.GameList)
     {
-        var color = p.Won ? "Win" : "Loose";
-        var playerOne = p.Opponent != Model.Player.Username;
-        <tr class=@color>
-            <td>
-                @p.TimeStamp.ToShortDateString()
-            </td>
-            <td>
-                @p.Opponent
-            </td>
-            <td>
-                @p.Rating
-            </td>
-        </tr>
-        foreach (var set in p.GameSets)
-        {
-            <tr>
-                <td>
-                    @(playerOne ? set.Score1 : set.Score2)
-                </td>
-                <td>
-                </td>
-                <td>
-                    @(playerOne ? set.Score2 : set.Score1)
-                </td>
-            </tr>
-        }
+        
+    @game.TimeStamp
+    <br/>
+    switch (game.Game)
+    {
+        case Game.SingleTableTennis:
+            @Html.Label("Single Table Tennis")
+            <b>
+                @game.Players[0] - @game.Players[1]
+            </b>
+            break;
+        case Game.DoubleTableTennis:
+            @Html.Label("Double Table Tennis")
+            <b>
+                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3]
+            </b>
+            break;
+        case Game.SingleFoosball:
+            @Html.Label("Single Foosball")
+            <b>
+                @game.Players[0] - @game.Players[1]
+            </b>
+            break;
+        case Game.DoubleFoosball:
+            @Html.Label("Double Foosball")
+            <b>
+                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3]
+            </b>
+            break;
+    }
+    <br/>
+    foreach (GameSet set in game.GameSets)
+    {
+        <b>
+            @set.Score1 - @set.Score2
+        </b>
+        <br/>
+    }
+    <br/>
     }
 </table>
 
