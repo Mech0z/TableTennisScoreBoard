@@ -351,6 +351,14 @@ namespace TableTennis.Controllers
                 };
 
                 game.GameSets.Add(new GameSet { Score1 = vm.Score1Set1, Score2 = vm.Score2Set1 });
+                if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
+                {
+                    game.GameSets.Add(new GameSet { Score1 = vm.Score1Set2, Score2 = vm.Score2Set2 });
+                }
+                if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
+                {
+                    game.GameSets.Add(new GameSet { Score1 = vm.Score1Set3, Score2 = vm.Score2Set3 });
+                }
 
                 //Validate game score
                 string errorMessage = "";
@@ -395,7 +403,7 @@ namespace TableTennis.Controllers
 
                 game.BoundAccount = "d60";
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
-                _matchManagementRepository.CreateMatch(game);
+                //_matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerList", "PlayerManagement");
             }
@@ -429,11 +437,13 @@ namespace TableTennis.Controllers
                     return new[]
                         {
                             new SelectListItem {Text = "Single to 10", Value = GameType.Single.ToString()},
+                            new SelectListItem {Text = "10 Point best best of 3", Value = GameType.Double3_10.ToString()}
                         };
                 case Game.DoubleFoosball:
                     return new[]
                         {
                             new SelectListItem {Text = "Double to 10", Value = GameType.Double.ToString()},
+                            new SelectListItem {Text = "10 Point best best of 3", Value = GameType.Double3_10.ToString()}
                         };
                 case Game.DoubleTableTennis:
                     return new[]

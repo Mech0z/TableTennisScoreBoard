@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Driver.Builders;
+using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
 
@@ -20,6 +22,12 @@ namespace TableTennis.MongoDB
             return collection.FindAll().ToList();
         }
 
+        public List<PlayedGame> GetAllGames(Game game)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+            return collection.Find(Query<PlayedGame>.Where(s => s.Game == game)).ToList();
+        }
+
         public List<PlayedGame> GetAllGamesByUsername(string username)
         {
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
@@ -35,10 +43,23 @@ namespace TableTennis.MongoDB
         public List<PlayedGame> GetLastXPlayedGames(int numberOfGames, string boundAccount)
         {
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
-            return
-                collection.Find(Query<PlayedGame>.Where(game => game.BoundAccount == boundAccount)).OrderByDescending(
+            var result = collection.Find(Query<PlayedGame>.Where(game => game.BoundAccount == boundAccount)).OrderByDescending(
                     s => s.TimeStamp).Take(numberOfGames).ToList();
+
+            foreach (var game in result)
+            {
+                game.TimeStamp = GetCurrentTime(game.TimeStamp);
+            }
+
+            return result;
         }
+
+        public DateTime GetCurrentTime(DateTime datetime) 
+        { 
+            var zoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Romance Standard Time");
+            var zoneSpecificTime = TimeZoneInfo.ConvertTime(datetime, zoneInfo);  
+            return zoneSpecificTime; 
+        }
 
         public void UpdateMatch(PlayedGame game)
         {

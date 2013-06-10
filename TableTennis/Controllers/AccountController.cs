@@ -58,6 +58,15 @@ namespace TableTennis.Controllers
             return RedirectToAction("Management", "Account");
         }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult UpdateFoosballDoubleRating()
+        {
+            ViewBag.Result = "Done";
+            _ratingCalculator.RecalculateDoubleFoosballRatings();
+            return RedirectToAction("Management", "Account");
+        }
+
         //
         // POST: /Account/Login
 

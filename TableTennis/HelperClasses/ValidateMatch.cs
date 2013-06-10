@@ -25,9 +25,10 @@ namespace TableTennis.HelperClasses
         {
             switch (gameType)
             {
-                case GameType.Single11:
                 case GameType.Double:
                     return ValidateStandardFoosballGame(gameSets, out errorMessage);
+                    case GameType.Double3_10:
+                    return ValidateBestOfThreeFoosballGame(gameSets, out errorMessage);
                 default:
                     errorMessage = "Not valid game rules";
                     return -1;
@@ -134,6 +135,53 @@ namespace TableTennis.HelperClasses
             errorMessage = "Games are played to 10";
             return -1;
         }
+
+        private static int ValidateBestOfThreeFoosballGame(List<GameSet> gameSets, out string errorMessage)
+        {
+            int player1Sets = 0;
+            int player2Sets = 0;
+            int valid = 0;
+
+            errorMessage = "";
+
+            foreach (GameSet gameSet in gameSets)
+            {
+                if (gameSet.Score1 == 10 && gameSet.Score2 < 10 && gameSet.Score2 >= 0)
+                {
+                    player1Sets++;
+                }
+                else if (gameSet.Score2 == 10 && gameSet.Score1 < 10 && gameSet.Score1 >= 0)
+                {
+                    player2Sets++;
+                }
+                else if (gameSet.Score1 < 0 || gameSet.Score2 < 0)
+                {
+                    valid = -1;
+                    errorMessage = "Scores cant be less than zero!";
+                }
+                else
+                {
+                    valid = -1;
+                    errorMessage = string.Format("Unvalid set");
+                }
+            }
+
+            if (string.IsNullOrEmpty(errorMessage))
+            {
+                if (player1Sets == 2)
+                {
+                    return 1;
+                }
+                if (player2Sets == 2)
+                {
+                    return 2;
+                }
+
+                errorMessage = "No player have won 2 sets";
+                valid = -1;
+            }
+            return valid;
+        }
     }
 
     public enum Game
@@ -150,6 +198,7 @@ namespace TableTennis.HelperClasses
         Single21,
         Double,
         Freestyle,
-        Single
+        Single,
+        Double3_10
     }
 }

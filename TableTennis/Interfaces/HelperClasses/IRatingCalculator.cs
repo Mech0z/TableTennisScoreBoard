@@ -4,5 +4,6 @@
     {
         void RecalculateSingleTTRatings();
         void RecalculateDoubleTTRatings();
+        void RecalculateDoubleFoosballRatings();
     }
 }

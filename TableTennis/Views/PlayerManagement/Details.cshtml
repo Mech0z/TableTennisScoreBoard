@@ -23,12 +23,12 @@
         @Html.DisplayFor(model => model.Player.Email)
     </div>
 
-    <div class="display-label">
+@*    <div class="display-label">
         @Html.DisplayNameFor(model => model.Player.Ratings[Game.SingleTableTennis])
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Player.Ratings[Game.SingleTableTennis])
-    </div>
+    </div>*@
 
     <div class="display-field">
         <img src="@Html.Gravatar(Model.Player.GravatarEmail)" width="64" height="64" alt="Users Gravatar"/>
@@ -53,7 +53,6 @@
     {
         var color = p.Won ? "Win" : "Loose";
         var playerOne = p.Opponent != Model.Player.Username;
-        
         <tr class=@color>
             <td>
                 @p.TimeStamp.ToShortDateString()
