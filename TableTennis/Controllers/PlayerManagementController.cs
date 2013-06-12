@@ -18,8 +18,36 @@ namespace TableTennis.Controllers
         {
             _playerManagementRepository = playerManagementRepository;
             _matchManagementRepository = matchManagementRepository;
+            //SetWinners();
         }
 
+        //private void SetWinners()
+        //{
+        //    var matches = _matchManagementRepository.GetAllGames();
+
+        //    foreach (var playedGame in matches)
+        //    {
+        //        playedGame.WinnerUsersnames = new List<string>();
+        //        if (playedGame.Players.Count == 2)
+        //        {
+        //            playedGame.WinnerUsersnames.Add(playedGame.WinnerUsername);
+        //        }
+        //        else
+        //        {
+        //            if (playedGame.WinnerUsername == playedGame.Players[0])
+        //            {
+        //                playedGame.WinnerUsersnames.Add(playedGame.Players[0]);
+        //                playedGame.WinnerUsersnames.Add(playedGame.Players[1]);
+        //            }
+        //            else
+        //            {
+        //                playedGame.WinnerUsersnames.Add(playedGame.Players[2]);
+        //                playedGame.WinnerUsersnames.Add(playedGame.Players[3]);
+        //            }
+        //        }
+        //        _matchManagementRepository.UpdateMatch(playedGame);
+        //    }
+        //}
         //
         // GET: /UserManagement/
 

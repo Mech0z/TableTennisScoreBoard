@@ -13,5 +13,6 @@ namespace TableTennis.Interfaces.Repository
         void UpdateGameRatingById(PlayedGame game);
         List<PlayedGame> GetLastXPlayedGames(int numberOfGames, string boundAccount);
         void UpdateMatch(PlayedGame game);
+        PlayerMatchStatistics GetPlayerStatistics(string username);
     }
 }

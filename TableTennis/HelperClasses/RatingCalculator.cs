@@ -40,7 +40,7 @@ namespace TableTennis.HelperClasses
                 var player2 = players.SingleOrDefault(s => s.Username == game.Players[1]);
                 int rating;
 
-                if (game.Players[0] == game.WinnerUsername)
+                if (game.WinnerUsersnames.Contains(game.Players[0]))
                 {
                     var elo = new EloRating(player1.Ratings[Game.SingleTableTennis], player2.Ratings[Game.SingleTableTennis], 1, 0);
                     player1.Ratings[Game.SingleTableTennis] += (int)elo.Point1;
@@ -94,7 +94,7 @@ namespace TableTennis.HelperClasses
                 var player4 = players.SingleOrDefault(s => s.Username == game.Players[3]);
                 int rating;
 
-                if (game.Players[0] == game.WinnerUsername)
+                if (game.WinnerUsersnames.Contains(game.Players[0]))
                 {
                     var elo = new EloRating(player1.Ratings[Game.DoubleTableTennis], player2.Ratings[Game.DoubleTableTennis], 1, 0);
                     player1.Ratings[Game.DoubleTableTennis] += (int)elo.Point1;
@@ -152,7 +152,7 @@ namespace TableTennis.HelperClasses
                 var player4 = players.SingleOrDefault(s => s.Username == game.Players[3]);
                 int rating;
 
-                if (game.Players[0] == game.WinnerUsername)
+                if (game.WinnerUsersnames.Contains(game.Players[0]))
                 {
                     var elo = new EloRating(player1.Ratings[Game.DoubleFoosball], player2.Ratings[Game.DoubleFoosball], 1, 0);
                     player1.Ratings[Game.DoubleFoosball] += (int)elo.Point1;

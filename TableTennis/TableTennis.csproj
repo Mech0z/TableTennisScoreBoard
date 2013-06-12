@@ -164,6 +164,7 @@
     <Compile Include="Interfaces\Repository\IAuthenticationRepository.cs" />
     <Compile Include="Interfaces\Repository\IMatchManagementRepository.cs" />
     <Compile Include="Interfaces\Repository\IPlayerManagementRepository.cs" />
+    <Compile Include="Models\PlayerMatchStatistics.cs" />
     <Compile Include="MongoDB\Authentication\MongoAuthenticationRepository.cs" />
     <Compile Include="MongoDB\MongoMatchManagement.cs" />
     <Compile Include="MongoDB\Authentication\MongoMembershipProvider.cs" />

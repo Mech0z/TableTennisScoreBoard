@@ -151,7 +151,7 @@ namespace TableTennis.Controllers
                 _playerManagementRepository.UpdateRating(vm.Player2Username, (int) ratingSystem.FinalResult2,
                                                          Game.SingleTableTennis);
 
-                game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
+                game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
                 game.Game = Game.SingleTableTennis;
                 game.BoundAccount = "d60";
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
@@ -242,7 +242,17 @@ namespace TableTennis.Controllers
                 _playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
                                                          Game.DoubleTableTennis);
 
-                game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
+                if (validationResult == 1)
+                {
+                    game.WinnerUsersnames.Add(game.Players[0]);
+                    game.WinnerUsersnames.Add(game.Players[1]);
+                }
+                else
+                {
+                    game.WinnerUsersnames.Add(game.Players[2]);
+                    game.WinnerUsersnames.Add(game.Players[3]);
+                }
+
                 game.Game = Game.DoubleTableTennis;
 
                 game.BoundAccount = "d60";
@@ -311,7 +321,7 @@ namespace TableTennis.Controllers
                 _playerManagementRepository.UpdateRating(vm.Player2Username, (int)ratingSystem.FinalResult2,
                                                          Game.SingleFoosball);
 
-                game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
+                game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
                 game.Game = Game.SingleFoosball;
                 game.BoundAccount = "d60";
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
@@ -398,7 +408,17 @@ namespace TableTennis.Controllers
                 _playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
                                                          Game.DoubleFoosball);
 
-                game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
+                if (validationResult == 1)
+                {
+                    game.WinnerUsersnames.Add(game.Players[0]);
+                    game.WinnerUsersnames.Add(game.Players[1]);
+                }
+                else
+                {
+                    game.WinnerUsersnames.Add(game.Players[2]);
+                    game.WinnerUsersnames.Add(game.Players[3]);
+                }
+
                 game.Game = Game.DoubleFoosball;
 
                 game.BoundAccount = "d60";

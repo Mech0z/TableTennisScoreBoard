@@ -14,6 +14,7 @@ namespace TableTennis.Models
         {
             Players = new List<string>();
             GameSets = new List<GameSet>();
+            WinnerUsersnames = new List<string>();
         }
 
         [BsonId(IdGenerator = typeof(CombGuidGenerator))]
@@ -26,7 +27,7 @@ namespace TableTennis.Models
 
         public List<string> Players { get; set; }
 
-        public string WinnerUsername { get; set; }
+        public List<string> WinnerUsersnames { get; set; }
 
         public int EloPoints { get; set; }
 

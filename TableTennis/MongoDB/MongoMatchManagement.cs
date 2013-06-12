@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson;
 using MongoDB.Driver.Builders;
 using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
@@ -65,6 +66,16 @@ namespace TableTennis.MongoDB
         {
             var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
             collection.Save(game);
+        }
+
+        public PlayerMatchStatistics GetPlayerStatistics(string username)
+        {
+            var collection = _mongoDatabase.GetCollection<PlayedGame>("PlayedGames");
+
+            collection.Aggregate(new BsonDocument())
+
+
+            return new PlayerMatchStatistics();
         }
     }
 }
