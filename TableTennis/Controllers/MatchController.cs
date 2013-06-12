@@ -233,13 +233,13 @@ namespace TableTennis.Controllers
 
                 game.EloPoints = playerOneWin == 1 ? (int) ratingSystem.Point1 : (int) ratingSystem.Point2;
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username, (int) ratingSystem.FinalResult1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username, player1Rating + (int)ratingSystem.Point1,
                                                          Game.DoubleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, (int) ratingSystem.FinalResult1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username, player2Rating + (int)ratingSystem.Point1,
                                                          Game.DoubleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player3Username, (int) ratingSystem.FinalResult2,
+                _playerManagementRepository.UpdateRating(vm.Player3Username, player3Rating + (int)ratingSystem.Point2,
                                                          Game.DoubleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player4Username, (int) ratingSystem.FinalResult2,
+                _playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
                                                          Game.DoubleTableTennis);
 
                 game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
@@ -389,13 +389,13 @@ namespace TableTennis.Controllers
 
                 game.EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2;
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username, (int)ratingSystem.FinalResult1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username, player1Rating + (int)ratingSystem.Point1,
                                                          Game.DoubleFoosball);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, (int)ratingSystem.FinalResult1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username, player2Rating + (int)ratingSystem.Point1,
                                                          Game.DoubleFoosball);
-                _playerManagementRepository.UpdateRating(vm.Player3Username, (int)ratingSystem.FinalResult2,
+                _playerManagementRepository.UpdateRating(vm.Player3Username, player3Rating + (int)ratingSystem.Point2,
                                                          Game.DoubleFoosball);
-                _playerManagementRepository.UpdateRating(vm.Player4Username, (int)ratingSystem.FinalResult2,
+                _playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
                                                          Game.DoubleFoosball);
 
                 game.WinnerUsername = validationResult == 1 ? vm.Player1Username : vm.Player2Username;
@@ -403,7 +403,7 @@ namespace TableTennis.Controllers
 
                 game.BoundAccount = "d60";
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
-                //_matchManagementRepository.CreateMatch(game);
+                _matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerListDoubleFoosball", "PlayerManagement");
             }
