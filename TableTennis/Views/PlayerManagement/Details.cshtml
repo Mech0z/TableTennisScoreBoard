@@ -59,25 +59,25 @@
         case Game.SingleTableTennis:
             @Html.Label("Single Table Tennis")
             <b>
-                @game.Players[0] - @game.Players[1]
+                @game.Players[0] - @game.Players[1] (@game.EloPoints)
             </b>
             break;
         case Game.DoubleTableTennis:
             @Html.Label("Double Table Tennis")
             <b>
-                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3]
+                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
             </b>
             break;
         case Game.SingleFoosball:
             @Html.Label("Single Foosball")
             <b>
-                @game.Players[0] - @game.Players[1]
+                @game.Players[0] - @game.Players[1] (@game.EloPoints)
             </b>
             break;
         case Game.DoubleFoosball:
             @Html.Label("Double Foosball")
             <b>
-                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3]
+                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
             </b>
             break;
     }
