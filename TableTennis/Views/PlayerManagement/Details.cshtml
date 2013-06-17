@@ -52,47 +52,57 @@
     @foreach (var game in Model.PlayedGamesViewModel.GameList)
     {
         
-    @game.TimeStamp
-    <br/>
-    switch (game.Game)
-    {
-        case Game.SingleTableTennis:
-            @Html.Label("Single Table Tennis")
-            <b>
-                @game.Players[0] - @game.Players[1] (@game.EloPoints)
-            </b>
-            break;
-        case Game.DoubleTableTennis:
-            @Html.Label("Double Table Tennis")
-            <b>
-                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
-            </b>
-            break;
-        case Game.SingleFoosball:
-            @Html.Label("Single Foosball")
-            <b>
-                @game.Players[0] - @game.Players[1] (@game.EloPoints)
-            </b>
-            break;
-        case Game.DoubleFoosball:
-            @Html.Label("Double Foosball")
-            <b>
-                @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
-            </b>
-            break;
-    }
-    <br/>
-    foreach (GameSet set in game.GameSets)
-    {
-        <b>
-            @set.Score1 - @set.Score2
-        </b>
+        @game.TimeStamp
         <br/>
-    }
-    <br/>
+        switch (game.Game)
+        {
+            case Game.SingleTableTennis:
+                @Html.Label("Single Table Tennis")
+                <b>
+                    @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                </b>
+                break;
+            case Game.DoubleTableTennis:
+                @Html.Label("Double Table Tennis")
+                <b>
+                    @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
+                </b>
+                break;
+            case Game.SingleFoosball:
+                @Html.Label("Single Foosball")
+                <b>
+                    @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                </b>
+                break;
+            case Game.DoubleFoosball:
+                @Html.Label("Double Foosball")
+                <b>
+                    @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
+                </b>
+                break;
+        }
+        <br/>
+        foreach (GameSet set in game.GameSets)
+        {
+            <b>
+                @set.Score1 - @set.Score2
+            </b>
+            <br/>
+        }
+        <br/>
     }
 </table>
 
-<p>
-    @Html.ActionLink("Back to List", "PlayerList")
-</p>
+@foreach (var stats in Model.PlayedMatchStatistics)
+{
+    <b>
+        @stats.Score[0] - @stats.Score[1]
+    </b>
+    <b>
+        @stats.Username
+    </b>
+    <b>
+        @stats.Game       
+    </b>
+    <br/>
+}

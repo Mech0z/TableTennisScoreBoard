@@ -399,14 +399,14 @@ namespace TableTennis.Controllers
 
                 game.EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2;
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username, player1Rating + (int)ratingSystem.Point1,
-                                                         Game.DoubleFoosball);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, player2Rating + (int)ratingSystem.Point1,
-                                                         Game.DoubleFoosball);
-                _playerManagementRepository.UpdateRating(vm.Player3Username, player3Rating + (int)ratingSystem.Point2,
-                                                         Game.DoubleFoosball);
-                _playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
-                                                         Game.DoubleFoosball);
+                //_playerManagementRepository.UpdateRating(vm.Player1Username, player1Rating + (int)ratingSystem.Point1,
+                //                                         Game.DoubleFoosball);
+                //_playerManagementRepository.UpdateRating(vm.Player2Username, player2Rating + (int)ratingSystem.Point1,
+                //                                         Game.DoubleFoosball);
+                //_playerManagementRepository.UpdateRating(vm.Player3Username, player3Rating + (int)ratingSystem.Point2,
+                //                                         Game.DoubleFoosball);
+                //_playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
+                //                                         Game.DoubleFoosball);
 
                 if (validationResult == 1)
                 {
@@ -423,7 +423,7 @@ namespace TableTennis.Controllers
 
                 game.BoundAccount = "d60";
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
-                _matchManagementRepository.CreateMatch(game);
+                //_matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerListDoubleFoosball", "PlayerManagement");
             }
