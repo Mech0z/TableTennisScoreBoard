@@ -5,200 +5,191 @@ namespace TableTennis.HelperClasses
 {
     public static class ValidateMatch
     {
-        public static int ValidateGame(Game game, GameType gameType, List<GameSet> gameSets, out string errorMessage)
+        public static int ValidateGame(Game game, GameType gameType, List<GameSet> gameSets,
+                                    out string errorMessage)
+        {
+            int player1Sets = 0;
+            int player2Sets = 0;
+            int valid = 0;
+
+            int winSets = GetSets(game, gameType);
+            int scoreGoal = GetScoreGoal(game, gameType);
+            int winMargin = GetWinnerMargin(game, gameType);
+
+            errorMessage = "";
+
+
+            foreach (GameSet gameSet in gameSets)
+            {
+                if (gameSet.Score1 < 0 || gameSet.Score2 < 0)
+                {
+                    valid = -1;
+                    errorMessage = "Scores cant be less than zero!";
+                }
+                if (gameSet.Score1 == scoreGoal && gameSet.Score2 + winMargin <= gameSet.Score1)
+                {
+                    player1Sets++;
+                }
+                else if (gameSet.Score2 == scoreGoal && gameSet.Score1 + winMargin <= gameSet.Score2)
+                {
+                    player2Sets++;
+                }
+                else if (gameSet.Score1 == gameSet.Score2 + winMargin && gameSet.Score1 > scoreGoal)
+                {
+                    player1Sets++;
+                }
+                else if (gameSet.Score2 == gameSet.Score1 + winMargin && gameSet.Score2 > scoreGoal)
+                {
+                    player2Sets++;
+                }
+                else
+                {
+                    valid = -1;
+                    errorMessage = string.Format("Unvalid set, games are played to {0} or until won by {1} points",
+                                                 scoreGoal, winMargin);
+                }
+            }
+
+            if (string.IsNullOrEmpty(errorMessage))
+            {
+                if (player1Sets == winSets)
+                {
+                    return 1;
+                }
+                if (player2Sets == winSets)
+                {
+                    return 2;
+                }
+
+                errorMessage = string.Format("No player have won {0} sets", winSets);
+                valid = -1;
+            }
+            return valid;
+        }
+
+        private static int GetWinnerMargin(Game game, GameType gameType)
         {
             switch (game)
             {
-                case Game.SingleTableTennis:
-                case Game.DoubleTableTennis:
-                    return ValidateTableTennis(gameType, gameSets, out errorMessage);
                 case Game.SingleFoosball:
+                    switch (gameType)
+                    {
+                        case GameType.Single:
+                            return 1;
+                        case GameType.Double3_10:
+                            return 1;
+                    }
+                    break;
                 case Game.DoubleFoosball:
-                    return ValidateFoosball(gameType, gameSets, out errorMessage);
-                default:
-                    errorMessage = "Not valid game";
-                    return -1;
-            }
-        }
-
-        private static int ValidateFoosball(GameType gameType, List<GameSet> gameSets, out string errorMessage)
-        {
-            switch (gameType)
-            {
-                case GameType.Double:
-                    return ValidateStandardFoosballGame(gameSets, out errorMessage);
-                    case GameType.Double3_10:
-                    return ValidateBestOfThreeFoosballGame(gameSets, out errorMessage);
-                default:
-                    errorMessage = "Not valid game rules";
-                    return -1;
-            }
-        }
-
-        private static int ValidateTableTennis(GameType gameType, List<GameSet> gameSets, out string errorMessage)
-        {
-            int player1Sets = 0;
-            int player2Sets = 0;
-            int valid = 0;
-
-            int scoreGoal = 0;
-
-            errorMessage = "";
-
-            switch (gameType)
-            {
-                case GameType.Freestyle:
-                    if (gameSets[0].Score1 == 1)
+                    switch (gameType)
                     {
-                        return 1;
+                        case GameType.Double:
+                            return 1;
+                        case GameType.Double3_10:
+                            return 1;
                     }
-                    if (gameSets[0].Score2 == 1)
+                    break;
+                case Game.SingleTableTennis:
+                    switch (gameType)
                     {
-                        return 2;
+                        case GameType.Freestyle:
+                            return 1;
+                        case GameType.Single11:
+                        case GameType.Single21:
+                            return 2;
                     }
-
-                    errorMessage = "One player must have a score of 1 in first set to indicate a winner";
-                    return -1;
-                case GameType.Single11:
-                    scoreGoal = 11;
                     break;
-                case GameType.Single21:
-                case GameType.Double:
-                    scoreGoal = 21;
-                    break;
-                default:
-                    errorMessage = "Invalid game type";
+                case Game.DoubleTableTennis:
+                    switch (gameType)
+                    {
+                        case GameType.Freestyle:
+                            return 1;
+                        case GameType.Single21:
+                            return 2;
+                    }
                     break;
             }
 
-            foreach (GameSet gameSet in gameSets)
-            {
-                if (gameSet.Score1 == scoreGoal && gameSet.Score2 + 2 <= gameSet.Score1)
-                {
-                    player1Sets++;
-                }
-                else if (gameSet.Score2 == scoreGoal && gameSet.Score1 + 2 <= gameSet.Score2)
-                {
-                    player2Sets++;
-                }
-                else if (gameSet.Score1 == gameSet.Score2 + 2 && gameSet.Score1 > scoreGoal)
-                {
-                    player1Sets++;
-                }
-                else if (gameSet.Score2 == gameSet.Score1 + 2 && gameSet.Score2 > scoreGoal)
-                {
-                    player2Sets++;
-                }
-                else if (gameSet.Score1 < 0 || gameSet.Score2 < 0)
-                {
-                    valid = -1;
-                    errorMessage = "Scores cant be less than zero!";
-                }
-                else
-                {
-                    valid = -1;
-                    errorMessage = string.Format("Unvalid set, games are played to {0} or until won by 2 points",
-                                                 scoreGoal);
-                }
-            }
-
-            if (string.IsNullOrEmpty(errorMessage))
-            {
-                if (player1Sets == 2)
-                {
-                    return 1;
-                }
-                if (player2Sets == 2)
-                {
-                    return 2;
-                }
-
-                errorMessage = "No player have won 2 sets";
-                valid = -1;
-            }
-            return valid;
-        }
-
-        private static int ValidateStandardFoosballGame(List<GameSet> gameSets, out string errorMessage)
-        {
-            errorMessage = "";
-
-            if (gameSets[0].Score1 == 10 && gameSets[0].Score2 >= 0 && gameSets[0].Score2 <= 9)
-            {
-                return 1;
-            }
-            if (gameSets[0].Score2 == 10 && gameSets[0].Score1 >= 0 && gameSets[0].Score1 <= 9)
-            {
-                return 2;
-            }
-
-            errorMessage = "Games are played to 10";
             return -1;
         }
 
-        private static int ValidateBestOfThreeFoosballGame(List<GameSet> gameSets, out string errorMessage)
+        private static int GetScoreGoal(Game game, GameType gameType)
         {
-            int player1Sets = 0;
-            int player2Sets = 0;
-            int valid = 0;
-
-            errorMessage = "";
-
-            foreach (GameSet gameSet in gameSets)
+            switch (game)
             {
-                if (gameSet.Score1 == 10 && gameSet.Score2 < 10 && gameSet.Score2 >= 0)
-                {
-                    player1Sets++;
-                }
-                else if (gameSet.Score2 == 10 && gameSet.Score1 < 10 && gameSet.Score1 >= 0)
-                {
-                    player2Sets++;
-                }
-                else if (gameSet.Score1 < 0 || gameSet.Score2 < 0)
-                {
-                    valid = -1;
-                    errorMessage = "Scores cant be less than zero!";
-                }
-                else
-                {
-                    valid = -1;
-                    errorMessage = string.Format("Unvalid set");
-                }
+                case Game.SingleFoosball:
+                case Game.DoubleFoosball:
+                    return 10;
+                case Game.SingleTableTennis:
+                    switch (gameType)
+                    {
+                        case GameType.Freestyle:
+                            return 1;
+                        case GameType.Single11:
+                            return 11;
+                        case GameType.Single21:
+                            return 21;
+                    }
+                    break;
+                case Game.DoubleTableTennis:
+                    switch (gameType)
+                    {
+                        case GameType.Freestyle:
+                            return 1;
+                        case GameType.Single21:
+                            return 21;
+                    }
+                    break;
             }
 
-            if (string.IsNullOrEmpty(errorMessage))
-            {
-                if (player1Sets == 2)
-                {
-                    return 1;
-                }
-                if (player2Sets == 2)
-                {
-                    return 2;
-                }
-
-                errorMessage = "No player have won 2 sets";
-                valid = -1;
-            }
-            return valid;
+            return -1;
         }
-    }
 
-    public enum Game
-    {
-        SingleTableTennis,
-        DoubleTableTennis,
-        SingleFoosball,
-        DoubleFoosball
-    }
+        private static int GetSets(Game game, GameType gameType)
+        {
+            switch (game)
+            {
+                case Game.SingleFoosball:
+                    switch (gameType)
+                    {
+                        case GameType.Single:
+                            return 1;
+                        case GameType.Double3_10:
+                            return 2;
+                    }
+                    break;
+                case Game.DoubleFoosball:
+                    switch (gameType)
+                    {
+                        case GameType.Double:
+                            return 1;
+                        case GameType.Double3_10:
+                            return 2;
+                    }
+                    break;
+                case Game.SingleTableTennis:
+                    switch (gameType)
+                    {
+                        case GameType.Freestyle:
+                            return 1;
+                        case GameType.Single11:
+                            return 2;
+                        case GameType.Single21:
+                            return 2;
+                    }
+                    break;
+                case Game.DoubleTableTennis:
+                    switch (gameType)
+                    {
+                        case GameType.Freestyle:
+                            return 1;
+                        case GameType.Single21:
+                            return 2;
+                    }
+                    break;
+            }
 
-    public enum GameType
-    {
-        Single11,
-        Single21,
-        Double,
-        Freestyle,
-        Single,
-        Double3_10
+            return -1;
+        }
     }
 }

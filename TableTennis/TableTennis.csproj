@@ -160,6 +160,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="HelperClasses\Game.cs" />
+    <Compile Include="HelperClasses\GameType.cs" />
     <Compile Include="HelperClasses\ValidateMatch.cs" />
     <Compile Include="Interfaces\HelperClasses\IRating.cs" />
     <Compile Include="Interfaces\Repository\IAuthenticationRepository.cs" />
