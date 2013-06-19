@@ -77,22 +77,9 @@
                                 <li class="@(ViewBag.Active == "LastGames" ? "active" : "")">
                                     @Html.ActionLink("Last Games", "LastGames", "Match")
                                 </li>
-                                <li class="@(ViewBag.Active == "Account" ? "active" : "")">
+@*                                <li class="@(ViewBag.Active == "Account" ? "active" : "")">
                                     @Html.Partial("_LoginPartial")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Create player", "Create", "PlayerManagement")
-                                    @*@if (Request.IsAuthenticated)
-                                    {
-                                        
-                                    }*@
-                                </li>
-                                <li class="@(ViewBag.Active == "Admin" ? "active" : "")">
-                                    @if (Request.IsAuthenticated)
-                                    {
-                                        @Html.ActionLink("Admin", "Management", "Account")
-                                    }
-                                </li>
+                                </li>*@
                             </ul>
                             <div class="nav-collapse">
                  
@@ -105,6 +92,11 @@
                 @RenderBody()
             </div>
             <div id="footer" class="row-fluid">
+                |
+                @Html.ActionLink("Admin", "Management", "Account")
+                |
+                @Html.ActionLink("Create player", "Create", "PlayerManagement")
+                |
             </div>
         </div>
 
