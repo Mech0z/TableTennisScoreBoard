@@ -1,9 +1,10 @@
-﻿namespace TableTennis.Interfaces.HelperClasses
+﻿using TableTennis.HelperClasses;
+
+namespace TableTennis.Interfaces.HelperClasses
 {
     public interface IRatingCalculator
     {
-        void RecalculateSingleTTRatings();
-        void RecalculateDoubleTTRatings();
-        void RecalculateDoubleFoosballRatings();
+        void RecalculateSingleRatings(Game game);
+        void RecalculateDoubleRatings(Game game);
     }
 }

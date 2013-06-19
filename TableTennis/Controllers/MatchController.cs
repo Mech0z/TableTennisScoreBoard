@@ -139,16 +139,14 @@ namespace TableTennis.Controllers
                 int player2Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player2Username,
                                                                                           Game.SingleTableTennis);
 
-                int playerOneWin = validationResult == 1 ? 1 : 0;
-                int playerTwoWin = validationResult == 2 ? 1 : 0;
+                bool playerOneWin = validationResult == 1;
 
-                var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
+                var elo = new EloRating();
+                var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
 
-                game.EloPoints = playerOneWin == 1 ? (int) ratingSystem.Point1 : (int) ratingSystem.Point2;
-
-                _playerManagementRepository.UpdateRating(vm.Player1Username, (int) ratingSystem.FinalResult1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username,  playerOneWin ? (int) rating : (int) rating * -1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, (int) ratingSystem.FinalResult2,
+                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? (int) rating : (int)rating * -1,
                                                          Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
@@ -225,22 +223,19 @@ namespace TableTennis.Controllers
                 int player4Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player4Username,
                                                                                           Game.DoubleTableTennis);
 
-                int playerOneWin = validationResult == 1 ? 1 : 0;
-                int playerTwoWin = validationResult == 2 ? 1 : 0;
+                bool playerOneWin = validationResult == 1;
 
-                var ratingSystem = new EloRating((player1Rating + player2Rating)/2, (player3Rating + player4Rating)/2,
-                                                 playerOneWin, playerTwoWin);
+                var elo = new EloRating();
+                var rating = elo.CalculateRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2, playerOneWin);
 
-                game.EloPoints = playerOneWin == 1 ? (int) ratingSystem.Point1 : (int) ratingSystem.Point2;
-
-                _playerManagementRepository.UpdateRating(vm.Player1Username, player1Rating + (int)ratingSystem.Point1,
-                                                         Game.DoubleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, player2Rating + (int)ratingSystem.Point1,
-                                                         Game.DoubleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player3Username, player3Rating + (int)ratingSystem.Point2,
-                                                         Game.DoubleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
-                                                         Game.DoubleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player2Username, playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player3Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player4Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
 
                 if (validationResult == 1)
                 {
@@ -309,17 +304,15 @@ namespace TableTennis.Controllers
                 int player2Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player2Username,
                                                                                           Game.SingleFoosball);
 
-                int playerOneWin = validationResult == 1 ? 1 : 0;
-                int playerTwoWin = validationResult == 2 ? 1 : 0;
+                bool playerOneWin = validationResult == 1;
 
-                var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
+                var elo = new EloRating();
+                var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
 
-                game.EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2;
-
-                _playerManagementRepository.UpdateRating(vm.Player1Username, (int)ratingSystem.FinalResult1,
-                                                         Game.SingleFoosball);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, (int)ratingSystem.FinalResult2,
-                                                         Game.SingleFoosball);
+                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
                 game.Game = Game.SingleFoosball;
@@ -391,22 +384,19 @@ namespace TableTennis.Controllers
                 int player4Rating = _playerManagementRepository.GetPlayerRatingByUsername(vm.Player4Username,
                                                                                           Game.DoubleFoosball);
 
-                int playerOneWin = validationResult == 1 ? 1 : 0;
-                int playerTwoWin = validationResult == 2 ? 1 : 0;
+                bool playerOneWin = validationResult == 1;
 
-                var ratingSystem = new EloRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2,
-                                                 playerOneWin, playerTwoWin);
+                var elo = new EloRating();
+                var rating = elo.CalculateRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2, playerOneWin);
 
-                game.EloPoints = playerOneWin == 1 ? (int)ratingSystem.Point1 : (int)ratingSystem.Point2;
-
-                //_playerManagementRepository.UpdateRating(vm.Player1Username, player1Rating + (int)ratingSystem.Point1,
-                //                                         Game.DoubleFoosball);
-                //_playerManagementRepository.UpdateRating(vm.Player2Username, player2Rating + (int)ratingSystem.Point1,
-                //                                         Game.DoubleFoosball);
-                //_playerManagementRepository.UpdateRating(vm.Player3Username, player3Rating + (int)ratingSystem.Point2,
-                //                                         Game.DoubleFoosball);
-                //_playerManagementRepository.UpdateRating(vm.Player4Username, player4Rating + (int)ratingSystem.Point2,
-                //                                         Game.DoubleFoosball);
+                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player2Username, playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player3Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
+                _playerManagementRepository.UpdateRating(vm.Player4Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                                                         Game.SingleTableTennis);
 
                 if (validationResult == 1)
                 {
@@ -423,7 +413,7 @@ namespace TableTennis.Controllers
 
                 game.BoundAccount = "d60";
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
-                //_matchManagementRepository.CreateMatch(game);
+                _matchManagementRepository.CreateMatch(game);
 
                 return RedirectToAction("PlayerListDoubleFoosball", "PlayerManagement");
             }

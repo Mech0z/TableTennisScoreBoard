@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TableTennis.Interfaces.HelperClasses;
 using TableTennis.Interfaces.Repository;
@@ -18,178 +18,123 @@ namespace TableTennis.HelperClasses
             _playerManagementRepository = playerManagementRepository;
         }
 
-        public void RecalculateSingleTTRatings()
+        public void RecalculateSingleRatings(Game game)
         {
-            var allGames = _matchManagementRepository.GetAllGames(Game.SingleTableTennis).OrderBy(games => games.TimeStamp);
-            var players = _playerManagementRepository.GetAllPlayers();
+            IOrderedEnumerable<PlayedGame> allGames =
+                _matchManagementRepository.GetAllGames(game).OrderBy(games => games.TimeStamp);
+            List<Player> players = _playerManagementRepository.GetAllPlayers();
 
-            foreach (var player in players)
+            foreach (Player player in players)
             {
-                if (player.Ratings.ContainsKey(Game.SingleTableTennis))
+                if (player.Ratings.ContainsKey(game))
                 {
-                    player.Ratings[Game.SingleTableTennis] = 1500;
+                    player.Ratings[game] = 1500;
                 }
             }
 
-            foreach (var game in allGames)
+            foreach (PlayedGame playedGame in allGames)
             {
-                if (!game.Ranked)
+                if (!playedGame.Ranked)
                 {
                     continue;
                 }
-                var player1 = players.SingleOrDefault(s => s.Username == game.Players[0]);
-                var player2 = players.SingleOrDefault(s => s.Username == game.Players[1]);
-                int rating;
+                Player player1 = players.SingleOrDefault(s => s.Username == playedGame.Players[0]);
+                Player player2 = players.SingleOrDefault(s => s.Username == playedGame.Players[1]);
+                double rating;
 
-                if (game.WinnerUsersnames.Contains(game.Players[0]))
+                if (playedGame.WinnerUsersnames.Contains(playedGame.Players[0]))
                 {
-                    var elo = new EloRating(player1.Ratings[Game.SingleTableTennis], player2.Ratings[Game.SingleTableTennis], 1, 0);
-                    player1.Ratings[Game.SingleTableTennis] += (int)elo.Point1;
-                    player2.Ratings[Game.SingleTableTennis] += (int)elo.Point2;
-                    rating = (int) elo.Point1;
+                    var elo = new EloRating();
+                    rating = elo.CalculateRating(player1.Ratings[game],
+                                                 player2.Ratings[game], true);
+
+                    player1.Ratings[game] += (int) rating;
+                    player2.Ratings[game] -= (int) rating;
                 }
                 else
                 {
-                    var elo = new EloRating(player1.Ratings[Game.SingleTableTennis], player2.Ratings[Game.SingleTableTennis], 0, 1);
-                    player1.Ratings[Game.SingleTableTennis] += (int)elo.Point1;
-                    player2.Ratings[Game.SingleTableTennis] += (int)elo.Point2;
-                    rating = (int) elo.Point2;
+                    var elo = new EloRating();
+                    rating = elo.CalculateRating(player1.Ratings[game],
+                                                 player2.Ratings[game], false);
+
+                    player1.Ratings[game] -= (int) rating;
+                    player2.Ratings[game] += (int) rating;
                 }
 
-                game.EloPoints = rating;
+                playedGame.EloPoints = (int) rating;
 
-                _matchManagementRepository.UpdateGameRatingById(game);
+                _matchManagementRepository.UpdateGameRatingById(playedGame);
             }
 
-            foreach (var player in players)
+            foreach (Player player in players)
             {
-                if (player.Ratings.ContainsKey(Game.SingleTableTennis))
+                if (player.Ratings.ContainsKey(game))
                 {
-                    _playerManagementRepository.UpdateRating(player.Username, player.Ratings[Game.SingleTableTennis],
-                                                             Game.SingleTableTennis);
+                    _playerManagementRepository.UpdateRating(player.Username, player.Ratings[game],
+                                                             game);
                 }
             }
         }
 
-        public void RecalculateDoubleTTRatings()
+        public void RecalculateDoubleRatings(Game game)
         {
-            var allGames = _matchManagementRepository.GetAllGames(Game.DoubleTableTennis).OrderBy(games => games.TimeStamp);
-            var players = _playerManagementRepository.GetAllPlayers();
+            IOrderedEnumerable<PlayedGame> allGames =
+                _matchManagementRepository.GetAllGames(game).OrderBy(games => games.TimeStamp);
+            List<Player> players = _playerManagementRepository.GetAllPlayers();
 
-            foreach (var player in players)
+            foreach (Player player in players)
             {
-                if (player.Ratings.ContainsKey(Game.DoubleTableTennis))
+                if (player.Ratings.ContainsKey(game))
                 {
-                    player.Ratings[Game.DoubleTableTennis] = 1500;
+                    player.Ratings[game] = 1500;
                 }
             }
-            foreach (var game in allGames)
+            foreach (PlayedGame playedGame in allGames)
             {
-                if (!game.Ranked)
+                if (!playedGame.Ranked)
                 {
                     continue;
                 }
-                var player1 = players.SingleOrDefault(s => s.Username == game.Players[0]);
-                var player2 = players.SingleOrDefault(s => s.Username == game.Players[1]);
-                var player3 = players.SingleOrDefault(s => s.Username == game.Players[2]);
-                var player4 = players.SingleOrDefault(s => s.Username == game.Players[3]);
-                int rating;
+                Player player1 = players.SingleOrDefault(s => s.Username == playedGame.Players[0]);
+                Player player2 = players.SingleOrDefault(s => s.Username == playedGame.Players[1]);
+                Player player3 = players.SingleOrDefault(s => s.Username == playedGame.Players[2]);
+                Player player4 = players.SingleOrDefault(s => s.Username == playedGame.Players[3]);
+                double rating;
 
-                if (game.WinnerUsersnames.Contains(game.Players[0]))
+                int team1rating = (player1.Ratings[game] + player2.Ratings[game])/2;
+                int team2rating = (player3.Ratings[game] + player4.Ratings[game])/2;
+
+                if (playedGame.WinnerUsersnames.Contains(playedGame.Players[0]))
                 {
-                    var team1rating = player1.Ratings[Game.DoubleTableTennis] + player2.Ratings[Game.DoubleTableTennis] / 2;
-                    var team2rating = player3.Ratings[Game.DoubleTableTennis] + player4.Ratings[Game.DoubleTableTennis] / 2;
-                    var elo = new EloRating(team1rating, team2rating, 1, 0);
-                    player1.Ratings[Game.DoubleTableTennis] += (int)elo.Point1;
-                    player2.Ratings[Game.DoubleTableTennis] += (int)elo.Point1;
-                    player3.Ratings[Game.DoubleTableTennis] += (int)elo.Point2;
-                    player4.Ratings[Game.DoubleTableTennis] += (int)elo.Point2;
-                    rating = (int)elo.Point1;
+                    var elo = new EloRating();
+                    rating = elo.CalculateRating(team1rating, team2rating, true);
+
+                    player1.Ratings[game] += (int) rating;
+                    player2.Ratings[game] += (int) rating;
+                    player3.Ratings[game] -= (int) rating;
+                    player4.Ratings[game] -= (int) rating;
                 }
                 else
                 {
-                    var team1rating = player1.Ratings[Game.DoubleTableTennis] + player2.Ratings[Game.DoubleTableTennis] / 2;
-                    var team2rating = player3.Ratings[Game.DoubleTableTennis] + player4.Ratings[Game.DoubleTableTennis] / 2;
-                    var elo = new EloRating(team1rating, team2rating, 0, 1);
-                    player1.Ratings[Game.DoubleTableTennis] += (int)elo.Point1;
-                    player2.Ratings[Game.DoubleTableTennis] += (int)elo.Point1;
-                    player3.Ratings[Game.DoubleTableTennis] += (int)elo.Point2;
-                    player4.Ratings[Game.DoubleTableTennis] += (int)elo.Point2;
-                    rating = (int)elo.Point2;
+                    var elo = new EloRating();
+                    rating = elo.CalculateRating(team1rating, team2rating, false);
+
+                    player1.Ratings[game] -= (int) rating;
+                    player2.Ratings[game] -= (int) rating;
+                    player3.Ratings[game] += (int) rating;
+                    player4.Ratings[game] += (int) rating;
                 }
 
-                game.EloPoints = rating;
+                playedGame.EloPoints = (int) rating;
 
-                _matchManagementRepository.UpdateGameRatingById(game);
+                _matchManagementRepository.UpdateGameRatingById(playedGame);
             }
-            foreach (var player in players)
+            foreach (Player player in players)
             {
-                if (player.Ratings.ContainsKey(Game.DoubleTableTennis))
+                if (player.Ratings.ContainsKey(game))
                 {
-                    _playerManagementRepository.UpdateRating(player.Username, player.Ratings[Game.DoubleTableTennis],
-                                                             Game.DoubleTableTennis);
-                }
-            }
-        }
-
-
-        public void RecalculateDoubleFoosballRatings()
-        {
-            var allGames = _matchManagementRepository.GetAllGames(Game.DoubleFoosball).OrderBy(games => games.TimeStamp);
-            var players = _playerManagementRepository.GetAllPlayers();
-
-            foreach (var player in players)
-            {
-                if (player.Ratings.ContainsKey(Game.DoubleFoosball))
-                {
-                    player.Ratings[Game.DoubleFoosball] = 1500;
-                }
-            }
-            foreach (var game in allGames)
-            {
-                if (!game.Ranked)
-                {
-                    continue;
-                }
-                var player1 = players.SingleOrDefault(s => s.Username == game.Players[0]);
-                var player2 = players.SingleOrDefault(s => s.Username == game.Players[1]);
-                var player3 = players.SingleOrDefault(s => s.Username == game.Players[2]);
-                var player4 = players.SingleOrDefault(s => s.Username == game.Players[3]);
-                int rating;
-
-
-                if (game.WinnerUsersnames.Contains(game.Players[0]))
-                {
-                    var team1rating = player1.Ratings[Game.DoubleFoosball] + player2.Ratings[Game.DoubleFoosball] / 2;
-                    var team2rating = player3.Ratings[Game.DoubleFoosball] + player4.Ratings[Game.DoubleFoosball] / 2;
-                    var elo = new EloRating(team1rating, team2rating, 1, 0);
-                    player1.Ratings[Game.DoubleFoosball] += (int)elo.Point1;
-                    player2.Ratings[Game.DoubleFoosball] += (int)elo.Point1;
-                    player3.Ratings[Game.DoubleFoosball] += (int)elo.Point2;
-                    player4.Ratings[Game.DoubleFoosball] += (int)elo.Point2;
-                    rating = (int)elo.Point1;
-                }
-                else
-                {
-                    var team1rating = player1.Ratings[Game.DoubleFoosball] + player2.Ratings[Game.DoubleFoosball] / 2;
-                    var team2rating = player3.Ratings[Game.DoubleFoosball] + player4.Ratings[Game.DoubleFoosball] / 2;
-                    var elo = new EloRating(team1rating, team2rating, 0, 1);
-                    player1.Ratings[Game.DoubleFoosball] += (int)elo.Point1;
-                    player2.Ratings[Game.DoubleFoosball] += (int)elo.Point1;
-                    player3.Ratings[Game.DoubleFoosball] += (int)elo.Point2;
-                    player4.Ratings[Game.DoubleFoosball] += (int)elo.Point2;
-                    rating = (int)elo.Point2;
-                }
-
-                game.EloPoints = rating;
-                _matchManagementRepository.UpdateGameRatingById(game);
-            }
-            foreach (var player in players)
-            {
-                if (player.Ratings.ContainsKey(Game.DoubleFoosball))
-                {
-                    _playerManagementRepository.UpdateRating(player.Username, player.Ratings[Game.DoubleFoosball],
-                                                             Game.DoubleFoosball);
+                    _playerManagementRepository.UpdateRating(player.Username, player.Ratings[game],
+                                                             game);
                 }
             }
         }

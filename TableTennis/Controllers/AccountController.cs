@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Security;
+using TableTennis.HelperClasses;
 using TableTennis.Interfaces.HelperClasses;
 using TableTennis.Models;
 
@@ -45,7 +46,16 @@ namespace TableTennis.Controllers
         public ActionResult UpdateRating()
         {
             ViewBag.Result = "Done";
-            _ratingCalculator.RecalculateSingleTTRatings();
+            _ratingCalculator.RecalculateSingleRatings(Game.SingleTableTennis);
+            return RedirectToAction("Management", "Account");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult UpdateSingleFoosballRating()
+        {
+            ViewBag.Result = "Done";
+            _ratingCalculator.RecalculateSingleRatings(Game.SingleFoosball);
             return RedirectToAction("Management", "Account");
         }
 
@@ -54,7 +64,7 @@ namespace TableTennis.Controllers
         public ActionResult UpdateTTDoubleRating()
         {
             ViewBag.Result = "Done";
-            _ratingCalculator.RecalculateDoubleTTRatings();
+            _ratingCalculator.RecalculateDoubleRatings(Game.DoubleTableTennis);
             return RedirectToAction("Management", "Account");
         }
 
@@ -63,7 +73,7 @@ namespace TableTennis.Controllers
         public ActionResult UpdateFoosballDoubleRating()
         {
             ViewBag.Result = "Done";
-            _ratingCalculator.RecalculateDoubleFoosballRatings();
+            _ratingCalculator.RecalculateDoubleRatings(Game.DoubleFoosball);
             return RedirectToAction("Management", "Account");
         }
 
