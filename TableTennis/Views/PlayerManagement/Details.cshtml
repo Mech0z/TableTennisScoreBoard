@@ -6,103 +6,91 @@
     ViewBag.Title = @Model.Player.Username;
 }
 
-<h2>Player details</h2>
+<div class="tabbable">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Details</a></li>
+        <li><a href="#tab2" data-toggle="tab">Recent games</a></li>
+        <li><a href="#tab3" data-toggle="tab">Stats</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab1" class="tab-pane active">
+            <fieldset>
+                <div class="display-label">
+                    @Html.DisplayNameFor(model => model.Player.Username)
+                </div> 
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Player.Username)
+                </div>
 
-<fieldset>
-    <div class="display-label">
-        @Html.DisplayNameFor(model => model.Player.Username)
-    </div> 
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Player.Username)
-    </div>
+                <div class="display-label">
+                    @Html.DisplayNameFor(model => model.Player.Email)
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Player.Email)
+                </div>
 
-    <div class="display-label">
-        @Html.DisplayNameFor(model => model.Player.Email)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Player.Email)
-    </div>
-
-@*    <div class="display-label">
-        @Html.DisplayNameFor(model => model.Player.Ratings[Game.SingleTableTennis])
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Player.Ratings[Game.SingleTableTennis])
-    </div>*@
-
-    <div class="display-field">
-        <img src="@Html.Gravatar(Model.Player.GravatarEmail)" width="64" height="64" alt="Users Gravatar"/>
-    </div>
-</fieldset>
-
-<h2>Last 10 games</h2>
-
-<table>
-    <tr>
-        <td>
-            Time
-        </td>
-        <td>
-            Opponent
-        </td>
-        <td>
-            Rating
-        </td>
-    </tr>
-    @foreach (var game in Model.PlayedGamesViewModel.GameList)
-    {
-        
-        @game.TimeStamp
-        <br/>
-        switch (game.Game)
-        {
-            case Game.SingleTableTennis:
-                @Html.Label("Single Table Tennis")
+                <div class="display-field">
+                    <img src="@Html.Gravatar(Model.Player.GravatarEmail)" width="64" height="64" alt="Users Gravatar"/>
+                </div>
+            </fieldset>
+        </div>
+        <div id="tab2" class="tab-pane">
+            @foreach (PlayedGame game in Model.PlayedGamesViewModel.GameList)
+            {
+                @game.TimeStamp
+                <br/>
+                switch (game.Game)
+                {
+                    case Game.SingleTableTennis:
+                        @Html.Label("Single Table Tennis")
+                        <b>
+                            @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                        </b>
+                        break;
+                    case Game.DoubleTableTennis:
+                        @Html.Label("Double Table Tennis")
+                        <b>
+                            @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
+                        </b>
+                        break;
+                    case Game.SingleFoosball:
+                        @Html.Label("Single Foosball")
+                        <b>
+                            @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                        </b>
+                        break;
+                    case Game.DoubleFoosball:
+                        @Html.Label("Double Foosball")
+                        <b>
+                            @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
+                        </b>
+                        break;
+                }
+                <br/>
+                foreach (GameSet set in game.GameSets)
+                {
+                    <b>
+                        @set.Score1 - @set.Score2
+                    </b>
+                    <br/>
+                }
+                <br/>
+            }
+        </div>
+        <div id="tab3" class="tab-pane">
+            @foreach (PlayerMatchStatistics stats in Model.PlayedMatchStatistics)
+            {
                 <b>
-                    @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                    @stats.Score[0] - @stats.Score[1]
                 </b>
-                break;
-            case Game.DoubleTableTennis:
-                @Html.Label("Double Table Tennis")
                 <b>
-                    @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
+                    @stats.Username
                 </b>
-                break;
-            case Game.SingleFoosball:
-                @Html.Label("Single Foosball")
                 <b>
-                    @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                    @stats.Game       
                 </b>
-                break;
-            case Game.DoubleFoosball:
-                @Html.Label("Double Foosball")
-                <b>
-                    @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
-                </b>
-                break;
-        }
-        <br/>
-        foreach (GameSet set in game.GameSets)
-        {
-            <b>
-                @set.Score1 - @set.Score2
-            </b>
-            <br/>
-        }
-        <br/>
-    }
-</table>
-
-@foreach (var stats in Model.PlayedMatchStatistics)
-{
-    <b>
-        @stats.Score[0] - @stats.Score[1]
-    </b>
-    <b>
-        @stats.Username
-    </b>
-    <b>
-        @stats.Game       
-    </b>
-    <br/>
-}
+                <br/>
+            }
+        </div>
+    </div>
+</div>

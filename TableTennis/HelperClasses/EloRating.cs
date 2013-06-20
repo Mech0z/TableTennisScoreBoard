@@ -1,30 +1,25 @@
-﻿namespace TableTennis.Models
+﻿using TableTennis.Interfaces.HelperClasses;
+
+namespace TableTennis.HelperClasses
 {
-    public class EloRating
+    public class EloRating : IRating
     {
-        public double Point1 { get; set; }
-        public double Point2 { get; set; }
-
-        public double FinalResult1 { get; set; }
-        public double FinalResult2 { get; set; }
-
-        public EloRating(double CurrentRating1, double CurrentRating2, double Score1, double Score2)
+        public double CalculateRating(int player1, int player2, bool playerOneWin)
         {
             const double medium = 20;
             const double diversification = 20;
             const double minRating = medium - diversification;
             const double maxRating = medium + diversification;
 
-            double diff = 0;
+            double diff;
 
-            if (Score1 > Score2)
+            if (playerOneWin)
             {
-                diff = CurrentRating1 - CurrentRating2;
+                diff = player1 - player2;
             }
-
-            if (Score1 < Score2)
+            else
             {
-                diff = CurrentRating2 - CurrentRating1;
+                diff = player2 - player1;
             }
 
             var result = (medium * diversification - diff) / medium + minRating;
@@ -35,21 +30,9 @@
             else if (result < minRating)
                 result = minRating;
 
-            if (Score1 > Score2)
-            {
-                FinalResult1 = CurrentRating1 + result;
-                FinalResult2 = CurrentRating2 - result;
-            }
-
-            else
-            {
-                FinalResult1 = CurrentRating1 - result;
-                FinalResult2 = CurrentRating2 + result;
-            }
-
-            Point1 = FinalResult1 - CurrentRating1;
-            Point2 = FinalResult2 - CurrentRating2;
+            return result;
         }
+
 
         //public EloRating(double CurrentRating1, double CurrentRating2, double Score1, double Score2)
         //{
