@@ -10,16 +10,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F16735
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRTest", "SignalRTest\SignalRTest.csproj", "{8CC84364-8DBC-4305-9E1C-FD6840C067A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Release|x64.ActiveCfg = Release|Any CPU
+		{3AE8F2B2-5172-4EEC-9564-B595E5093567}.Release|x86.ActiveCfg = Release|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Release|x64.ActiveCfg = Release|Any CPU
+		{8CC84364-8DBC-4305-9E1C-FD6840C067A3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

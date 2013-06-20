@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
@@ -13,12 +16,15 @@ namespace TableTennis.Controllers
     {
         private readonly IMatchManagementRepository _matchManagementRepository;
         private readonly IPlayerManagementRepository _playerManagementRepository;
+        private readonly IPersistentConnectionContext _hubConnectionContext;
 
         public MatchController(IMatchManagementRepository matchManagementRepository,
-                               IPlayerManagementRepository playerManagementRepository)
+                               IPlayerManagementRepository playerManagementRepository,
+            IPersistentConnectionContext hubContext)
         {
             _matchManagementRepository = matchManagementRepository;
             _playerManagementRepository = playerManagementRepository;
+            _hubConnectionContext = hubContext;
         }
 
         /// <summary>
@@ -141,7 +147,9 @@ namespace TableTennis.Controllers
 
                 int playerOneWin = validationResult == 1 ? 1 : 0;
                 int playerTwoWin = validationResult == 2 ? 1 : 0;
-
+               
+                BroadCastWinner(vm.Player1Username, vm.Player2Username, "table tennis", playerOneWin == 1);
+                
                 var ratingSystem = new EloRating(player1Rating, player2Rating, playerOneWin, playerTwoWin);
 
                 game.EloPoints = playerOneWin == 1 ? (int) ratingSystem.Point1 : (int) ratingSystem.Point2;
@@ -163,6 +171,19 @@ namespace TableTennis.Controllers
             {
                 return View();
             }
+        }
+
+        private void BroadCastWinner(string teamOneName, string teamTwoName, string matchName, bool didTeamOneWin)
+        {
+            var msg = new BroadCastMessage
+            {
+                Winner = didTeamOneWin ? teamOneName : teamTwoName,
+                Looser = didTeamOneWin ? teamTwoName : teamOneName,
+                MatchType = matchName
+            };
+
+            string message = string.Format("{0} just won a {1} match against {2}", msg.Winner, msg.MatchType, msg.Looser);
+            _hubConnectionContext.Connection.Broadcast(message);
         }
 
         /// <summary>

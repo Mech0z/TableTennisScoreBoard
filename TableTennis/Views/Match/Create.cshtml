@@ -4,6 +4,29 @@
     ViewBag.Title = "Enter Match Result";
     ViewBag.Active = "EnterMatch";
 }
+@*<script src="../../Scripts/jquery.signalR-1.0.0.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var connection = $.connection('/hub');
+
+        connection.start()
+            .done(function () {
+                $('#submitScore').click(function () {
+                    var broadCastMessage =
+                    {
+                        matchType: 'tableTennis',
+                        winner: 'Martin Clausen',
+                        looser: 'Mads Skipper'
+                    };
+
+                    connection.send(JSON.stringify(broadCastMessage));
+                });
+            })
+            .fail(function (error) {
+                console.log('SignalR error occured ' + error);
+            });
+    });
+</script>*@
 
 @using (Html.BeginForm("Create", "Match", FormMethod.Post))
 {
@@ -39,6 +62,6 @@
     @Html.EditorFor(p => p.Score2Set3)
     @Html.ValidationMessageFor(p => p.Score2Set3)
     
-    <br/>
-    <input type="submit" value="Add result" />    
+    <br />
+    <input type="submit" id="submitScore" value="Add result" />    
 }

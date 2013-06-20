@@ -1,4 +1,6 @@
 using System.Web.Mvc;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.Practices.Unity;
 using TableTennis.HelperClasses;
 using TableTennis.Interfaces.HelperClasses;
@@ -32,8 +34,8 @@ namespace TableTennis
             container.RegisterType<IMatchManagementRepository, MongoMatchManagement>();
             container.RegisterType<IPlayerManagementRepository, MongoPlayerManagement>();
             container.RegisterType<IRatingCalculator, RatingCalculator>();
-
             container.RegisterType<IAuthenticationRepository, MongoAuthenticationRepository>();
+            container.RegisterInstance(typeof(IPersistentConnectionContext), GlobalHost.ConnectionManager.GetConnectionContext<ScoreConnection>());
             RegisterTypes(container);
 
             return container;
