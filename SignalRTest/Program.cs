@@ -15,12 +15,12 @@ namespace SignalRTest
 
             try
             {
-                //conn = new Connection("http://localhost:50400/hub");
-                //conn.Received += connection_Received;
+                conn = new Connection("http://madsskipper.dk/hub");
+                conn.Received += connection_Received;
 
-                //conn.Start().Wait();
+                conn.Start().Wait();
 
-                //Console.ReadLine();
+                Console.ReadLine();
 
                 // Windows 8
                 //var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);

@@ -147,14 +147,14 @@ namespace TableTennis.Controllers
 
                 bool playerOneWin = validationResult == 1;
                
-                BroadCastWinner(vm.Player1Username, vm.Player2Username, "table tennis", playerOneWin == 1);
+                BroadCastWinner(vm.Player1Username, vm.Player2Username, "table tennis", playerOneWin);
                 
                 var elo = new EloRating();
                 var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username,  playerOneWin ? (int) rating : (int) rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username,  playerOneWin ? player1Rating + (int) rating : player1Rating + (int) rating * -1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? (int) rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? player2Rating + (int) rating : player2Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
@@ -330,9 +330,9 @@ namespace TableTennis.Controllers
                 var elo = new EloRating();
                 var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? player1Rating + (int)rating : player1Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? player2Rating + (int)rating : player2Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
@@ -410,13 +410,13 @@ namespace TableTennis.Controllers
                 var elo = new EloRating();
                 var rating = elo.CalculateRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2, playerOneWin);
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? player1Rating + (int)rating : player1Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username, playerOneWin ? player2Rating + (int)rating : player2Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player3Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player3Username, !playerOneWin ? player3Rating + (int)rating : player3Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player4Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player4Username, !playerOneWin ? player4Rating + (int)rating : player4Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
 
                 if (validationResult == 1)
