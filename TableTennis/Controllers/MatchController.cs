@@ -12,13 +12,13 @@ namespace TableTennis.Controllers
 {
     public class MatchController : Controller
     {
+        private readonly IPersistentConnectionContext _hubConnectionContext;
         private readonly IMatchManagementRepository _matchManagementRepository;
         private readonly IPlayerManagementRepository _playerManagementRepository;
-        private readonly IPersistentConnectionContext _hubConnectionContext;
 
         public MatchController(IMatchManagementRepository matchManagementRepository,
                                IPlayerManagementRepository playerManagementRepository,
-            IPersistentConnectionContext hubContext)
+                               IPersistentConnectionContext hubContext)
         {
             _matchManagementRepository = matchManagementRepository;
             _playerManagementRepository = playerManagementRepository;
@@ -28,7 +28,7 @@ namespace TableTennis.Controllers
         /// <summary>
         ///     Show 10 last games from account
         /// </summary>
-        /// <returns></returns> 
+        /// <returns></returns>
         public ActionResult LastGames()
         {
             //TODO var games = _matchManagementRepository.GetLastXPlayedGames(10, HttpContext.User.Identity.Name);
@@ -119,7 +119,7 @@ namespace TableTennis.Controllers
                         BoundAccount = "d60"
                     };
 
-               //Validate game score
+                //Validate game score
                 string errorMessage = "";
                 var gameType = (GameType) Enum.Parse(typeof (GameType), vm.GameType);
                 game.GameType = gameType;
@@ -127,7 +127,7 @@ namespace TableTennis.Controllers
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    vm = RecreateSingleViewModel(vm,Game.SingleTableTennis , errorMessage);
+                    vm = RecreateSingleViewModel(vm, Game.SingleTableTennis, errorMessage);
                     return View(vm);
                 }
 
@@ -137,19 +137,25 @@ namespace TableTennis.Controllers
                                                                                           Game.SingleTableTennis);
 
                 bool playerOneWin = validationResult == 1;
-               
+
                 BroadCastWinner(vm.Player1Username, vm.Player2Username, "table tennis", playerOneWin);
-                
+
                 var elo = new EloRating();
-                var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
-                game.EloPoints = (int)rating;
-                _playerManagementRepository.UpdateRating(vm.Player1Username,  playerOneWin ? player1Rating + (int) rating : player1Rating + (int) rating * -1,
+                double rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
+                game.EloPoints = (int) rating;
+                _playerManagementRepository.UpdateRating(vm.Player1Username,
+                                                         playerOneWin
+                                                             ? player1Rating + (int) rating
+                                                             : player1Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? player2Rating + (int) rating : player2Rating + (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username,
+                                                         !playerOneWin
+                                                             ? player2Rating + (int) rating
+                                                             : player2Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
-                
+
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
@@ -164,11 +170,11 @@ namespace TableTennis.Controllers
         private void BroadCastWinner(string teamOneName, string teamTwoName, string matchName, bool didTeamOneWin)
         {
             var msg = new BroadCastMessage
-            {
-                Winner = didTeamOneWin ? teamOneName : teamTwoName,
-                Looser = didTeamOneWin ? teamTwoName : teamOneName,
-                MatchType = matchName
-            };
+                {
+                    Winner = didTeamOneWin ? teamOneName : teamTwoName,
+                    Looser = didTeamOneWin ? teamTwoName : teamOneName,
+                    MatchType = matchName
+                };
 
             string message = string.Format("{0} just won a {1} match against {2}", msg.Winner, msg.MatchType, msg.Looser);
             _hubConnectionContext.Connection.Broadcast(message);
@@ -185,14 +191,14 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleTableTennis, "Failed to submit, invalid data!");
+                    vm = RecreateDoubleViewModel(vm, Game.DoubleTableTennis, "Failed to submit, invalid data!");
                     return View(vm);
                 }
                 if (vm.Player1Username == vm.Player2Username || vm.Player1Username == vm.Player3Username ||
                     vm.Player1Username == vm.Player4Username || vm.Player2Username == vm.Player3Username ||
                     vm.Player2Username == vm.Player4Username || vm.Player3Username == vm.Player4Username)
                 {
-                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleTableTennis, "Select different players!");
+                    vm = RecreateDoubleViewModel(vm, Game.DoubleTableTennis, "Select different players!");
                     return View(vm);
                 }
 
@@ -214,7 +220,7 @@ namespace TableTennis.Controllers
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleTableTennis, errorMessage);
+                    vm = RecreateDoubleViewModel(vm, Game.DoubleTableTennis, errorMessage);
                     return View(vm);
                 }
 
@@ -230,15 +236,20 @@ namespace TableTennis.Controllers
                 bool playerOneWin = validationResult == 1;
 
                 var elo = new EloRating();
-                var rating = elo.CalculateRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2, playerOneWin);
-                game.EloPoints = (int)rating;
-                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? (int)rating : (int)rating * -1,
+                double rating = elo.CalculateRating((player1Rating + player2Rating)/2, (player3Rating + player4Rating)/2,
+                                                    playerOneWin);
+                game.EloPoints = (int) rating;
+                _playerManagementRepository.UpdateRating(vm.Player1Username,
+                                                         playerOneWin ? (int) rating : (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username,
+                                                         playerOneWin ? (int) rating : (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player3Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player3Username,
+                                                         !playerOneWin ? (int) rating : (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player4Username, !playerOneWin ? (int)rating : (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player4Username,
+                                                         !playerOneWin ? (int) rating : (int) rating*-1,
                                                          Game.SingleTableTennis);
 
                 if (validationResult == 1)
@@ -269,17 +280,17 @@ namespace TableTennis.Controllers
                 {
                     new GameSet
                         {
-                            Score1 = vm.Score1Set1, 
+                            Score1 = vm.Score1Set1,
                             Score2 = vm.Score2Set1
                         }
                 };
             if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
             {
-                result.Add(new GameSet { Score1 = vm.Score1Set2, Score2 = vm.Score2Set2 });
+                result.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
             }
             if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
             {
-                result.Add(new GameSet { Score1 = vm.Score1Set3, Score2 = vm.Score2Set3 });
+                result.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
             }
             return result;
         }
@@ -288,11 +299,11 @@ namespace TableTennis.Controllers
         {
             var result = new List<GameSet>
                 {
-                    new GameSet 
-                    {
-                        Score1 = vm.Score1Set1, 
-                        Score2 = vm.Score2Set1
-                    }
+                    new GameSet
+                        {
+                            Score1 = vm.Score1Set1,
+                            Score2 = vm.Score2Set1
+                        }
                 };
 
             if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
@@ -306,7 +317,7 @@ namespace TableTennis.Controllers
 
             return result;
         }
-            
+
         [HttpPost]
         public ActionResult CreateSingleFoosball(CreateViewModel vm)
         {
@@ -324,18 +335,18 @@ namespace TableTennis.Controllers
                 }
 
                 var game = new PlayedGame
-                {
-                    Players = { vm.Player1Username, vm.Player2Username },
-                    Ranked = true,
-                    TimeStamp = DateTime.UtcNow,
-                    GameSets = CreateGameSetsSingle(vm),
-                    Game = Game.SingleFoosball,
-                    BoundAccount = "d60"
-                };
+                    {
+                        Players = {vm.Player1Username, vm.Player2Username},
+                        Ranked = true,
+                        TimeStamp = DateTime.UtcNow,
+                        GameSets = CreateGameSetsSingle(vm),
+                        Game = Game.SingleFoosball,
+                        BoundAccount = "d60"
+                    };
 
                 //Validate game score
                 string errorMessage = "";
-                var gameType = (GameType)Enum.Parse(typeof(GameType), vm.GameType);
+                var gameType = (GameType) Enum.Parse(typeof (GameType), vm.GameType);
                 game.GameType = gameType;
                 int validationResult = ValidateMatch.ValidateGame(Game.SingleFoosball, gameType, game.GameSets,
                                                                   out errorMessage);
@@ -353,17 +364,23 @@ namespace TableTennis.Controllers
                 bool playerOneWin = validationResult == 1;
 
                 var elo = new EloRating();
-                var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin); 
-                game.EloPoints = (int)rating;
+                double rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
+                game.EloPoints = (int) rating;
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? player1Rating + (int)rating : player1Rating + (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username,
+                                                         playerOneWin
+                                                             ? player1Rating + (int) rating
+                                                             : player1Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? player2Rating + (int)rating : player2Rating + (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username,
+                                                         !playerOneWin
+                                                             ? player2Rating + (int) rating
+                                                             : player2Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
-                
-                
+
+
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
@@ -382,36 +399,36 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleFoosball, "Failed to submit, invalid data!");
+                    vm = RecreateDoubleViewModel(vm, Game.DoubleFoosball, "Failed to submit, invalid data!");
                     return View(vm);
                 }
                 if (vm.Player1Username == vm.Player2Username || vm.Player1Username == vm.Player3Username ||
                     vm.Player1Username == vm.Player4Username || vm.Player2Username == vm.Player3Username ||
                     vm.Player2Username == vm.Player4Username || vm.Player3Username == vm.Player4Username)
                 {
-                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleFoosball, "Select different players!");
+                    vm = RecreateDoubleViewModel(vm, Game.DoubleFoosball, "Select different players!");
                     return View(vm);
                 }
 
                 var game = new PlayedGame
-                {
-                    Players = { vm.Player1Username, vm.Player2Username, vm.Player3Username, vm.Player4Username },
-                    Ranked = true,
-                    TimeStamp = DateTime.UtcNow,
-                    Game = Game.DoubleFoosball,
-                    BoundAccount = "d60",
-                    GameSets = CreateGameSets(vm)
-                };
+                    {
+                        Players = {vm.Player1Username, vm.Player2Username, vm.Player3Username, vm.Player4Username},
+                        Ranked = true,
+                        TimeStamp = DateTime.UtcNow,
+                        Game = Game.DoubleFoosball,
+                        BoundAccount = "d60",
+                        GameSets = CreateGameSets(vm)
+                    };
 
                 //Validate game score
                 string errorMessage = "";
-                var gameType = (GameType)Enum.Parse(typeof(GameType), vm.GameType);
+                var gameType = (GameType) Enum.Parse(typeof (GameType), vm.GameType);
                 game.GameType = gameType;
                 int validationResult = ValidateMatch.ValidateGame(Game.DoubleFoosball, gameType, game.GameSets,
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleFoosball, errorMessage);
+                    vm = RecreateDoubleViewModel(vm, Game.DoubleFoosball, errorMessage);
                     return View(vm);
                 }
 
@@ -427,16 +444,29 @@ namespace TableTennis.Controllers
                 bool playerOneWin = validationResult == 1;
 
                 var elo = new EloRating();
-                var rating = elo.CalculateRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2, playerOneWin);
-                game.EloPoints = (int)rating;
+                double rating = elo.CalculateRating((player1Rating + player2Rating)/2, (player3Rating + player4Rating)/2,
+                                                    playerOneWin);
+                game.EloPoints = (int) rating;
 
-                _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? player1Rating + (int)rating : player1Rating + (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player1Username,
+                                                         playerOneWin
+                                                             ? player1Rating + (int) rating
+                                                             : player1Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player2Username, playerOneWin ? player2Rating + (int)rating : player2Rating + (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player2Username,
+                                                         playerOneWin
+                                                             ? player2Rating + (int) rating
+                                                             : player2Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player3Username, !playerOneWin ? player3Rating + (int)rating : player3Rating + (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player3Username,
+                                                         !playerOneWin
+                                                             ? player3Rating + (int) rating
+                                                             : player3Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
-                _playerManagementRepository.UpdateRating(vm.Player4Username, !playerOneWin ? player4Rating + (int)rating : player4Rating + (int)rating * -1,
+                _playerManagementRepository.UpdateRating(vm.Player4Username,
+                                                         !playerOneWin
+                                                             ? player4Rating + (int) rating
+                                                             : player4Rating + (int) rating*-1,
                                                          Game.SingleTableTennis);
 
 
@@ -450,7 +480,7 @@ namespace TableTennis.Controllers
                     game.WinnerUsersnames.Add(game.Players[2]);
                     game.WinnerUsersnames.Add(game.Players[3]);
                 }
-                
+
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
@@ -462,7 +492,6 @@ namespace TableTennis.Controllers
             }
         }
 
-        
 
         private IEnumerable<SelectListItem> CreateTableTennisGameTypes(Game game)
         {
@@ -472,13 +501,21 @@ namespace TableTennis.Controllers
                     return new[]
                         {
                             new SelectListItem {Text = "Single to 10", Value = GameType.Single.ToString()},
-                            new SelectListItem {Text = "10 Point best best of 3", Value = GameType.Double3_10.ToString()}
+                            new SelectListItem
+                                {
+                                    Text = "10 Point best best of 3",
+                                    Value = GameType.Double3_10.ToString()
+                                }
                         };
                 case Game.DoubleFoosball:
                     return new[]
                         {
                             new SelectListItem {Text = "Double to 10", Value = GameType.Double.ToString()},
-                            new SelectListItem {Text = "10 Point best best of 3", Value = GameType.Double3_10.ToString()}
+                            new SelectListItem
+                                {
+                                    Text = "10 Point best best of 3",
+                                    Value = GameType.Double3_10.ToString()
+                                }
                         };
                 case Game.DoubleTableTennis:
                     return new[]
@@ -506,7 +543,7 @@ namespace TableTennis.Controllers
             return vm;
         }
 
-        private CreateDoubleViewModel RecreateDoubleViewMdoel(CreateDoubleViewModel vm, Game game, string errorMessage)
+        private CreateDoubleViewModel RecreateDoubleViewModel(CreateDoubleViewModel vm, Game game, string errorMessage)
         {
             ModelState.Clear();
             vm.PlayerList = CreatePlayerList();
