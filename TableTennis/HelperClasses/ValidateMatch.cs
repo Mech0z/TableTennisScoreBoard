@@ -75,18 +75,18 @@ namespace TableTennis.HelperClasses
                     switch (gameType)
                     {
                         case GameType.Single:
-                            return 1;
+                            return 2;
                         case GameType.Double3_10:
-                            return 1;
+                            return 2;
                     }
                     break;
                 case Game.DoubleFoosball:
                     switch (gameType)
                     {
                         case GameType.Double:
-                            return 1;
+                            return 2;
                         case GameType.Double3_10:
-                            return 1;
+                            return 2;
                     }
                     break;
                 case Game.SingleTableTennis:

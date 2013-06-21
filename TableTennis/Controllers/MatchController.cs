@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
-using Microsoft.AspNet.SignalR.Infrastructure;
 using TableTennis.HelperClasses;
 using TableTennis.Interfaces.Repository;
 using TableTennis.Models;
@@ -30,7 +28,7 @@ namespace TableTennis.Controllers
         /// <summary>
         ///     Show 10 last games from account
         /// </summary>
-        /// <returns></returns>
+        /// <returns></returns> 
         public ActionResult LastGames()
         {
             //TODO var games = _matchManagementRepository.GetLastXPlayedGames(10, HttpContext.User.Identity.Name);
@@ -102,12 +100,12 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = RecreateSingleTTMatchViewModel(vm, "Failed to submit, invalid data!");
+                    vm = RecreateSingleViewModel(vm, Game.SingleTableTennis, "Failed to submit, invalid data!");
                     return View(vm);
                 }
                 if (vm.Player1Username == vm.Player2Username)
                 {
-                    vm = RecreateSingleTTMatchViewModel(vm, "Select different players!");
+                    vm = RecreateSingleViewModel(vm, Game.SingleTableTennis, "Select different players!");
                     return View(vm);
                 }
 
@@ -116,19 +114,12 @@ namespace TableTennis.Controllers
                         Players = {vm.Player1Username, vm.Player2Username},
                         Ranked = true,
                         TimeStamp = DateTime.UtcNow,
+                        GameSets = CreateGameSetsSingle(vm),
+                        Game = Game.SingleTableTennis,
+                        BoundAccount = "d60"
                     };
 
-                game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
-                if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
-                {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
-                }
-                if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
-                {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
-                }
-
-                //Validate game score
+               //Validate game score
                 string errorMessage = "";
                 var gameType = (GameType) Enum.Parse(typeof (GameType), vm.GameType);
                 game.GameType = gameType;
@@ -136,7 +127,7 @@ namespace TableTennis.Controllers
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    vm = RecreateSingleTTMatchViewModel(vm, errorMessage);
+                    vm = RecreateSingleViewModel(vm,Game.SingleTableTennis , errorMessage);
                     return View(vm);
                 }
 
@@ -151,15 +142,14 @@ namespace TableTennis.Controllers
                 
                 var elo = new EloRating();
                 var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
-
+                game.EloPoints = (int)rating;
                 _playerManagementRepository.UpdateRating(vm.Player1Username,  playerOneWin ? player1Rating + (int) rating : player1Rating + (int) rating * -1,
                                                          Game.SingleTableTennis);
                 _playerManagementRepository.UpdateRating(vm.Player2Username, !playerOneWin ? player2Rating + (int) rating : player2Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
-                game.Game = Game.SingleTableTennis;
-                game.BoundAccount = "d60";
+                
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
@@ -195,14 +185,14 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = RecreateDoubleTTMatchViewModel(vm, "Failed to submit, invalid data!");
+                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleTableTennis, "Failed to submit, invalid data!");
                     return View(vm);
                 }
                 if (vm.Player1Username == vm.Player2Username || vm.Player1Username == vm.Player3Username ||
                     vm.Player1Username == vm.Player4Username || vm.Player2Username == vm.Player3Username ||
                     vm.Player2Username == vm.Player4Username || vm.Player3Username == vm.Player4Username)
                 {
-                    vm = RecreateDoubleTTMatchViewModel(vm, "Select different players!");
+                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleTableTennis, "Select different players!");
                     return View(vm);
                 }
 
@@ -211,17 +201,10 @@ namespace TableTennis.Controllers
                         Players = {vm.Player1Username, vm.Player2Username, vm.Player3Username, vm.Player4Username},
                         Ranked = true,
                         TimeStamp = DateTime.UtcNow,
+                        Game = Game.DoubleTableTennis,
+                        GameSets = CreateGameSets(vm),
+                        BoundAccount = "d60"
                     };
-
-                game.GameSets.Add(new GameSet {Score1 = vm.Score1Set1, Score2 = vm.Score2Set1});
-                if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
-                {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
-                }
-                if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
-                {
-                    game.GameSets.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
-                }
 
                 //Validate game score
                 string errorMessage = "";
@@ -231,7 +214,7 @@ namespace TableTennis.Controllers
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    vm = RecreateDoubleTTMatchViewModel(vm, errorMessage);
+                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleTableTennis, errorMessage);
                     return View(vm);
                 }
 
@@ -248,7 +231,7 @@ namespace TableTennis.Controllers
 
                 var elo = new EloRating();
                 var rating = elo.CalculateRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2, playerOneWin);
-
+                game.EloPoints = (int)rating;
                 _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? (int)rating : (int)rating * -1,
                                                          Game.SingleTableTennis);
                 _playerManagementRepository.UpdateRating(vm.Player2Username, playerOneWin ? (int)rating : (int)rating * -1,
@@ -269,9 +252,6 @@ namespace TableTennis.Controllers
                     game.WinnerUsersnames.Add(game.Players[3]);
                 }
 
-                game.Game = Game.DoubleTableTennis;
-
-                game.BoundAccount = "d60";
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
@@ -283,6 +263,50 @@ namespace TableTennis.Controllers
             }
         }
 
+        private List<GameSet> CreateGameSetsSingle(CreateViewModel vm)
+        {
+            var result = new List<GameSet>
+                {
+                    new GameSet
+                        {
+                            Score1 = vm.Score1Set1, 
+                            Score2 = vm.Score2Set1
+                        }
+                };
+            if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
+            {
+                result.Add(new GameSet { Score1 = vm.Score1Set2, Score2 = vm.Score2Set2 });
+            }
+            if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
+            {
+                result.Add(new GameSet { Score1 = vm.Score1Set3, Score2 = vm.Score2Set3 });
+            }
+            return result;
+        }
+
+        private List<GameSet> CreateGameSets(CreateDoubleViewModel vm)
+        {
+            var result = new List<GameSet>
+                {
+                    new GameSet 
+                    {
+                        Score1 = vm.Score1Set1, 
+                        Score2 = vm.Score2Set1
+                    }
+                };
+
+            if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
+            {
+                result.Add(new GameSet {Score1 = vm.Score1Set2, Score2 = vm.Score2Set2});
+            }
+            if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
+            {
+                result.Add(new GameSet {Score1 = vm.Score1Set3, Score2 = vm.Score2Set3});
+            }
+
+            return result;
+        }
+            
         [HttpPost]
         public ActionResult CreateSingleFoosball(CreateViewModel vm)
         {
@@ -290,12 +314,12 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = RecreateSingleFoosbalViewModel(vm, "Failed to submit, invalid data!");
+                    vm = RecreateSingleViewModel(vm, Game.SingleFoosball, "Failed to submit, invalid data!");
                     return View(vm);
                 }
                 if (vm.Player1Username == vm.Player2Username)
                 {
-                    vm = RecreateSingleFoosbalViewModel(vm, "Select different players!");
+                    vm = RecreateSingleViewModel(vm, Game.SingleFoosball, "Select different players!");
                     return View(vm);
                 }
 
@@ -304,9 +328,10 @@ namespace TableTennis.Controllers
                     Players = { vm.Player1Username, vm.Player2Username },
                     Ranked = true,
                     TimeStamp = DateTime.UtcNow,
+                    GameSets = CreateGameSetsSingle(vm),
+                    Game = Game.SingleFoosball,
+                    BoundAccount = "d60"
                 };
-
-                game.GameSets.Add(new GameSet { Score1 = vm.Score1Set1, Score2 = vm.Score2Set1 });
 
                 //Validate game score
                 string errorMessage = "";
@@ -316,7 +341,7 @@ namespace TableTennis.Controllers
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    vm = RecreateSingleFoosbalViewModel(vm, errorMessage);
+                    vm = RecreateSingleViewModel(vm, Game.SingleFoosball, errorMessage);
                     return View(vm);
                 }
 
@@ -328,7 +353,8 @@ namespace TableTennis.Controllers
                 bool playerOneWin = validationResult == 1;
 
                 var elo = new EloRating();
-                var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin);
+                var rating = elo.CalculateRating(player1Rating, player2Rating, playerOneWin); 
+                game.EloPoints = (int)rating;
 
                 _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? player1Rating + (int)rating : player1Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
@@ -336,8 +362,8 @@ namespace TableTennis.Controllers
                                                          Game.SingleTableTennis);
 
                 game.WinnerUsersnames.Add(validationResult == 1 ? vm.Player1Username : vm.Player2Username);
-                game.Game = Game.SingleFoosball;
-                game.BoundAccount = "d60";
+                
+                
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
@@ -356,14 +382,14 @@ namespace TableTennis.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = RecreateDoubleFoosballViewMdoel(vm, "Failed to submit, invalid data!");
+                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleFoosball, "Failed to submit, invalid data!");
                     return View(vm);
                 }
                 if (vm.Player1Username == vm.Player2Username || vm.Player1Username == vm.Player3Username ||
                     vm.Player1Username == vm.Player4Username || vm.Player2Username == vm.Player3Username ||
                     vm.Player2Username == vm.Player4Username || vm.Player3Username == vm.Player4Username)
                 {
-                    vm = RecreateDoubleFoosballViewMdoel(vm, "Select different players!");
+                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleFoosball, "Select different players!");
                     return View(vm);
                 }
 
@@ -372,17 +398,10 @@ namespace TableTennis.Controllers
                     Players = { vm.Player1Username, vm.Player2Username, vm.Player3Username, vm.Player4Username },
                     Ranked = true,
                     TimeStamp = DateTime.UtcNow,
+                    Game = Game.DoubleFoosball,
+                    BoundAccount = "d60",
+                    GameSets = CreateGameSets(vm)
                 };
-
-                game.GameSets.Add(new GameSet { Score1 = vm.Score1Set1, Score2 = vm.Score2Set1 });
-                if (vm.Score1Set2 != 0 || vm.Score2Set2 != 0)
-                {
-                    game.GameSets.Add(new GameSet { Score1 = vm.Score1Set2, Score2 = vm.Score2Set2 });
-                }
-                if (vm.Score1Set3 != 0 || vm.Score2Set3 != 0)
-                {
-                    game.GameSets.Add(new GameSet { Score1 = vm.Score1Set3, Score2 = vm.Score2Set3 });
-                }
 
                 //Validate game score
                 string errorMessage = "";
@@ -392,7 +411,7 @@ namespace TableTennis.Controllers
                                                                   out errorMessage);
                 if (validationResult == -1)
                 {
-                    vm = RecreateDoubleFoosballViewMdoel(vm, errorMessage);
+                    vm = RecreateDoubleViewMdoel(vm, Game.DoubleFoosball, errorMessage);
                     return View(vm);
                 }
 
@@ -409,6 +428,7 @@ namespace TableTennis.Controllers
 
                 var elo = new EloRating();
                 var rating = elo.CalculateRating((player1Rating + player2Rating) / 2, (player3Rating + player4Rating) / 2, playerOneWin);
+                game.EloPoints = (int)rating;
 
                 _playerManagementRepository.UpdateRating(vm.Player1Username, playerOneWin ? player1Rating + (int)rating : player1Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
@@ -418,6 +438,7 @@ namespace TableTennis.Controllers
                                                          Game.SingleTableTennis);
                 _playerManagementRepository.UpdateRating(vm.Player4Username, !playerOneWin ? player4Rating + (int)rating : player4Rating + (int)rating * -1,
                                                          Game.SingleTableTennis);
+
 
                 if (validationResult == 1)
                 {
@@ -429,10 +450,7 @@ namespace TableTennis.Controllers
                     game.WinnerUsersnames.Add(game.Players[2]);
                     game.WinnerUsersnames.Add(game.Players[3]);
                 }
-
-                game.Game = Game.DoubleFoosball;
-
-                game.BoundAccount = "d60";
+                
                 //TODO game.BoundAccount = HttpContext.User.Identity.Name;
                 _matchManagementRepository.CreateMatch(game);
 
@@ -444,21 +462,7 @@ namespace TableTennis.Controllers
             }
         }
 
-        /// <summary>
-        ///     Creates a new view model if there is an error when submitting
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns></returns>
-        private CreateViewModel RecreateSingleTTMatchViewModel(CreateViewModel vm, string errorMessage)
-        {
-            ModelState.Clear();
-            vm.PlayerList = CreatePlayerList();
-            vm.GameTypes = CreateTableTennisGameTypes(Game.SingleTableTennis);
-            ModelState.AddModelError("ValidationError", errorMessage);
-
-            return vm;
-        }
+        
 
         private IEnumerable<SelectListItem> CreateTableTennisGameTypes(Game game)
         {
@@ -492,31 +496,21 @@ namespace TableTennis.Controllers
             }
         }
 
-        private CreateViewModel RecreateSingleFoosbalViewModel(CreateViewModel vm, string errorMessage)
+        private CreateViewModel RecreateSingleViewModel(CreateViewModel vm, Game game, string errorMessage)
         {
             ModelState.Clear();
             vm.PlayerList = CreatePlayerList();
-            vm.GameTypes = CreateTableTennisGameTypes(Game.SingleFoosball);
+            vm.GameTypes = CreateTableTennisGameTypes(game);
             ModelState.AddModelError("ValidationError", errorMessage);
 
             return vm;
         }
 
-        private CreateDoubleViewModel RecreateDoubleFoosballViewMdoel(CreateDoubleViewModel vm, string errorMessage)
+        private CreateDoubleViewModel RecreateDoubleViewMdoel(CreateDoubleViewModel vm, Game game, string errorMessage)
         {
             ModelState.Clear();
             vm.PlayerList = CreatePlayerList();
-            vm.GameTypes = CreateTableTennisGameTypes(Game.DoubleFoosball);
-            ModelState.AddModelError("ValidationError", errorMessage);
-
-            return vm;
-        }
-
-        private CreateDoubleViewModel RecreateDoubleTTMatchViewModel(CreateDoubleViewModel vm, string errorMessage)
-        {
-            ModelState.Clear();
-            vm.PlayerList = CreatePlayerList();
-            vm.GameTypes = CreateTableTennisGameTypes(Game.DoubleTableTennis);
+            vm.GameTypes = CreateTableTennisGameTypes(game);
             ModelState.AddModelError("ValidationError", errorMessage);
 
             return vm;

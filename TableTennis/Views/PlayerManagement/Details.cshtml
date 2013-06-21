@@ -37,6 +37,9 @@
         <div id="tab2" class="tab-pane">
             @foreach (PlayedGame game in Model.PlayedGamesViewModel.GameList)
             {
+                bool winner = game.WinnerUsersnames.Contains(Model.Player.Username);
+                var points = winner ? game.EloPoints.ToString() : "-" + game.EloPoints;
+                
                 @game.TimeStamp
                 <br/>
                 switch (game.Game)
@@ -44,25 +47,25 @@
                     case Game.SingleTableTennis:
                         @Html.Label("Single Table Tennis")
                         <b>
-                            @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                            @game.Players[0] - @game.Players[1] (@points)
                         </b>
                         break;
                     case Game.DoubleTableTennis:
                         @Html.Label("Double Table Tennis")
                         <b>
-                            @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
+                            @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@points)
                         </b>
                         break;
                     case Game.SingleFoosball:
                         @Html.Label("Single Foosball")
                         <b>
-                            @game.Players[0] - @game.Players[1] (@game.EloPoints)
+                            @game.Players[0] - @game.Players[1] (@points)
                         </b>
                         break;
                     case Game.DoubleFoosball:
                         @Html.Label("Double Foosball")
                         <b>
-                            @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@game.EloPoints)
+                            @game.Players[0] & @game.Players[1] vs @game.Players[2] & @game.Players[3] (@points)
                         </b>
                         break;
                 }
