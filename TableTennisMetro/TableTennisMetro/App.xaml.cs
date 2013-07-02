@@ -6,15 +6,14 @@ using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-// The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
 namespace TableTennisMetro
 {
 
     sealed partial class App : Application
     {
-        private Connection conn = null;
-        private const string conUrl = "http://madsskipper.dk";
+        private Connection conn;
+        private const string conUrl = "http://madsskipper.dk/hub";
 
         public App()
         {
